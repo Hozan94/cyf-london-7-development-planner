@@ -68,10 +68,15 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.14.6",
+		"@hookform/resolvers": "^2.6.1",
+		"bootstrap": "^5.0.2",
 		"express": "^4.17.1",
 		"helmet": "^4.6.0",
 		"morgan": "^1.10.0",
-		"pg": "^8.6.0"
+		"pg": "^8.6.0",
+		"react-bootstrap": "^1.6.1",
+		"react-hook-form": "^7.11.1",
+		"yup": "^0.32.9"
 	},
 	"engines": {
 		"node": "^12 || ^14",
