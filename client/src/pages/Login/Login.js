@@ -1,32 +1,38 @@
-import React from 'react'
+import React from "react";
 import "./Login.css";
-import image from '../../img/cyf.png';
+import image from "../../img/cyf.png";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
  import * as yup from "yup";
- 
- 
+
+
  const Loginschema = yup.object().shape({
     email: yup.string().email("Email is not valid").required(),
     password: yup.string().required(),
-    
+
 });
 
 
 
 function Login() {
     const { register, handleSubmit, formState:{ errors } } = useForm({
-        resolver: yupResolver(Loginschema)
+        resolver: yupResolver(Loginschema),
       });
-      const onSubmit = data => console.log(data);
+  const onSubmit = (data) => {
+    localStorage.setItem("useremail", data.email);
+    // console.log(data.email);
+  };
+  // const currentuseremail = localStorage.getItem("useremail");
+  // console.log(currentuseremail);
+
     return (
         <div>
-             
+
             <div className="Login-container">
-              <img src={image} alt="Write something here" />  
+              <img src={image} alt="Write something here" />
                <form onSubmit={handleSubmit(onSubmit)}>
                <div className="Login-details">
-             
+
                <div className="input-box">
                   <span className="details">Email</span>
                     <input type="email"   {...register("email")} />
@@ -44,12 +50,12 @@ function Login() {
               <button className="btn-login">Login</button>
               <button className="btn-signup">Signup</button>
               </div>
-              
+
                </form>
 
-            </div> 
+            </div>
         </div>
-    )
+    );
 }
 
-export default Login
+export default Login;
