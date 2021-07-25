@@ -206,10 +206,10 @@ router.delete("/graduates/:id", (req, res) => {
 //dashboard endpoints
 // router.use("logged/user_id",(req,res,next)=>)
 // GET requests for plans and goals
-router.get("/graduates/:graduate_id/plans", (req, res) => {
+router.get("/graduates/:graduate_id(\\d+)/plans", (req, res) => {
 	const graduateId = req.params.graduate_id;
 	// /graduates/:graduate_id/plans/:plan_id/goals
-	const query = `SELECT * FROM plans WHERE graduate_id=$1`;
+	const query = "SELECT * FROM plans WHERE graduate_id=$1";
 
 	pool
 		.query(query, [graduateId])
@@ -224,11 +224,11 @@ router.get("/graduates/:graduate_id/plans", (req, res) => {
 		.catch((e) => console.error(e));
 });
 
-router.get("/graduates/:graduate_id/:plan_id([0:9])", (req, res) => {
+router.get("/graduates/:graduate_id/:plan_id(\\d+)", (req, res) => {
 	const graduateId = req.params.graduate_id;
 	const planId = req.params.plan_id;
+	// const query = "SELECT * FROM plans WHERE graduate_id=$1 and id=$2";
 	const query = "SELECT * FROM plans WHERE graduate_id=$1 and id=$2";
-
 	pool
 		.query(query, [graduateId, planId])
 		.then((result) => {
@@ -237,44 +237,37 @@ router.get("/graduates/:graduate_id/:plan_id([0:9])", (req, res) => {
 				// res.json({ success: "Graduate's plans are found " });
 				res.json(result.rows);
 			} else {
-				res
-					.status(404)
-					.json({
-						status: 404,
-						error: "This graduate doesn't have such a plan id",
-					});
+				res.status(404).json({
+					status: 404,
+					error: "This graduate doesn't have such a plan id",
+				});
 			}
 		})
 		.catch((e) => console.error(e));
 });
 
-router.get(
-	"/graduates/:graduate_id/plans/:plan_id([0:9])/goals",
-	(req, res) => {
-		const graduateId = req.params.graduate_id;
-		const planId = req.params.plan_id;
-		const query = `select goals.id,goals.goal_details,goals.due_date
+router.get("/graduates/:graduate_id/plans/:plan_id(\\d+)/goals", (req, res) => {
+	const graduateId = req.params.graduate_id;
+	const planId = req.params.plan_id;
+	const query = `select goals.id,goals.goal_details,goals.due_date
                     from goals inner join plans on plans.id=goals.plan_id
                     where plans.graduate_id=$1 and goals.plan_id=$2;`;
 
-		pool
-			.query(query, [graduateId, planId])
-			.then((result) => {
-				if (result.rowCount) {
-					// res.json({ success: "Graduate's plans are found " });
-					res.json(result.rows);
-				} else {
-					res
-						.status(404)
-						.json({
-							status: 404,
-							error: "Make sure this graduate id has this plan id",
-						});
-				}
-			})
-			.catch((e) => console.error(e));
-	}
-);
+	pool
+		.query(query, [graduateId, planId])
+		.then((result) => {
+			if (result.rowCount) {
+				// res.json({ success: "Graduate's plans are found " });
+				res.json(result.rows);
+			} else {
+				res.status(404).json({
+					status: 404,
+					error: "Make sure this graduate id has this plan id",
+				});
+			}
+		})
+		.catch((e) => console.error(e));
+});
 router.get("/graduates/:graduate_id/goals", (req, res) => {
 	const graduateId = req.params.graduate_id;
 	// const planId = req.params.plan_id;
@@ -290,12 +283,10 @@ router.get("/graduates/:graduate_id/goals", (req, res) => {
 				// res.json({ success: "Graduate's goals are found " });
 				res.json(result.rows);
 			} else {
-				res
-					.status(404)
-					.json({
-						status: 404,
-						error: "This graduate doesn't have any goals.",
-					});
+				res.status(404).json({
+					status: 404,
+					error: "This graduate doesn't have any goals.",
+				});
 			}
 		})
 		.catch((e) => console.error(e));
@@ -307,25 +298,21 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
 	// const goals_list=[{goal_details:"text1"},{goal_details:"text2"}]
 	//Validate all fields are filled in
 	if (!plan_name || !graduateId) {
-		return res
-			.status(400)
-			.json({
-				status: 400,
-				error: "This api endpoint requires plan name and graduate id",
-			});
+		return res.status(400).json({
+			status: 400,
+			error: "This api endpoint requires plan name and graduate id",
+		});
 	}
 
 	const query = "SELECT * FROM plans WHERE plan_name=$1 and graduate_id=$2";
 
 	pool.query(query, [plan_name, graduateId]).then((result) => {
 		if (result.rowCount) {
-			res
-				.status(400)
-				.json({
-					status: 400,
-					error:
-						"Please change the plan name, this graduate has already got a plan with the same name",
-				});
+			res.status(400).json({
+				status: 400,
+				error:
+					"Please change the plan name, this graduate has already got a plan with the same name",
+			});
 		} else {
 			const query_plan =
 				"INSERT INTO plans (plan_name,graduate_id) VALUES ($1,$2) RETURNING id";
@@ -336,7 +323,8 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
 					goals_list.map((item) => {
 						console.log(item);
 						// item.goal_details
-						const query_goals = `INSERT INTO goals (plan_id,goal_details,goal_status_id) VALUES($1,$2,$3)`;
+						const query_goals =
+							"INSERT INTO goals (plan_id,goal_details,goal_status_id) VALUES($1,$2,$3)";
 						pool
 							.query(query_goals, [result.rows[0].id, item.goal_details, 1])
 							.then(() => {
