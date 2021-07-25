@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./SignUp.css";
 import image from '../../img/cyf.png';
 import { useForm } from "react-hook-form";
@@ -17,13 +17,14 @@ const userSchema = yup.object().shape({
 });
 
 function SignUp() {
+    const [role, setRole] = useState("")
 
-    const handleClassMenu = (value) => {
-        alert(value);
-    };
+    const [status, setStatus] = useState(true);
 
     const handleRoleMenu = (value) => {
-        alert(value);
+        value === "graduate" ? setStatus(false) : setStatus(true)
+        
+        setRole(value);
     }
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -32,7 +33,7 @@ function SignUp() {
 
     const onSubmit = (data) => {
         console.log(data)
-        fetch("http://localhost:3000/api/graduates", {
+        fetch(`http://localhost:3000/api/${role}s`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -54,11 +55,11 @@ function SignUp() {
                 <img src={image} alt="cyf-logo" />
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="user-details">
-                        
+
                         <div className="input-box">
                             <span className="details">First Name</span>
                             <input type="text"   {...register("firstName")} />
-                           
+
                             <p>{errors.firstName?.message}</p>
                         </div>
 
@@ -70,20 +71,6 @@ function SignUp() {
                         </div>
 
                         <div className="input-box">
-                            <span className="details">Class</span>
-                            <select className="role" name="studentClass" id="studentClass" required
-                                {...register("class")}
-                                onChange={(e) => handleClassMenu(e.target.value)}
-                            >
-                                <option value="">--Please choose your Class--</option>
-                                <option value="WMS01">WMS01</option>
-                                <option value="WMS02">WMS02</option>
-                                <option value="LDN06">LDN06</option>
-                                <option value="LDN07">LDN07</option>
-                            </select>
-                        </div>
-
-                        <div className="input-box">
                             <span className="details">Role</span>
                             <select className="role" name="role" id="role" required
                                 {...register("role")}
@@ -92,6 +79,20 @@ function SignUp() {
                                 <option value="">--Please choose your Role--</option>
                                 <option value="graduate">Graduate</option>
                                 <option value="mentor">Mentor</option>
+                            </select>
+                        </div>
+
+                        <div className="input-box">
+                            <span className="details">Class</span>
+                            <select className="role" name="studentClass" id="studentClass" required
+                                {...register("class")}
+                                onChange={(e) => handleClassMenu(e.target.value)} disabled={status}
+                            >
+                                <option value="">--Please choose your Class--</option>
+                                <option value="WMS01">WMS01</option>
+                                <option value="WMS02">WMS02</option>
+                                <option value="LDN06">LDN06</option>
+                                <option value="LDN07">LDN07</option>
                             </select>
                         </div>
 
@@ -119,16 +120,16 @@ function SignUp() {
                         <div className="input-box">
                             <span className="details">Confirm Password</span>
                             <input type="password"   {...register("confirmPassword")} />
-                            
+
                             <p>{errors.confirmPassword?.message}</p>
                         </div>
-                    
+
                     </div>
-                         <div className="btn-holder">
+                    <div className="btn-holder">
                         <button className="btn-signup">Signup</button>
                     </div>
                 </form>
-                 </div> 
+            </div>
         </div>
     )
 }
