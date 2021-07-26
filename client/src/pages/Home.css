@@ -1,0 +1,17 @@
+.tab-container{
+    width:200px;
+}
+
+/*.tab{
+    justify-content: space-between;
+}*/
+
+.tab{
+    width:50%;
+    text-align: center;
+    padding: 20px;
+}
+
+.tabs-container{
+justify-content: center;
+}

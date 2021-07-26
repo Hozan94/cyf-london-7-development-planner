@@ -6,26 +6,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
  import * as yup from "yup";
 
 
- const Loginschema = yup.object().shape({
+ const loginSchema = yup.object().shape({
     email: yup.string().email("Email is not valid").required(),
     password: yup.string().required(),
 
 });
 
 
-
 function Login() {
-    const { register, handleSubmit, formState:{ errors } } = useForm({
-        resolver: yupResolver(Loginschema),
-      });
-  const onSubmit = (data) => {
-    localStorage.setItem("useremail", data.email);
-    // console.log(data.email);
-  };
-  // const currentuseremail = localStorage.getItem("useremail");
-  // console.log(currentuseremail);
 
-    return (
+    const { register, handleSubmit, formState:{ errors } } = useForm({
+        resolver: yupResolver(loginSchema),
+      });
+
+      const onSubmit = (data) => console.log(data);
+
+      return (
         <div>
 
             <div className="Login-container">
@@ -48,7 +44,6 @@ function Login() {
                </div>
                <div className="btn-holder">
               <button className="btn-login">Login</button>
-              <button className="btn-signup">Signup</button>
               </div>
 
                </form>
