@@ -486,12 +486,13 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
 
 	const query = "SELECT * FROM plans WHERE plan_name=$1 and graduate_id=$2";
 
-	pool.query(query, [plan_name, graduateId]).then((result) => {
+    pool.query(query, [plan_name, graduateId])
+        .then((result) => {
 		if (result.rowCount) {
 			res.status(400).json({
 				status: 400,
 				error:
-					"Please change the plan name, this graduate has already got a plan with the same name",
+					"Please change the plan name, this graduate has already got a plan with the same name or ",
 			});
 		} else {
 			const query_plan =
@@ -511,12 +512,17 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
 								res.json({
 									success: "All the goals are saved ",
 								});
-							});
+                            })
+                        .catch((e)=>console.error(e));
 					});
 				})
 				.catch((e) => console.error(e));
 		}
 	});
 });
+
+// mentors dashboard api
+
+// router.get
 
 export default router;

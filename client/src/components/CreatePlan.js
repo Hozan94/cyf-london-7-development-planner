@@ -1,33 +1,33 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import GoalsForm from './GoalsForm';
-import GoalsTable from './GoalsTable';
-import { Paper, TextField, Grid } from '@material-ui/core';
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import CloseIcon from "@material-ui/icons/Close";
+import Slide from "@material-ui/core/Slide";
+import GoalsForm from "./GoalsForm";
+import GoalsTable from "./GoalsTable";
+import { Paper, TextField, Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
-        position: 'relative'
+        position: "relative",
     },
     title: {
-        textAlign: 'center',
+        textAlign: "center",
         flex: 1,
     },
     pageContent: {
         margin: theme.spacing(5),
-        padding: theme.spacing(3)
+        padding: theme.spacing(3),
     },
     planTitle: {
-        width: '50%',
+        width: "50%",
         margin: theme.spacing(5),
-    }
+    },
 }));
 
 
@@ -42,7 +42,7 @@ function CreatePlan(props) {
     const [open, setOpen] = useState(false);
     const [data, setData] = useState([]);
     const [planTitle, setPlanTitle] = useState("");
-    
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -53,13 +53,13 @@ function CreatePlan(props) {
 
     const ourPlans = {
         plan: planTitle,
-        goalsList: data
-    }
+        goalsList: data,
+    };
 
     function handleSubmit() {
-        props.plan(props.plansList.concat(ourPlans))
+        props.plan(props.plansList.concat(ourPlans));
         setOpen(false);
-        setData([])
+        setData([]);
     }
     function handleInputChange(e) {
         setPlanTitle(e.target.value);
@@ -100,7 +100,7 @@ function CreatePlan(props) {
                 <GoalsTable goals={data} />
             </Dialog>
         </div>
-    )
+    );
 }
 
 export default CreatePlan;

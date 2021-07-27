@@ -1,40 +1,40 @@
 
-import React, { useState } from 'react';
-import { Grid } from '@material-ui/core';
-import { useForm, Form } from './useForm';
-import Controls from './controls/Controls';
-import { format } from 'date-fns';
+import React, { useState } from "react";
+import { Grid } from "@material-ui/core";
+import { useForm, Form } from "./useForm";
+import Controls from "./controls/Controls";
+import { format } from "date-fns";
 
 
 const initialFieldValues = {
     id: 0,
-    goal: '',
+    goal: "",
     dueDate: new Date(),
-    remarks: '',
-    isCompleted: false
-}
+    remarks: "",
+    isCompleted: false,
+};
 
 function GoalsForm(props) {
 
     const {
         values,
         setValues,
-        handleInputChange
+        handleInputChange,
     } = useForm(initialFieldValues);
 
-    const [data, setData] = useState([])
+    const [data, setData] = useState([]);
 
     const goal = {
         goal: values.goal,
-        dueDate: format(values.dueDate, 'MM/dd/yyyy'),
-        remarks: values.remarks
-    }
+        dueDate: format(values.dueDate, "MM/dd/yyyy"),
+        remarks: values.remarks,
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    
-        setData(data.concat(goal))
-        props.goals(data.concat(goal))
+
+        setData(data.concat(goal));
+        props.goals(data.concat(goal));
 
     };
 
@@ -82,6 +82,6 @@ function GoalsForm(props) {
             </Grid>
         </Form>
     );
-};
+}
 
 export default GoalsForm;

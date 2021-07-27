@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import './GraduateBoard.css';
-import CreatePlan from '../components/CreatePlan';
-import PlansTable from '../components/PlansTable';
-import Controls from '../components/controls/Controls';
+import React, { useState } from "react";
+import "./GraduateBoard.css";
+import CreatePlan from "../components/CreatePlan";
+import PlansTable from "../components/PlansTable";
+import Controls from "../components/controls/Controls";
 
 
 function LandingPage() {
@@ -20,11 +20,11 @@ function LandingPage() {
                 />
             </header>
             <main>
-                <CreatePlan plan={setPlans} plansList={plans}/>
+                <CreatePlan plan={setPlans} plansList={plans} />
                 <PlansTable plan={plans} />
             </main>
         </div >
-    )
-};
+    );
+}
 
 export default LandingPage;
