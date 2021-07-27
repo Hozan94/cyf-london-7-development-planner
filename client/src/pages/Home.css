@@ -1,11 +1,17 @@
-.logo {
-	width: 100px;
+.tab-container{
+    width:200px;
 }
 
-.message {
-	color: blue;
+/*.tab{
+    justify-content: space-between;
+}*/
+
+.tab{
+    width:50%;
+    text-align: center;
+    padding: 20px;
 }
 
-.message:hover {
-	background-color: yellow;
+.tabs-container{
+justify-content: center;
 }
