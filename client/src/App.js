@@ -13,7 +13,8 @@ const App = () => (
 		<Route path="/about/this/site">
 			<About />
 		</Route>
-        <Route path="/graduate/board">
+		<Route path="/graduate/board">
+			{/* we need to make this a protected path on the front end */}
             <GraduateBoard />
         </Route>
 	</Switch>
