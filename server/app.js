@@ -25,9 +25,16 @@ if (app.get("env") === "production") {
 }
 
 app.use(apiRoot, router);
+// Dashboard Route
+//app.use("/", require('./routes/dashboard'));
 
+
+// register and login routes
+//app.use("/auth", require("./routes/jwtAuth"));
 app.use(express.static(staticDir));
 app.use(pushStateRouting(apiRoot, staticDir));
+//api
+//app.use("/", require("./routes/jwtAuth"));
 
 app.use(logErrors());
 
