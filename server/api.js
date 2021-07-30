@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import { Router } from "express";
 import { Pool } from "pg";
 
