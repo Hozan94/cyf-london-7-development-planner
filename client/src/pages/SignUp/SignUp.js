@@ -4,56 +4,109 @@ import image from '../../img/cyf.png';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { toast } from "react-toastify";
+
 
 const userSchema = yup.object().shape({
     firstName: yup.string().required('First Name is required'),
     lastName: yup.string().required("Last Name is required"),
     city: yup.string().required(),
-    class: yup.string().required(),
+    classCode: yup.string(),
     email: yup.string().email("Email is not valid").required(),
-    password: yup.string().min(8).max(15).required(),
+    password: yup.string().min(8).max(20).required(),
     confirmPassword: yup.string().oneOf([yup.ref("password"), null], 'Passwords must match')
 
 });
 
-function SignUp() {
-    const [role, setRole] = useState("")
-
+const SignUp = ({ setAuth , userType}) => {
+    const [role, setRole] = useState("");
     const [status, setStatus] = useState(true);
+
+    const handleClassMenu = (value) => {
+        console.log(value);
+    };
 
     const handleRoleMenu = (value) => {
         value === "graduate" ? setStatus(false) : setStatus(true)
-        
         setRole(value);
+        userType(value)
+        console.log(value)
     }
 
+    // bind usefrom and yup with yupresolver
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(userSchema)
     });
 
-    const onSubmit = (data) => {
-        console.log(data)
-        fetch(`http://localhost:3000/api/${role}s`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-            })
-            .catch((error) => {
-                console.error(error);
+    const onSubmitForm = async (data) => {
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/register/${role}s`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
             });
-    };
+
+            const parseRes = await response.json();
+           
+            if (parseRes.token) {
+                localStorage.setItem("token", parseRes.token)
+                setAuth(true);
+                toast.success("You Registered Successfully")
+            } else {
+                setAuth(false);
+                toast.error(parseRes)
+            }
+
+        } catch (err) {
+            console.error(err.message);
+        }
+
+    }
+
+
+//function SignUp() {
+//    const [role, setRole] = useState("")
+
+//    const [status, setStatus] = useState(true);
+
+//    const handleRoleMenu = (value) => {
+//        value === "graduate" ? setStatus(false) : setStatus(true)
+        
+//        setRole(value);
+//    }
+
+//    const handleClassMenu = (value) => {
+//        console.log(value)
+//    }
+
+//    const { register, handleSubmit, formState: { errors } } = useForm({
+//        resolver: yupResolver(userSchema)
+//    });
+
+//    const onSubmit = (data) => {
+//        console.log(data)
+//        fetch(`http://localhost:3000/api/register/${role}s`, {
+//            method: "POST",
+//            headers: {
+//                "Content-Type": "application/json",
+//            },
+//            body: JSON.stringify(data),
+//        })
+//            .then((response) => response.json())
+//            .then((data) => {
+//                console.log(data);
+//            })
+//            .catch((error) => {
+//                console.error(error);
+//            });
+//    };
 
     return (
         <div>
             <div className="signUp-container">
                 <img src={image} alt="cyf-logo" />
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmitForm)}>
                     <div className="user-details">
 
                         <div className="input-box">
@@ -85,7 +138,7 @@ function SignUp() {
                         <div className="input-box">
                             <span className="details">Class</span>
                             <select className="role" name="studentClass" id="studentClass" required
-                                {...register("class")}
+                                {...register("classCode")}
                                 onChange={(e) => handleClassMenu(e.target.value)} disabled={status}
                             >
                                 <option value="">--Please choose your Class--</option>

@@ -1,5 +1,11 @@
 import { Router } from "express";
 import { Pool } from "pg";
+//const authorization = require('./middleware/authorization');
+//const jwtGenerator = require('./utils/jwtGenerator');
+import { authorization, jwtGenerator } from "./middleware";
+import { pool } from './db';
+
+const bcrypt = require('bcrypt');
 
 const router = new Router();
 
@@ -7,11 +13,12 @@ router.get("/", (_, res) => {
     res.json({ message: "Hello, world!" });
 });
 
-const dbUrl = process.env.DATABASE_URL || "postgres://localhost:5432/cyf";
+//const dbUrl = process.env.DATABASE_URL || "postgres://localhost:5432/cyf";
 
-const pool = new Pool({
-    connectionString: dbUrl,
-});
+//const pool = new Pool({
+//    connectionString: dbUrl,
+//});
+
 
 //GET all "/graduates" OR get a graduate with a searchTerm included in their details "/graduates?q={searchTerm}"
 router.get("/graduates", (req, res) => {
@@ -68,18 +75,57 @@ router.get("/graduates/:id", (req, res) => {
         .catch((error) => console.log(error));
 });
 
+//router.post("/register", async (req, res) => {
 
+//    try {
+
+//        // 1.destaructure req.body
+//        const { firstName, lastName, email, password } = req.body;
+//        const graduateClass = req.body.classCode;
+//        let graduateClassId;
+//        // 2. check if user exist then throw error
+//        const user = await pool.query("SELECT * FROM graduates WHERE email = $1", [
+//            email
+//        ]);
+
+//        if (user.rows.length !== 0) {
+//            res.status(401).json("user Already Exist");
+//        }
+
+
+//        const userClass = await pool.query("SELECT id FROM classes WHERE class_code = $1", [graduateClass]);
+
+//        graduateClassId = userClass.rows[0].id;
+
+//        // 3. bcrypt user password
+//        const saltRound = 10;
+//        const salt = await bcrypt.genSalt(saltRound);
+//        const bcryptPassword = await bcrypt.hash(password, salt)
+
+
+//        // 4. enter new user inside the database
+//        const newUser = await pool.query("INSERT INTO graduates (first_name,last_name,email,password,class_id) values($1,$2,$3,$4,$5) RETURNING *", [firstName, lastName, email, bcryptPassword, graduateClassId]);
+//        //res.json(newUser.rows[0]);
+//        // 5. generating jwttoken
+
+//        const token = jwtGenerator(newUser.rows[0].id);
+
+//        res.json({ token });
+
+//    } catch (err) {
+//        console.error(err.message);
+//        res.status(500).send("server error");
+
+//    }
+//});
 //POST a new graduate at "/graduates"
-router.post("/graduates", (req, res) => {
-    const graduateFirstName = req.body.firstName;
-    const graduateLastName = req.body.lastName;
-    const graduateEmail = req.body.email;
-    const graduatePassword = req.body.password;
-    const graduateClass = req.body.class;
+router.post("/register/graduates", (req, res) => {
+
+    const { firstName, lastName, email, password, classCode } = req.body;
     let graduateClassId;
 
     //Validate all fields are filled in
-    if (!graduateFirstName || !graduateLastName || !graduateEmail || !graduatePassword || !graduateClass) {
+    if (!firstName || !lastName || !email || !password || !classCode) {
         return res.status(400).json({ "status": 400, "error": "Please fill in all fields" });
     }
 
@@ -89,7 +135,7 @@ router.post("/graduates", (req, res) => {
         "SELECT first_name FROM graduates WHERE email = $1";
 
     pool
-        .query(query, [graduateEmail])
+        .query(query, [email])
         .then((result) => {
             if (result.rowCount) {
                 res.status(400).json({ "status": 400, "error": "An account already exist" });
@@ -99,17 +145,26 @@ router.post("/graduates", (req, res) => {
                     "SELECT id FROM classes WHERE class_code = $1";
 
                 pool
-                    .query(query, [graduateClass])
+                    .query(query, [classCode])
                     .then((result) => {
                         graduateClassId = result.rows[0].id;
+
+                        const saltRound = 10;
+                        const salt = bcrypt.genSalt(saltRound);
+                        const bcryptPassword = bcrypt.hash(password, salt);
 
                         const query =
 
                             "INSERT INTO graduates ( first_name, last_name, email, password, class_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, class_id, TO_CHAR(sign_up_date:: DATE, 'yyyy-mm-dd') AS sign_up_date";
 
                         pool
-                            .query(query, [graduateFirstName, graduateLastName, graduateEmail, graduatePassword, graduateClassId])
-                            .then((result) => res.json({ "success": "New graduate is created", "graduate": result.rows }))
+                            .query(query, [firstName, lastName, email, bcryptPassword, graduateClassId])
+                            .then((result) => {
+                                const token = jwtGenerator(result.rows[0].id);
+
+                                res.json({ token });
+                                //res.json({ "success": "New graduate is created", "graduate": result.rows })
+                            })
                             .catch((e) => console.error(e));
                     })
                     .catch((e) => console.error(e))
@@ -250,16 +305,13 @@ router.get("/mentors/:id", (req, res) => {
 
 
 //POST a new mentor at "/mentors"
-router.post("/mentors", (req, res) => {
-    const mentorFirstName = req.body.firstName;
-    const mentorLastName = req.body.lastName;
-    const mentorEmail = req.body.email;
-    const mentorPassword = req.body.password;
-    const mentorCity = req.body.city;
+router.post("/register/mentors", (req, res) => {
+
+    const { firstName, lastName, email, password, city } = req.body
     let mentorCityId;
 
     //Validate all fields are filled in
-    if (!mentorFirstName || !mentorLastName || !mentorEmail || !mentorPassword || !mentorCity) {
+    if (!firstName || !lastName || !email || !password || !city) {
         return res.status(400).json({ "status": 400, "error": "Please fill in all fields" });
     }
 
@@ -269,7 +321,7 @@ router.post("/mentors", (req, res) => {
         "SELECT first_name FROM mentors WHERE email=$1";
 
     pool
-        .query(query, [mentorEmail])
+        .query(query, [email])
         .then((result) => {
             if (result.rowCount) {
                 res.status(400).json({ "status": 400, "error": "An account already exist" });
@@ -279,17 +331,30 @@ router.post("/mentors", (req, res) => {
                     "SELECT id FROM cities WHERE city_name = $1";
 
                 pool
-                    .query(query, [mentorCity])
+                    .query(query, [city])
                     .then((result) => {
                         mentorCityId = result.rows[0].id
+
+                        //async function hashIt(password) {
+                        //    const salt = await bcrypt.genSalt(6);
+                        //    const hashed = await bcrypt.hash(password, salt);
+                        //    return hashed;
+                        //}
+        
+                        //const salt = bcrypt.genSaltSync(6)
+                        //const hashed = bcrypt.hashSync(password, salt)
 
                         const query =
 
                             "INSERT INTO mentors ( first_name, last_name, email, password, city_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, city_id, TO_CHAR(sign_up_date:: DATE, 'yyyy-mm-dd') AS sign_up_date";
 
                         pool
-                            .query(query, [mentorFirstName, mentorLastName, mentorEmail, mentorPassword, mentorCityId])
-                            .then((result) => res.json({ "success": "New mentor is created", "mentor": result.rows }))
+                            .query(query, [firstName, lastName, email, password, mentorCityId])
+                            .then((result) => {
+                                const token = jwtGenerator(result.rows[0].id);
+
+                                res.json({ token });
+                            })
                             .catch((e) => console.error(e));
 
                     })
@@ -376,8 +441,38 @@ router.delete("/mentors/:id", (req, res) => {
 
 //POST for users logging in at "/users/login"
 router.post("/users/login", (req, res) => {
+    //try {
+    //    // destructure req.body
+    //    const { email, password } = req.body;
+
+    //    // check if user exist if not trw err
+    //    const user = await pool.query("SELECT *  FROM graduates  where email = $1 ", [email]);
+
+    //    if (user.rows.length === 0) {
+    //        return res.status(401).json("user does not exist")
+    //    }
+
+    //    //check if password entered is same as database password
+
+    //    //const validPassword = await bcrypt.compare(password, user.rows[0].password);
+    //    // if everything ok then give them jw token
+    //    if (!password) {
+    //        return res.status(401).json("password or email is incorrect")
+    //    }
+
+    //    const token = jwtGenerator(user.rows[0].id)
+    //    const userFirstName = user.rows[0].first_name
+    //    //console.log(token, userEmail)
+    //   res.json({ token, userFirstName })
+    //    //res.send()
+    //} catch (err) {
+    //    console.error(err.message);
+    //    res.status(500).send("server error");
+    //}
+
     const userEmail = req.body.email;
     const userPassword = req.body.password;
+    let userType;
 
     const query =
 
@@ -387,7 +482,12 @@ router.post("/users/login", (req, res) => {
         .query(query, [userEmail, userPassword])
         .then((result) => {
             if (result.rowCount) {
-                res.json({ "success": "Graduate logged in" })
+                const token = jwtGenerator(result.rows[0].id)
+
+                userType = "graduate";
+
+                res.json({ token , userType})
+                //res.json({ "success": "Graduate logged in" })
             } else {
                 const query =
 
@@ -397,7 +497,12 @@ router.post("/users/login", (req, res) => {
                     .query(query, [userEmail, userPassword])
                     .then((result) => {
                         if (result.rowCount) {
-                            res.json(res.json({ "success": "Mentor logged in" }))
+                            const token = jwtGenerator(result.rows[0].id)
+
+                            userType = "mentor";
+
+                            res.json({ token, userType })
+                            //res.json(res.json({ "success": "Mentor logged in" }))
                         } else {
                             res.status(404).json({ "status": 404, "error": "No matching email/passsword" })
                         }
@@ -408,5 +513,31 @@ router.post("/users/login", (req, res) => {
         .catch((e) => console.error(e));
 });
 
+
+router.get("/dashboard/:role", authorization, async (req, res) => {
+    const role = req.params.role
+    try {
+        //req.user has the payload
+        console.log(req.user)
+        const user = await pool.query(`SELECT first_name FROM ${role}s WHERE id = $1`, [req.user]);
+        res.json(user.rows[0]);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json("server errors");
+    }
+
+});
+
+//api/is-verify
+router.get("/is-verify", authorization,
+    async (req, res) => {
+        try {
+            res.json(true);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send("server error");
+        }
+    });
 
 export default router;
