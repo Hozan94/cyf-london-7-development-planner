@@ -51,6 +51,7 @@ const SignUp = ({ setAuth , userType }) => {
 
             if (parseRes.token) {
                 localStorage.setItem("token", parseRes.token);
+                localStorage.setItem("userType", role);
                 setAuth(true);
                 toast.success("You Registered Successfully");
             } else {

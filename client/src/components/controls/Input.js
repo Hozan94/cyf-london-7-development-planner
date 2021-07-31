@@ -2,7 +2,7 @@ import React from 'react';
 import { TextField } from '@material-ui/core';
 
 function Input(props) {
-    const {name, label, value, onChange, multiline, placeholder, rows, maxRows} = props;
+    const {name, label, value, onChange, multiline, placeholder, rows, maxRows, autoFocus} = props;
 
     return (
         <TextField
@@ -15,6 +15,7 @@ function Input(props) {
             rows={rows}
             value={value}
             onChange={onChange}
+            autoFocus={autoFocus}
         />
     )
 }

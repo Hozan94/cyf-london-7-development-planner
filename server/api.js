@@ -353,6 +353,7 @@ router.post("/register/mentors", (req, res) => {
                             .then((result) => {
                                 const token = jwtGenerator(result.rows[0].id);
 
+                                //const userType = 
                                 res.json({ token });
                             })
                             .catch((e) => console.error(e));

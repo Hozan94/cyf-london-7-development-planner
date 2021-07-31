@@ -53,7 +53,7 @@ function Home() {
 
 	useEffect(() => {
 		isAuth();
-	}, [isAuthenticated]);
+	}, []);
 
 	return (
 		<div className="App">

@@ -143,6 +143,7 @@ function Row(props) {
                                                 rows={8}
                                                 multiline={true}
                                                 value={values.feedback}
+                                                autoFocus={true}
                                                 onChange={handleInputChange}
                                             />
                                         </Grid>
