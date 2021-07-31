@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import { Router } from "express";
 import { Pool } from "pg";
 //const authorization = require('./middleware/authorization');
@@ -146,13 +148,13 @@ router.post("/register/graduates", (req, res) => {
 
                 pool
                     .query(query, [classCode])
-                    .then((result) => {
+                       
+                    .then( async(result) => {
+                        const saltRound = 10;
+                        const salt =  await bcrypt.genSalt(saltRound);
+                        const bcryptPassword = await bcrypt.hash(password, salt);
                         graduateClassId = result.rows[0].id;
-
-                        // const saltRound = 10;
-                        // const salt = bcrypt.genSalt(saltRound);
-                        // const bcryptPassword = bcrypt.hash(password, salt);
-
+                                                
                         const query =
 
                             "INSERT INTO graduates ( first_name, last_name, email, password, class_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, class_id, TO_CHAR(sign_up_date:: DATE, 'yyyy-mm-dd') AS sign_up_date";
@@ -161,7 +163,7 @@ router.post("/register/graduates", (req, res) => {
                             .query(query, [firstName, lastName, email, password, graduateClassId])
                             .then((result) => {
                                 const token = jwtGenerator(result.rows[0].id);
-
+                                 
                                 res.json({ token });
                                 //res.json({ "success": "New graduate is created", "graduate": result.rows })
                             })
@@ -477,28 +479,30 @@ router.post("/users/login", (req, res) => {
 
     const query =
 
-        "SELECT id FROM graduates WHERE email = $1 AND password = $2";
+        "SELECT * FROM graduates WHERE email = $1 ";
 
     pool
-        .query(query, [userEmail, userPassword])
-        .then((result) => {
-            if (result.rowCount) {
-                const token = jwtGenerator(result.rows[0].id);
-
+        .query(query, [userEmail])
+        .then( async (result) => {
+           
+          
+            if ( result.rowCount || await bcrypt.compare(userPassword, result.rows[0].password)) {
+                const token = jwtGenerator(result.rows[0].id)
                 userType = "graduate";
+                res.json({ token , userType})
+                
 
-                res.json({ token, userType })
-                //res.json({ "success": "Graduate logged in" })
+
             } else {
                 const query =
 
-                    "SELECT id FROM mentors WHERE email = $1 AND password = $2";
+                    "SELECT * FROM mentors WHERE email = $1 ";
 
                 pool
                     .query(query, [userEmail, userPassword])
-                    .then((result) => {
-                        if (result.rowCount) {
-                            const token = jwtGenerator(result.rows[0].id);
+                    .then( async(result) => {
+                        if ( result.rowCount || await bcrypt.compare(userPassword, result.rows[0].password)) {
+                            const token = jwtGenerator(result.rows[0].id)
 
                             userType = "mentor";
 
@@ -544,7 +548,7 @@ router.get("/is-verify", authorization,
     router.get("/graduates/:graduate_id/plans", (req, res) => {
 			const graduateId = req.params.graduate_id;
 			// /graduates/:graduate_id/plans/:plan_id/goals
-			const query = `SELECT * FROM plans WHERE graduate_id=$1`;
+			const query = "SELECT * FROM plans WHERE graduate_id=$1";
 
 			pool
 				.query(query, [graduateId])
@@ -661,7 +665,7 @@ router.get("/is-verify", authorization,
 									goals_list.map((item) => {
 										console.log(item);
 										// item.goal_details
-										const query_goals = `INSERT INTO goals (plan_id,goal_details,goal_status_id) VALUES($1,$2,$3)`;
+										const query_goals = "INSERT INTO goals (plan_id,goal_details,goal_status_id) VALUES($1,$2,$3)";
 										pool
 											.query(query_goals, [
 												result.rows[0].id,
@@ -678,5 +682,18 @@ router.get("/is-verify", authorization,
 								.catch((e) => console.error(e));
 						}
 					});
-				});
+                });
+/*feedacks endpoints */
+router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {
+    try {
+        // no need to check if mentor id is valid as mentors are already signed in
+        const feedback_requests = await pool.query("select * from feedbacks where mentor_id=$1", [req.params.mentor_id]);
+        res.json(feedback_requests.rows);
+    } catch(err) {
+        res.status(500).send("server error");
+
+    }
+
+});
+
 export default router;
