@@ -544,7 +544,7 @@ router.get("/is-verify", authorization,
     router.get("/graduates/:graduate_id/plans", (req, res) => {
 			const graduateId = req.params.graduate_id;
 			// /graduates/:graduate_id/plans/:plan_id/goals
-			const query = `SELECT * FROM plans WHERE graduate_id=$1`;
+			const query = "SELECT * FROM plans WHERE graduate_id=$1";
 
 			pool
 				.query(query, [graduateId])
@@ -661,7 +661,7 @@ router.get("/is-verify", authorization,
 									goals_list.map((item) => {
 										console.log(item);
 										// item.goal_details
-										const query_goals = `INSERT INTO goals (plan_id,goal_details,goal_status_id) VALUES($1,$2,$3)`;
+										const query_goals = "INSERT INTO goals (plan_id,goal_details,goal_status_id) VALUES($1,$2,$3)";
 										pool
 											.query(query_goals, [
 												result.rows[0].id,
@@ -678,5 +678,18 @@ router.get("/is-verify", authorization,
 								.catch((e) => console.error(e));
 						}
 					});
-				});
+                });
+/*feedacks endpoints */
+router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {
+    try {
+        // no need to check if mentor id is valid as mentors are already signed in
+        const feedback_requests = await pool.query("select * from feedbacks where mentor_id=$1", [req.params.mentor_id]);
+        res.json(feedback_requests.rows);
+    } catch(err) {
+        res.status(500).send("server error");
+
+    }
+
+});
+
 export default router;
