@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 
 const initialFieldValues = {
     id: 0,
-    goal: '',
+    goalDetails: '',
     dueDate: new Date(),
     remarks: '',
     isCompleted: false
@@ -25,7 +25,7 @@ function GoalsForm(props) {
     const [data, setData] = useState([])
 
     const goal = {
-        goal: values.goal,
+        goalDetails: values.goalDetails,
         dueDate: format(values.dueDate, 'MM/dd/yyyy'),
         remarks: values.remarks
     }
@@ -43,10 +43,10 @@ function GoalsForm(props) {
             <Grid container justifyContent="center" spacing={2}>
                 <Grid item xs={5} >
                     <Controls.Input
-                        name="goal"
+                        name="goalDetails"
                         label="Goal"
                         multiline={true}
-                        value={values.goal}
+                        value={values.goalDetails}
                         onChange={handleInputChange}
                     />
                 </Grid>

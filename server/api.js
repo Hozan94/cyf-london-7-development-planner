@@ -340,7 +340,7 @@ router.post("/register/mentors", (req, res) => {
                         //    const hashed = await bcrypt.hash(password, salt);
                         //    return hashed;
                         //}
-        
+
                         //const salt = bcrypt.genSaltSync(6)
                         //const hashed = bcrypt.hashSync(password, salt)
 
@@ -476,7 +476,7 @@ router.post("/users/login", (req, res) => {
 
     const query =
 
-        "SELECT email, password FROM graduates WHERE email = $1 AND password = $2";
+        "SELECT id FROM graduates WHERE email = $1 AND password = $2";
 
     pool
         .query(query, [userEmail, userPassword])
@@ -486,12 +486,12 @@ router.post("/users/login", (req, res) => {
 
                 userType = "graduate";
 
-                res.json({ token , userType})
+                res.json({ token, userType })
                 //res.json({ "success": "Graduate logged in" })
             } else {
                 const query =
 
-                    "SELECT email, password FROM mentors WHERE email = $1 AND password = $2";
+                    "SELECT id FROM mentors WHERE email = $1 AND password = $2";
 
                 pool
                     .query(query, [userEmail, userPassword])
@@ -516,12 +516,11 @@ router.post("/users/login", (req, res) => {
 
 router.get("/dashboard/:role", authorization, async (req, res) => {
     const role = req.params.role
+
     try {
         //req.user has the payload
-        console.log(req.user)
         const user = await pool.query(`SELECT first_name FROM ${role}s WHERE id = $1`, [req.user]);
         res.json(user.rows[0]);
-
     } catch (err) {
         console.error(err.message);
         res.status(500).json("server errors");

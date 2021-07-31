@@ -52,7 +52,7 @@ function CreatePlan(props) {
     };
 
     const ourPlans = {
-        plan: planTitle,
+        planName: planTitle,
         goalsList: data
     }
 
