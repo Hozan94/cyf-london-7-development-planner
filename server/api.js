@@ -5,9 +5,9 @@ import { Pool } from "pg";
 //const authorization = require('./middleware/authorization');
 //const jwtGenerator = require('./utils/jwtGenerator');
 import { authorization, jwtGenerator } from "./middleware";
-import { pool } from './db';
+import { pool } from "./db";
 
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 const router = new Router();
 
@@ -160,7 +160,7 @@ router.post("/register/graduates", (req, res) => {
                             "INSERT INTO graduates ( first_name, last_name, email, password, class_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, class_id, TO_CHAR(sign_up_date:: DATE, 'yyyy-mm-dd') AS sign_up_date";
 
                         pool
-                            .query(query, [firstName, lastName, email, bcryptPassword, graduateClassId])
+                            .query(query, [firstName, lastName, email, password, graduateClassId])
                             .then((result) => {
                                 const token = jwtGenerator(result.rows[0].id);
                                  
@@ -169,10 +169,10 @@ router.post("/register/graduates", (req, res) => {
                             })
                             .catch((e) => console.error(e));
                     })
-                    .catch((e) => console.error(e))
+                    .catch((e) => console.error(e));
             }
         })
-        .catch((e) => console.error(e))
+        .catch((e) => console.error(e));
 });
 
 
@@ -309,7 +309,7 @@ router.get("/mentors/:id", (req, res) => {
 //POST a new mentor at "/mentors"
 router.post("/register/mentors", (req, res) => {
 
-    const { firstName, lastName, email, password, city } = req.body
+    const { firstName, lastName, email, password, city } = req.body;
     let mentorCityId;
 
     //Validate all fields are filled in
@@ -335,14 +335,14 @@ router.post("/register/mentors", (req, res) => {
                 pool
                     .query(query, [city])
                     .then((result) => {
-                        mentorCityId = result.rows[0].id
+                        mentorCityId = result.rows[0].id;
 
                         //async function hashIt(password) {
                         //    const salt = await bcrypt.genSalt(6);
                         //    const hashed = await bcrypt.hash(password, salt);
                         //    return hashed;
                         //}
-        
+
                         //const salt = bcrypt.genSaltSync(6)
                         //const hashed = bcrypt.hashSync(password, salt)
 
@@ -417,7 +417,7 @@ router.put("/mentors/:id", (req, res) => {
             }
         })
         .catch((e) => console.error(e));
-})
+});
 
 
 //DELETE a mentor with a specified Id at "/mentors/:id"
@@ -505,10 +505,10 @@ router.post("/users/login", (req, res) => {
 
                             userType = "mentor";
 
-                            res.json({ token, userType })
+                            res.json({ token, userType });
                             //res.json(res.json({ "success": "Mentor logged in" }))
                         } else {
-                            res.status(404).json({ "status": 404, "error": "No matching email/passsword" })
+                            res.status(404).json({ "status": 404, "error": "No matching email/passsword" });
                         }
                     })
                     .catch((e) => console.error(e));
@@ -520,12 +520,11 @@ router.post("/users/login", (req, res) => {
 
 router.get("/dashboard/:role", authorization, async (req, res) => {
     const role = req.params.role
+
     try {
         //req.user has the payload
-        console.log(req.user)
         const user = await pool.query(`SELECT first_name FROM ${role}s WHERE id = $1`, [req.user]);
         res.json(user.rows[0]);
-
     } catch (err) {
         console.error(err.message);
         res.status(500).json("server errors");
@@ -543,5 +542,157 @@ router.get("/is-verify", authorization,
             res.status(500).send("server error");
         }
     });
+
+    // ************************************ plans and goals ****************
+    router.get("/graduates/:graduate_id/plans", (req, res) => {
+			const graduateId = req.params.graduate_id;
+			// /graduates/:graduate_id/plans/:plan_id/goals
+			const query = "SELECT * FROM plans WHERE graduate_id=$1";
+
+			pool
+				.query(query, [graduateId])
+				.then((result) => {
+					if (result.rowCount) {
+						// res.json({ success: "Graduate's plans are found " });
+						res.json(result.rows);
+					} else {
+						res.status(404).json({ status: 404, error: "No graduate found" });
+					}
+				})
+				.catch((e) => console.error(e));
+    });
+        router.get("/graduates/:graduate_id/:plan_id([0:9])", (req, res) => {
+					const graduateId = req.params.graduate_id;
+					const planId = req.params.plan_id;
+					const query = "SELECT * FROM plans WHERE graduate_id=$1 and id=$2";
+
+					pool
+						.query(query, [graduateId, planId])
+						.then((result) => {
+							console.log(result);
+							if (result.rowCount) {
+								// res.json({ success: "Graduate's plans are found " });
+								res.json(result.rows);
+							} else {
+								res.status(404).json({
+									status: 404,
+									error: "This graduate doesn't have such a plan id",
+								});
+							}
+						})
+						.catch((e) => console.error(e));
+				});
+
+				router.get(
+					"/graduates/:graduate_id/plans/:plan_id([0:9])/goals",
+					(req, res) => {
+						const graduateId = req.params.graduate_id;
+						const planId = req.params.plan_id;
+						const query = `select goals.id,goals.goal_details,goals.due_date
+                    from goals inner join plans on plans.id=goals.plan_id
+                    where plans.graduate_id=$1 and goals.plan_id=$2;`;
+
+						pool
+							.query(query, [graduateId, planId])
+							.then((result) => {
+								if (result.rowCount) {
+									// res.json({ success: "Graduate's plans are found " });
+									res.json(result.rows);
+								} else {
+									res.status(404).json({
+										status: 404,
+										error: "Make sure this graduate id has this plan id",
+									});
+								}
+							})
+							.catch((e) => console.error(e));
+					}
+				);
+				router.get("/graduates/:graduate_id/goals", (req, res) => {
+					const graduateId = req.params.graduate_id;
+					// const planId = req.params.plan_id;
+					// /graduates/:graduate_id/plans/:plan_id/goals
+					const query = `select plans.id,plans.graduate_id, plans.plan_name,array_agg(goals.goal_details) goals_list
+                    from goals inner join plans on plans.id=goals.plan_id
+                    where plans.graduate_id=$1 group by plans.id,plans.graduate_id, plans.plan_name`;
+
+					pool
+						.query(query, [graduateId])
+						.then((result) => {
+							if (result.rowCount) {
+								// res.json({ success: "Graduate's goals are found " });
+								res.json(result.rows);
+							} else {
+								res.status(404).json({
+									status: 404,
+									error: "This graduate doesn't have any goals.",
+								});
+							}
+						})
+						.catch((e) => console.error(e));
+				});
+				// adding plans and goals post requests
+				router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
+					const { plan_name, goals_list } = req.body; // this is found in the fetch body
+					const graduateId = req.params.graduate_id; // this is found in the fetch url
+					// const goals_list=[{goal_details:"text1"},{goal_details:"text2"}]
+					//Validate all fields are filled in
+					if (!plan_name || !graduateId) {
+						return res.status(400).json({
+							status: 400,
+							error: "This api endpoint requires plan name and graduate id",
+						});
+					}
+
+					const query =
+						"SELECT * FROM plans WHERE plan_name=$1 and graduate_id=$2";
+
+					pool.query(query, [plan_name, graduateId]).then((result) => {
+						if (result.rowCount) {
+							res.status(400).json({
+								status: 400,
+								error:
+									"Please change the plan name, this graduate has already got a plan with the same name",
+							});
+						} else {
+							const query_plan =
+								"INSERT INTO plans (plan_name,graduate_id) VALUES ($1,$2) RETURNING id";
+
+							pool
+								.query(query_plan, [plan_name, graduateId])
+								.then((result) => {
+									goals_list.map((item) => {
+										console.log(item);
+										// item.goal_details
+										const query_goals = "INSERT INTO goals (plan_id,goal_details,goal_status_id) VALUES($1,$2,$3)";
+										pool
+											.query(query_goals, [
+												result.rows[0].id,
+												item.goal_details,
+												1,
+											])
+											.then(() => {
+												res.json({
+													success: "All the goals are saved ",
+												});
+											});
+									});
+								})
+								.catch((e) => console.error(e));
+						}
+					});
+                });
+/*feedacks endpoints */
+router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {
+    try {
+        // no need to check if mentor id is valid as mentors are already signed in
+        const feedback_requests = await pool.query("select * from feedbacks where mentor_id=$1", [req.params.mentor_id]);
+        res.json(feedback_requests.rows);
+    } catch(err) {
+        res.status(500).send("server error");
+
+    }
+
+});
 
 export default router;

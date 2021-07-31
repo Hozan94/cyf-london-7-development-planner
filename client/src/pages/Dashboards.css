@@ -4,13 +4,14 @@
 	align-items: flex-start;
 	padding-top: 20px;
 	height: 150px;
-    background-color:rgb(226, 226, 226);
+	background-color: rgb(226, 226, 226);
 }
 
 .header-container h1 {
 	margin-left: 5%;
 }
 
+/*Not available in mentor board  */
 .goals-table-container {
 	margin-top: 20px;
 	margin-bottom: 40px;
@@ -33,9 +34,30 @@
 	align-items: center;
 }
 
+/* Not available in mentor board */
 .create-plan-button {
 	display: flex;
 	justify-content: center;
-    margin-top: 50px;
-    margin-bottom: 50px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+.goals-list-table {
+	background-color: rgb(248, 247, 245);
+}
+
+.plans-cell-header {
+	background-color: cornsilk;
+}
+
+.graduate-name-cell {
+	width: 25%;
+}
+
+.request-date-cell {
+	width: 20%;
+}
+
+.plan-name-cell {
+	width: 50%;
 }
