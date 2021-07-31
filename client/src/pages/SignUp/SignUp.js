@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import "./SignUp.css";
-import image from '../../img/cyf.png';
+import image from "../../img/cyf.png";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -8,17 +8,17 @@ import { toast } from "react-toastify";
 
 
 const userSchema = yup.object().shape({
-    firstName: yup.string().required('First Name is required'),
+    firstName: yup.string().required("First Name is required"),
     lastName: yup.string().required("Last Name is required"),
     city: yup.string().required(),
     classCode: yup.string(),
     email: yup.string().email("Email is not valid").required(),
     password: yup.string().min(8).max(20).required(),
-    confirmPassword: yup.string().oneOf([yup.ref("password"), null], 'Passwords must match')
+    confirmPassword: yup.string().oneOf([yup.ref("password"), null], "Passwords must match"),
 
 });
 
-const SignUp = ({ setAuth , userType}) => {
+const SignUp = ({ setAuth , userType }) => {
     const [role, setRole] = useState("");
     const [status, setStatus] = useState(true);
 
@@ -27,15 +27,15 @@ const SignUp = ({ setAuth , userType}) => {
     };
 
     const handleRoleMenu = (value) => {
-        value === "graduate" ? setStatus(false) : setStatus(true)
+        value === "graduate" ? setStatus(false) : setStatus(true);
         setRole(value);
-        userType(value)
-        console.log(value)
-    }
+        userType(value);
+        console.log(value);
+    };
 
     // bind usefrom and yup with yupresolver
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(userSchema)
+        resolver: yupResolver(userSchema),
     });
 
     const onSubmitForm = async (data) => {
@@ -44,25 +44,25 @@ const SignUp = ({ setAuth , userType}) => {
             const response = await fetch(`http://localhost:3000/api/register/${role}s`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
             });
 
             const parseRes = await response.json();
-           
+
             if (parseRes.token) {
-                localStorage.setItem("token", parseRes.token)
+                localStorage.setItem("token", parseRes.token);
                 setAuth(true);
-                toast.success("You Registered Successfully")
+                toast.success("You Registered Successfully");
             } else {
                 setAuth(false);
-                toast.error(parseRes)
+                toast.error(parseRes);
             }
 
         } catch (err) {
             console.error(err.message);
         }
 
-    }
+    };
 
 
 //function SignUp() {
@@ -72,7 +72,7 @@ const SignUp = ({ setAuth , userType}) => {
 
 //    const handleRoleMenu = (value) => {
 //        value === "graduate" ? setStatus(false) : setStatus(true)
-        
+
 //        setRole(value);
 //    }
 
@@ -184,8 +184,8 @@ const SignUp = ({ setAuth , userType}) => {
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default SignUp;
 

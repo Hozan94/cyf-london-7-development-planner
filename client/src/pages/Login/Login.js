@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import "./Login.css";
-import image from '../../img/cyf.png';
+import image from "../../img/cyf.png";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -26,7 +26,7 @@ const loginSchema = yup.object().shape({
 
 const Login = ({ setAuth, userType }) => {
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(loginSchema)
+        resolver: yupResolver(loginSchema),
     });
 
     //const [role, setRole] = useState("");
@@ -37,15 +37,15 @@ const Login = ({ setAuth, userType }) => {
             const response = await fetch("http://localhost:3000/api/users/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
             });
             const parseRes = await response.json();
             //console.log(parseRes.email)
-            userType(parseRes.userType)
+            userType(parseRes.userType);
 
             if (parseRes.token) {
-                localStorage.setItem("token", parseRes.token)
-                localStorage.setItem("userType", parseRes.userType)
+                localStorage.setItem("token", parseRes.token);
+                localStorage.setItem("userType", parseRes.userType);
 
                 setAuth(true);
                 toast.success(" login was Successfull");
@@ -59,7 +59,7 @@ const Login = ({ setAuth, userType }) => {
             console.error(err.message);
         }
 
-    }
+    };
     return (
         <div>
 
@@ -89,7 +89,7 @@ const Login = ({ setAuth, userType }) => {
 
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

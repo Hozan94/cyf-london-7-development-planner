@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import GraduateBoard from "./pages/GraduateBoard";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 toast.configure();
 //here I made some comment
@@ -15,7 +15,7 @@ const App = () => {
 
     return (
 
-        <Home/>
+        <Home />
         //<Switch>
         //    <Route path="/" exact>
         //        <Home />
@@ -28,7 +28,7 @@ const App = () => {
         //        <GraduateBoard />
         //    </Route>
         //</Switch>
-    )
+    );
 };
 
 export default App;
