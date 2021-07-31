@@ -17,23 +17,23 @@ function GraduateBoard({ setAuth }) {
         try {
             const response = await fetch("http://localhost:3000/api/dashboard/graduate", {
                 method: "GET",
-                headers: { token: localStorage.token }
+                headers: { token: localStorage.token },
             });
 
             const parseRes = await response.json();
             setName(parseRes.first_name);
-
         } catch (err) {
-            console.error(err.message)
+            console.error(err.message);
         }
     }
 
     const logout = (e) => {
-        e.preventDefault()
-        localStorage.removeItem("token");
+        e.preventDefault();
+        // localStorage.removeItem("token");
+        localStorage.clear();
         setAuth(false);
         toast.success("Logged out successfully");
-    }
+    };
 
     useEffect(() => {
         getName();
@@ -47,6 +47,7 @@ function GraduateBoard({ setAuth }) {
                     color="secondary"
                     type="submit"
                     text="Log Out"
+                    onClick={logout}
                 />
             </header>
             <main>
@@ -55,7 +56,7 @@ function GraduateBoard({ setAuth }) {
                 <Test plan={plans} isMentor={false}/>
             </main>
         </div >
-    )
-};
+    );
+}
 
 export default GraduateBoard;

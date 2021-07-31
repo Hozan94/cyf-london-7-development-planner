@@ -5,11 +5,11 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 export const authorization = (req, res, next) => {
-    // Get token from header  
+    // Get token from header
     const jwtToken = req.header("token");
 
     if (!jwtToken) {
-        return res.status(403).json("Not Authorized")
+        return res.status(403).json("Not Authorized");
     }
     try {
 
@@ -24,15 +24,15 @@ export const authorization = (req, res, next) => {
     }
 
 
-}
+};
 
 export const jwtGenerator = (user_id) => {
     const payload = {
-        user: user_id
-    }
+        user: user_id,
+    };
 
-    return jwt.sign(payload, process.env.jwtSecret, { expiresIn: "1hr" })
-}
+    return jwt.sign(payload, process.env.jwtSecret, { expiresIn: "1hr" });
+};
 
 export const configuredHelmet = () =>
 	helmet({
