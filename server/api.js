@@ -478,27 +478,29 @@ router.post("/users/login", (req, res) => {
 
     const query =
 
-        "SELECT email, password FROM graduates WHERE email = $1 AND password = $2";
+        "SELECT * FROM graduates WHERE email = $1 ";
 
     pool
-        .query(query, [userEmail, userPassword])
-        .then((result) => {
-            if (result.rowCount) {
+        .query(query, [userEmail])
+        .then( async (result) => {
+           
+          
+            if ( result.rowCount || await bcrypt.compare(userPassword, result.rows[0].password)) {
                 const token = jwtGenerator(result.rows[0].id)
-
                 userType = "graduate";
-
                 res.json({ token , userType})
-                //res.json({ "success": "Graduate logged in" })
+                
+
+
             } else {
                 const query =
 
-                    "SELECT email, password FROM mentors WHERE email = $1 AND password = $2";
+                    "SELECT * FROM mentors WHERE email = $1 ";
 
                 pool
                     .query(query, [userEmail, userPassword])
-                    .then((result) => {
-                        if (result.rowCount) {
+                    .then( async(result) => {
+                        if ( result.rowCount || await bcrypt.compare(userPassword, result.rows[0].password)) {
                             const token = jwtGenerator(result.rows[0].id)
 
                             userType = "mentor";
