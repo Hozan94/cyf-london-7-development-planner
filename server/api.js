@@ -148,13 +148,13 @@ router.post("/register/graduates", (req, res) => {
 
                 pool
                     .query(query, [classCode])
-                    .then((result) => {
-                        graduateClassId = result.rows[0].id;
-
+                       
+                    .then( async(result) => {
                         const saltRound = 10;
-                        const salt = bcrypt.genSalt(saltRound);
-                        const bcryptPassword = bcrypt.hash(password, salt);
-
+                        const salt =  await bcrypt.genSalt(saltRound);
+                        const bcryptPassword = await bcrypt.hash(password, salt);
+                        graduateClassId = result.rows[0].id;
+                                                
                         const query =
 
                             "INSERT INTO graduates ( first_name, last_name, email, password, class_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, class_id, TO_CHAR(sign_up_date:: DATE, 'yyyy-mm-dd') AS sign_up_date";
@@ -163,7 +163,7 @@ router.post("/register/graduates", (req, res) => {
                             .query(query, [firstName, lastName, email, bcryptPassword, graduateClassId])
                             .then((result) => {
                                 const token = jwtGenerator(result.rows[0].id);
-
+                                 
                                 res.json({ token });
                                 //res.json({ "success": "New graduate is created", "graduate": result.rows })
                             })
