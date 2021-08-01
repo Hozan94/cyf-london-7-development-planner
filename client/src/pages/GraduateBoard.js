@@ -53,7 +53,7 @@ function GraduateBoard({ setAuth }) {
             <main>
                 <CreatePlan plan={setPlans} plansList={plans}/>
                 {/*<PlansTable plan={plans} />*/}
-                <Test plan={plans} isMentor={false}/>
+                <Test plans={plans} isMentor={false}/>
             </main>
         </div >
     );

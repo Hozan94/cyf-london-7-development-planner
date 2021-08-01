@@ -25,8 +25,8 @@ function GoalsForm(props) {
     const [data, setData] = useState([])
 
     const goal = {
-        goalDetails: values.goalDetails,
-        dueDate: format(values.dueDate, 'MM/dd/yyyy'),
+        goal_details: values.goalDetails,
+        due_date: format(values.dueDate, 'MM/dd/yyyy'),
         remarks: values.remarks
     }
 

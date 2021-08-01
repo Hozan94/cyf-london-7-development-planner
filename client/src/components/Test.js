@@ -94,16 +94,16 @@ function Row(props) {
                 </TableCell >
                 {isMentor &&
                     <TableCell component="th" scope="row" >
-                        {row.graduateName}
+                        {row.name}
                     </TableCell>
                 }
                 {isMentor &&
                     < TableCell component="th">
-                        {row.requestDate}
+                    {row.feedback_requested_date}
                     </TableCell>
                 }
                 <TableCell component="th" >
-                    {row.planName}
+                    {row.plan_name}
                 </TableCell>
             </TableRow>
             <TableRow>
@@ -122,10 +122,10 @@ function Row(props) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.goalsList.map((data, index) => (
+                                    {row.goals_list.map((data, index) => (
                                         <TableRow key={index}>
-                                            <TableCell>{data.goalDetails}</TableCell>
-                                            <TableCell>{data.dueDate}</TableCell>
+                                            <TableCell>{data.goal_details}</TableCell>
+                                            <TableCell>{data.due_date}</TableCell>
                                             <TableCell >{data.remarks}</TableCell>
                                         </TableRow>
                                     ))}
@@ -181,9 +181,9 @@ export default function PlansTable(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.plan.map((data) => (
-                            <Row key={data.plan} row={data} isMentor={props.isMentor} />
-                        ))}
+                        {props.plans.map((data) => {
+                           return <Row key={data.id} row={data} isMentor={props.isMentor} /> 
+                            })}
                     </TableBody>
                 </Table>
             </TableContainer>

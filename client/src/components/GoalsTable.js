@@ -46,9 +46,9 @@ function GoalsTable(props) {
                         {props.goals.map((goal, index) => (
                             <TableRow key={index}>
                                 <TableCell component="th" scope="row">
-                                    {goal.goalDetails}
+                                    {goal.goal_details}
                                 </TableCell>
-                                <TableCell align="right">{goal.dueDate}</TableCell>
+                                <TableCell align="right">{goal.due_date}</TableCell>
                                 <TableCell align="right">{goal.remarks}</TableCell>
                             </TableRow>
                         ))}

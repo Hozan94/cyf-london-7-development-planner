@@ -52,8 +52,8 @@ function CreatePlan(props) {
     };
 
     const ourPlans = {
-        planName: planTitle,
-        goalsList: data
+        plan_name: planTitle,
+        goals_list: data
     }
 
     function handleSubmit() {

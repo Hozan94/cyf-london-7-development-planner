@@ -8,54 +8,57 @@ import { toast } from "react-toastify";
 
 function MentorBoard({ setAuth }) {
 
-    const fakeData = [
-        {
-            graduateName: "Hozan Ali",
-            requestDate: "20/05/2021",
-            planName: "Make a website about your products and add the option of purchase",
-            goalsList: [
-                {
-                    goalDetails: "Create the Front End",
-                    dueDate: "24/05/2021",
-                    remarks: "Use Express.js to build it and bcrypt to store passwords",
-                }, {
-                    goalDetails: "Create the Back End",
-                    dueDate: "28/05/2021",
-                    remarks: "Use React and React Hooks alongside Bootstrap",
-                },
-                {
-                    goalDetails: "Create the Data Base",
-                    dueDate: "22/05/2021",
-                    remarks: "Use Postgress and Postgress Node",
-                }
-            ]
-        },
-        {
-            graduateName: "Hozan Ali",
-            requestDate: "20/05/2021",
-            planName: "Make a website about your products and add the option of purchase",
-            goalsList: [
-                {
-                    goalDetails: "Create the Front End",
-                    dueDate: "24/05/2021",
-                    remarks: "Use Express.js to build it and bcrypt to store passwords",
-                }, {
-                    goalDetails: "Create the Back End",
-                    dueDate: "28/05/2021",
-                    remarks: "Use React and React Hooks alongside Bootstrap",
-                },
-                {
-                    goalDetails: "Create the Data Base",
-                    dueDate: "22/05/2021",
-                    remarks: "Use Postgress and Postgress Node",
-                }
-            ]
-        }
+    //const fakeData = [
+    //    {
+    //        name: "Hozan Ali",
+    //        feedback_requested_date: "20/05/2021",
+    //        plan_name: "Make a website about your products and add the option of purchase",
+    //        goals_list: [
+    //            {
+    //                goal_details: "Create the Front End",
+    //                due_date: "24/05/2021",
+    //                remarks: "Use Express.js to build it and bcrypt to store passwords",
+    //            }, {
+    //                goal_details: "Create the Back End",
+    //                due_date: "28/05/2021",
+    //                remarks: "Use React and React Hooks alongside Bootstrap",
+    //            },
+    //            {
+    //                goal_details: "Create the Data Base",
+    //                due_date: "22/05/2021",
+    //                remarks: "Use Postgress and Postgress Node",
+    //            }
+    //        ]
+    //    },
+    //    {
+    //        name: "Hozan Ali",
+    //        feedback_requested_date: "20/05/2021",
+    //        plan_name: "Make a website about your products and add the option of purchase",
+    //        goals_list: [
+    //            {
+    //                goal_details: "Create the Front End",
+    //                due_date: "24/05/2021",
+    //                remarks: "Use Express.js to build it and bcrypt to store passwords",
+    //            }, {
+    //                goal_details: "Create the Back End",
+    //                due_date: "28/05/2021",
+    //                remarks: "Use React and React Hooks alongside Bootstrap",
+    //            },
+    //            {
+    //                goal_details: "Create the Data Base",
+    //                due_date: "22/05/2021",
+    //                remarks: "Use Postgress and Postgress Node",
+    //            }
+    //        ]
+    //    }
 
-    ]
+    //]
 
-    const [plans, setPlans] = useState(fakeData);
-    const [name, setName] = useState("");
+    const [plans, setPlans] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+    const [mentor, setMentor] = useState();
+    let id;
 
     async function getName() {
         try {
@@ -65,16 +68,31 @@ function MentorBoard({ setAuth }) {
             });
 
             const parseRes = await response.json();
-            setName(parseRes.first_name);
-        
+            id = parseRes.id;
+            console.log(parseRes);
+
+            setMentor(parseRes);
+
+        } catch (err) {
+            console.error(err.message)
+        }
+
+        try {
+            const feedback = await fetch(`http://localhost:3000/api/mentors/${1}/feedbacks`);
+
+            const feedbackRes = await feedback.json();
+            setPlans(feedbackRes);
+            setLoading(false);
+            console.log(feedbackRes);
+
         } catch (err) {
             console.error(err.message)
         }
     }
-
+console.log(mentor)
     const logout = (e) => {
         e.preventDefault()
-        localStorage.removeItem("token");
+        localStorage.clear();
         setAuth(false);
         toast.success("Logged out successfully");
     }
@@ -86,16 +104,20 @@ function MentorBoard({ setAuth }) {
     return (
         <div>
             <header className="header-container">
-                <h1>Mentor Dashboard {name}</h1>
+                <h1>Mentor Dashboard </h1>
                 <Controls.Button
                     color="secondary"
                     type="submit"
                     text="Log Out"
+                    onClick={logout}
                 />
             </header>
             <main>
                 {/*<CreatePlan plan={setPlans} plansList={plans} />*/}
-                <Test plan={plans} isMentor={true}/>
+                {loading ? <h2>Loading.....</h2> : <h3>{`Number of feedbacks requested ${plans.length}`}</h3>}
+                {loading ? <h2>Loading.....</h2> : <Test plans={plans} isMentor={true} />}
+                {/*{plans.error ? <h1>{plans.error}</h1> : <Test plan={plans} isMentor={true} />}*/}
+                {/*<Test plan={plans} isMentor={true} />*/}
             </main>
         </div >
     )
