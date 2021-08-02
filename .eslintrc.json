@@ -1,20 +1,22 @@
 {
-	"env": {
-		"es6": true,
-		"node": true
-	},
-	"extends": ["@codeyourfuture/standard"],
-	"parser": "babel-eslint",
-	"rules": {
-		"indent": "off",
-		"operator-linebreak": "off",
-		"quotes": [
-			"error",
-			"double",
-			{
-				"avoidEscape": true,
-				"allowTemplateLiterals": false
-			}
-		]
-	}
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "standard"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+    }
 }

@@ -62,15 +62,10 @@ function Home() {
 					{/* <Link to="/signUp">Register</Link>
 					<br></br>
 					<Link to="/login">Log in</Link> */}
-					<NavBar />
+					{!isAuthenticated ? <NavBar /> : null}
 					<>
 						<Switch>
-							<Route
-                                exact
-                                path="/welcome"
-                                render={() => <Welcome />}
-
-							/>
+							<Route exact path="/welcome" render={() => <Welcome />} />
 							<Route
 								exact
 								path="/login"
