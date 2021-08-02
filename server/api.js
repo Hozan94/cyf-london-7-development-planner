@@ -619,8 +619,8 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
     pool.query(query, [plan_name, graduateId]).then((result) => {
         if (result.rowCount) {
             res.status(400).json({
-                status: 400,
-                error:
+                "status": 400,
+                "error":
                     "Please change the plan name, this graduate has already got a plan with the same name",
             });
         } else {
@@ -633,24 +633,28 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
                     goals_list.map((item) => {
                         console.log(item);
                         // item.goal_details
-                        const query_goals = "INSERT INTO goals (plan_id,goal_details,goal_status_id) VALUES($1,$2,$3)";
+                        const query_goals = "INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES($1,$2,$3,$4,$5)";
                         pool
                             .query(query_goals, [
                                 result.rows[0].id,
                                 item.goal_details,
+                                item.due_date,
+                                item.remarks,
                                 1,
                             ])
-                            .then(() => {
-                                res.json({
-                                    success: "All the goals are saved ",
-                                });
-                            });
+                            .catch((e) => console.error(e))
                     });
+
+                    res.json("goals are saved")
                 })
                 .catch((e) => console.error(e));
         }
-    });
+    })
+    .catch((e) => console.error(e));
 });
+
+
+
 /*feedacks endpoints */
 
 router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {

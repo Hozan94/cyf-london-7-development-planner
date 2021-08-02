@@ -56,11 +56,26 @@ function CreatePlan(props) {
         goals_list: data
     }
 
-    function handleSubmit() {
+  async function handleSubmit() {
         props.plan(props.plansList.concat(ourPlans))
+
         setOpen(false);
-        setData([])
+        setData([]);
+        try {
+            const response = await fetch(`http://localhost:3000/api/graduates/${props.graduateId}/plans/goals`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(ourPlans),
+            });
+
+            const parseRes = await response.json();
+            console.log(parseRes);
+        } catch (err){
+            console.log(err);
+        }
+       
     }
+
     function handleInputChange(e) {
         setPlanTitle(e.target.value);
     }

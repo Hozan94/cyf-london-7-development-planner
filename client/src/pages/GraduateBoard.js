@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 function GraduateBoard({ setAuth }) {
 
     const [plans, setPlans] = useState([]);
-    const [name, setName] = useState("");
+    const [graduate, setGraduate] = useState("");
 
     async function getName() {
         try {
@@ -21,7 +21,7 @@ function GraduateBoard({ setAuth }) {
             });
 
             const parseRes = await response.json();
-            setName(parseRes.first_name);
+            setGraduate(parseRes);
         } catch (err) {
             console.error(err.message);
         }
@@ -42,7 +42,7 @@ function GraduateBoard({ setAuth }) {
     return (
         <div>
             <header className="header-container">
-                <h1>Graduate Dashboard {name}</h1>
+                <h1>Graduate Dashboard {graduate.id}</h1>
                 <Controls.Button
                     color="secondary"
                     type="submit"
@@ -51,7 +51,7 @@ function GraduateBoard({ setAuth }) {
                 />
             </header>
             <main>
-                <CreatePlan plan={setPlans} plansList={plans}/>
+                <CreatePlan plan={setPlans} plansList={plans} graduateId={graduate.id}/>
                 {/*<PlansTable plan={plans} />*/}
                 <Test plans={plans} isMentor={false}/>
             </main>
