@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import GraduateBoard from "./pages/GraduateBoard";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+//import 'bootstrap/dist/css/bootstrap.css';
+
 
 toast.configure();
 //here I made some comment

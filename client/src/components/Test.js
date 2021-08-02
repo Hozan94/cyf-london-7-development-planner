@@ -18,6 +18,7 @@ import Controls from "./controls/Controls";
 import { useForm, Form } from "./useForm";
 import { Grid } from "@material-ui/core";
 import Icon from '@material-ui/core/Icon';
+import { format } from 'date-fns';
 
 
 const useStyles = makeStyles(theme => ({
@@ -99,7 +100,7 @@ function Row(props) {
                 }
                 {isMentor &&
                     < TableCell component="th">
-                    {row.feedback_requested_date}
+                        {format(new Date(row.feedback_requested_date), 'MM/dd/yyyy')}
                     </TableCell>
                 }
                 <TableCell component="th" >
@@ -125,7 +126,7 @@ function Row(props) {
                                     {row.goals_list.map((data, index) => (
                                         <TableRow key={index}>
                                             <TableCell>{data.goal_details}</TableCell>
-                                            <TableCell>{data.due_date}</TableCell>
+                                            <TableCell>{format(new Date(data.due_date), 'MM/dd/yyyy')}</TableCell>
                                             <TableCell >{data.remarks}</TableCell>
                                         </TableRow>
                                     ))}
@@ -182,8 +183,8 @@ export default function PlansTable(props) {
                     </TableHead>
                     <TableBody>
                         {props.plans.map((data) => {
-                           return <Row key={data.id} row={data} isMentor={props.isMentor} /> 
-                            })}
+                            return <Row key={data.id} row={data} isMentor={props.isMentor} />
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>

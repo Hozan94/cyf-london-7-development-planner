@@ -660,7 +660,7 @@ router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {
         // res.json(feedback_requests.rows);
         const feedback_requests = await pool.query(
             `select plans.id,concat(graduates.first_name,' ',graduates.last_name) as name,feedbacks.feedback_requested_date,feedbacks.mentor_id,plans.plan_name,
-                        json_agg(json_build_object('goal_details',goals.goal_details,'due_date',goals.due_date)) as goals_list
+                        json_agg(json_build_object('goal_details',goals.goal_details,'due_date',goals.due_date, 'remarks', goals.remarks)) as goals_list
                         from goals 
                         inner join plans on plans.id=goals.plan_id 
                         inner join graduates on graduates.id=plans.graduate_id 

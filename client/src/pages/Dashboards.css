@@ -61,3 +61,13 @@
 .plan-name-cell {
 	width: 50%;
 }
+
+.feedback-count{
+    margin:20px;
+    text-align: center;
+}
+
+.email{
+    padding-left: 25px;
+    color: black;
+}

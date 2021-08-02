@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.css';
+//import 'bootstrap/dist/css/bootstrap.css';
 //import { Tabs, Tab, TabContainer, Container, Row, Col } from 'react-bootstrap';
 //import SignUp from './SignUp/SignUp';
 //import Login from './Login/Login';
@@ -62,7 +62,7 @@ function Home() {
 					{/* <Link to="/signUp">Register</Link>
 					<br></br>
 					<Link to="/login">Log in</Link> */}
-					<NavBar />
+                    {!isAuthenticated ? <NavBar /> : null}
 					<>
 						<Switch>
 							<Route

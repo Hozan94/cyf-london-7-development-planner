@@ -78,7 +78,7 @@ function MentorBoard({ setAuth }) {
         }
 
         try {
-            const feedback = await fetch(`http://localhost:3000/api/mentors/${1}/feedbacks`);
+            const feedback = await fetch(`http://localhost:3000/api/mentors/${id}/feedbacks`);
 
             const feedbackRes = await feedback.json();
             setPlans(feedbackRes);
@@ -104,7 +104,7 @@ console.log(mentor)
     return (
         <div>
             <header className="header-container">
-                <h1>Mentor Dashboard </h1>
+                <h1>Mentor Dashboard <span className="email">{mentor ? mentor.email : null}</span></h1>
                 <Controls.Button
                     color="secondary"
                     type="submit"
@@ -114,7 +114,7 @@ console.log(mentor)
             </header>
             <main>
                 {/*<CreatePlan plan={setPlans} plansList={plans} />*/}
-                {loading ? <h2>Loading.....</h2> : <h3>{`Number of feedbacks requested ${plans.length}`}</h3>}
+                {loading ? <h2>Loading.....</h2> : <h3 className="feedback-count">{`Number of feedback requested ${plans.length}`}</h3>}
                 {loading ? <h2>Loading.....</h2> : <Test plans={plans} isMentor={true} />}
                 {/*{plans.error ? <h1>{plans.error}</h1> : <Test plan={plans} isMentor={true} />}*/}
                 {/*<Test plan={plans} isMentor={true} />*/}
