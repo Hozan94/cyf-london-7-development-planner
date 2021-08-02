@@ -13,7 +13,7 @@ function MentorBoard({ setAuth }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [mentor, setMentor] = useState();
-    let id;
+    let mentor_id;
 
     async function getName() {
         try {
@@ -23,7 +23,7 @@ function MentorBoard({ setAuth }) {
             });
 
             const parseRes = await response.json();
-            id = parseRes.id;
+            mentor_id = parseRes.id;
            // console.log(parseRes);
 
             setMentor(parseRes);
@@ -33,7 +33,7 @@ function MentorBoard({ setAuth }) {
         }
 
         try {
-            const feedback = await fetch(`http://localhost:3000/api/mentors/${id}/feedbacks`);
+            const feedback = await fetch(`http://localhost:3000/api/mentors/${mentor_id}/feedbacks`);
 
             const feedbackRes = await feedback.json();
             setPlans(feedbackRes);
