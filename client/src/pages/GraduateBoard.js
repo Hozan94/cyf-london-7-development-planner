@@ -5,13 +5,13 @@ import CreatePlan from '../components/CreatePlan';
 import Controls from '../components/controls/Controls';
 import Test from '../components/Test'
 import { toast } from "react-toastify";
+import { useHistory } from "react-router";
 
 
-
-function GraduateBoard({ setAuth }) {
-
+function GraduateBoard() {
+    const history = useHistory();
     const [plans, setPlans] = useState([]);
-    const [name, setName] = useState("");
+    const [graduate, setGraduate] = useState("");
 
     async function getName() {
         try {
@@ -21,7 +21,7 @@ function GraduateBoard({ setAuth }) {
             });
 
             const parseRes = await response.json();
-            setName(parseRes.first_name);
+            setGraduate(parseRes);
         } catch (err) {
             console.error(err.message);
         }
@@ -31,7 +31,7 @@ function GraduateBoard({ setAuth }) {
         e.preventDefault();
         // localStorage.removeItem("token");
         localStorage.clear();
-        setAuth(false);
+        history.push(`/login`);
         toast.success("Logged out successfully");
     };
 
@@ -42,7 +42,7 @@ function GraduateBoard({ setAuth }) {
     return (
         <div>
             <header className="header-container">
-                <h1>Graduate Dashboard {name}</h1>
+                <h1>Graduate Dashboard {graduate.id}</h1>
                 <Controls.Button
                     color="secondary"
                     type="submit"
@@ -51,7 +51,7 @@ function GraduateBoard({ setAuth }) {
                 />
             </header>
             <main>
-                <CreatePlan plan={setPlans} plansList={plans}/>
+                <CreatePlan plan={setPlans} plansList={plans} graduateId={graduate.id}/>
                 {/*<PlansTable plan={plans} />*/}
                 <Test plans={plans} isMentor={false}/>
             </main>

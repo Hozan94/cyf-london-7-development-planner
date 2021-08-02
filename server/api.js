@@ -70,48 +70,7 @@ router.get("/graduates/:id", (req, res) => {
 		.catch((error) => console.log(error));
 });
 
-//router.post("/register", async (req, res) => {
 
-//    try {
-
-//        // 1.destaructure req.body
-//        const { firstName, lastName, email, password } = req.body;
-//        const graduateClass = req.body.classCode;
-//        let graduateClassId;
-//        // 2. check if user exist then throw error
-//        const user = await pool.query("SELECT * FROM graduates WHERE email = $1", [
-//            email
-//        ]);
-
-//        if (user.rows.length !== 0) {
-//            res.status(401).json("user Already Exist");
-//        }
-
-//        const userClass = await pool.query("SELECT id FROM classes WHERE class_code = $1", [graduateClass]);
-
-//        graduateClassId = userClass.rows[0].id;
-
-//        // 3. bcrypt user password
-//        const saltRound = 10;
-//        const salt = await bcrypt.genSalt(saltRound);
-//        const bcryptPassword = await bcrypt.hash(password, salt)
-
-//        // 4. enter new user inside the database
-//        const newUser = await pool.query("INSERT INTO graduates (first_name,last_name,email,password,class_id) values($1,$2,$3,$4,$5) RETURNING *", [firstName, lastName, email, bcryptPassword, graduateClassId]);
-//        //res.json(newUser.rows[0]);
-//        // 5. generating jwttoken
-
-//        const token = jwtGenerator(newUser.rows[0].id);
-
-//        res.json({ token });
-
-//    } catch (err) {
-//        console.error(err.message);
-//        res.status(500).send("server error");
-
-//    }
-//});
-//POST a new graduate at "/graduates"
 router.post("/register/graduates", (req, res) => {
 	const { firstName, lastName, email, password, classCode } = req.body;
 	let graduateClassId;
@@ -654,70 +613,69 @@ router.get("/graduates/:graduate_id/goals", (req, res) => {
 //         .catch((e) => console.log(e));
 // });
 router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
-	const { plan_name, goals_list } = req.body; // this is found in the fetch body
-	const graduateId = req.params.graduate_id; // this is found in the fetch url
-	// const goals_list=[{goal_details:"text1"},{goal_details:"text2"}]
-	//Validate all fields are filled in
-	if (!plan_name || !graduateId) {
-		return res.status(400).json({
-			status: 400,
-			error: "This api endpoint requires plan name and graduate id",
-		});
-	}
-	const query = "SELECT * FROM plans WHERE plan_name=$1 and graduate_id=$2";
-	pool
-		.query(query, [plan_name, graduateId])
-		.then((result) => {
-			if (result.rowCount) {
-				return res.status(400).json({
-					status: 400,
-					error:
-						"Please change the plan name, this graduate has already got a plan with the same name",
-				});
-			} else {
-				//   ********
-                const query_plan = "INSERT INTO plans (plan_name,graduate_id) VALUES ($1,$2) RETURNING id";
+    const { plan_name, goals_list } = req.body; // this is found in the fetch body
+    const graduateId = req.params.graduate_id; // this is found in the fetch url
+    // const goals_list=[{goal_details:"text1"},{goal_details:"text2"}]
+    //Validate all fields are filled in
+    if (!plan_name || !graduateId) {
+        return res.status(400).json({
+            status: 400,
+            error: "This api endpoint requires plan name and graduate id",
+        });
+    }
 
-									pool
-										.query(query_plan, [plan_name, graduateId])
-										.then((result) => {
-											goals_list
-												.map((item) => {
-													//   console.log(item);
-													// item.goal_details
-													const query_goals =
-														"INSERT INTO goals (plan_id,goal_details,goal_status_id) VALUES($1,$2,$3)";
-													pool.query(query_goals, [
-														result.rows[0].id,
-														item.goal_details,
-														1,
-                                                    ])
-                                                       
-                                                    .catch((e)=>console.log(e))
-												}) //map is done
-												
-													res.json({
-														success: "All plans and goals are saved",
-													});
-												
-												
-										})
-										.catch((e) => console.log("second then", e));
-			}
-		})
-		.catch((e) => console.log("first then", e));
+    const query =
+        "SELECT * FROM plans WHERE plan_name=$1 and graduate_id=$2";
+
+    pool.query(query, [plan_name, graduateId]).then((result) => {
+        if (result.rowCount) {
+            res.status(400).json({
+                "status": 400,
+                "error":
+                    "Please change the plan name, this graduate has already got a plan with the same name",
+            });
+        } else {
+            const query_plan =
+                "INSERT INTO plans (plan_name,graduate_id) VALUES ($1,$2) RETURNING id";
+
+            pool
+                .query(query_plan, [plan_name, graduateId])
+                .then((result) => {
+                    goals_list.map((item) => {
+                        console.log(item);
+                        // item.goal_details
+                        const query_goals = "INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES($1,$2,$3,$4,$5)";
+                        pool
+                            .query(query_goals, [
+                                result.rows[0].id,
+                                item.goal_details,
+                                item.due_date,
+                                item.remarks,
+                                1,
+                            ])
+                            .catch((e) => console.error(e))
+                    });
+
+                    res.json("goals are saved")
+                })
+                .catch((e) => console.error(e));
+        }
+    })
+    .catch((e) => console.error(e));
 });
+
+
 
 /*feedacks endpoints */
 
 router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {
-	try {
-		// no need to check if mentor id is valid as mentors are already signed in
-		// const feedback_requests = await pool.query("select * from feedbacks where mentor_id=$1", [req.params.mentor_id]);
-		// res.json(feedback_requests.rows);
-		const feedback_requests = await pool.query(
-			`select plans.id,concat(graduates.first_name,' ',graduates.last_name) as name,feedbacks.feedback_requested_date,feedbacks.mentor_id,plans.plan_name,
-                        json_agg(json_build_object('goal_details',goals.goal_details,'due_date',goals.due_date)) as goals_list
+    try {
+        // no need to check if mentor id is valid as mentors are already signed in
+        // const feedback_requests = await pool.query("select * from feedbacks where mentor_id=$1", [req.params.mentor_id]);
+        // res.json(feedback_requests.rows);
+        const feedback_requests = await pool.query(
+            `select plans.id,concat(graduates.first_name,' ',graduates.last_name) as name,feedbacks.feedback_requested_date,feedbacks.mentor_id,plans.plan_name,
+                        json_agg(json_build_object('goal_details',goals.goal_details,'due_date',goals.due_date, 'remarks', goals.remarks)) as goals_list
                         from goals 
                         inner join plans on plans.id=goals.plan_id 
                         inner join graduates on graduates.id=plans.graduate_id 
