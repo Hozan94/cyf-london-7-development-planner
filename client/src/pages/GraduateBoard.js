@@ -5,11 +5,11 @@ import CreatePlan from '../components/CreatePlan';
 import Controls from '../components/controls/Controls';
 import Test from '../components/Test'
 import { toast } from "react-toastify";
+import { useHistory } from "react-router";
 
 
-
-function GraduateBoard({ setAuth }) {
-
+function GraduateBoard() {
+    const history = useHistory();
     const [plans, setPlans] = useState([]);
     const [graduate, setGraduate] = useState("");
 
@@ -31,7 +31,7 @@ function GraduateBoard({ setAuth }) {
         e.preventDefault();
         // localStorage.removeItem("token");
         localStorage.clear();
-        setAuth(false);
+        history.push(`/login`);
         toast.success("Logged out successfully");
     };
 

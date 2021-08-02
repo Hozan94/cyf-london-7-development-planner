@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./SignUp.css";
 import image from "../../img/cyf.png";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
@@ -18,7 +19,8 @@ const userSchema = yup.object().shape({
 
 });
 
-const SignUp = ({ setAuth , userType }) => {
+const SignUp = ({ userType }) => {
+    const history = useHistory();
     const [role, setRole] = useState("");
     const [status, setStatus] = useState(true);
 
@@ -38,70 +40,31 @@ const SignUp = ({ setAuth , userType }) => {
         resolver: yupResolver(userSchema),
     });
 
+   
+
+
     const onSubmitForm = async (data) => {
-
-        try {
-            const response = await fetch(`http://localhost:3000/api/register/${role}s`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
-            });
-
-            const parseRes = await response.json();
-
-            if (parseRes.token) {
-                localStorage.setItem("token", parseRes.token);
-                localStorage.setItem("userType", role);
-                setAuth(true);
-                toast.success("You Registered Successfully");
-            } else {
-                setAuth(false);
-                toast.error(parseRes);
-            }
-
-        } catch (err) {
-            console.error(err.message);
-        }
-
-    };
+		try {
+			const response = await fetch(`/api/register/${role}s`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(data),
+			});
+			const parseRes = await response.json();
+			if (parseRes.token) {
+				localStorage.setItem("token", parseRes.token);
+				localStorage.setItem("userType", role);
+				history.push(`/dashboard/${role}`);
+				toast.success("You Registered Successfully");
+			} else {
+				toast.error(parseRes);
+			}
+		} catch (err) {
+			console.error(err.message);
+		}
+	};
 
 
-//function SignUp() {
-//    const [role, setRole] = useState("")
-
-//    const [status, setStatus] = useState(true);
-
-//    const handleRoleMenu = (value) => {
-//        value === "graduate" ? setStatus(false) : setStatus(true)
-
-//        setRole(value);
-//    }
-
-//    const handleClassMenu = (value) => {
-//        console.log(value)
-//    }
-
-//    const { register, handleSubmit, formState: { errors } } = useForm({
-//        resolver: yupResolver(userSchema)
-//    });
-
-//    const onSubmit = (data) => {
-//        console.log(data)
-//        fetch(`http://localhost:3000/api/register/${role}s`, {
-//            method: "POST",
-//            headers: {
-//                "Content-Type": "application/json",
-//            },
-//            body: JSON.stringify(data),
-//        })
-//            .then((response) => response.json())
-//            .then((data) => {
-//                console.log(data);
-//            })
-//            .catch((error) => {
-//                console.error(error);
-//            });
-//    };
 
     return (
         <div>

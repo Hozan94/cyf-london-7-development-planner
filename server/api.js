@@ -77,50 +77,7 @@ router.get("/graduates/:id", (req, res) => {
         .catch((error) => console.log(error));
 });
 
-//router.post("/register", async (req, res) => {
 
-//    try {
-
-//        // 1.destaructure req.body
-//        const { firstName, lastName, email, password } = req.body;
-//        const graduateClass = req.body.classCode;
-//        let graduateClassId;
-//        // 2. check if user exist then throw error
-//        const user = await pool.query("SELECT * FROM graduates WHERE email = $1", [
-//            email
-//        ]);
-
-//        if (user.rows.length !== 0) {
-//            res.status(401).json("user Already Exist");
-//        }
-
-
-//        const userClass = await pool.query("SELECT id FROM classes WHERE class_code = $1", [graduateClass]);
-
-//        graduateClassId = userClass.rows[0].id;
-
-//        // 3. bcrypt user password
-//        const saltRound = 10;
-//        const salt = await bcrypt.genSalt(saltRound);
-//        const bcryptPassword = await bcrypt.hash(password, salt)
-
-
-//        // 4. enter new user inside the database
-//        const newUser = await pool.query("INSERT INTO graduates (first_name,last_name,email,password,class_id) values($1,$2,$3,$4,$5) RETURNING *", [firstName, lastName, email, bcryptPassword, graduateClassId]);
-//        //res.json(newUser.rows[0]);
-//        // 5. generating jwttoken
-
-//        const token = jwtGenerator(newUser.rows[0].id);
-
-//        res.json({ token });
-
-//    } catch (err) {
-//        console.error(err.message);
-//        res.status(500).send("server error");
-
-//    }
-//});
-//POST a new graduate at "/graduates"
 router.post("/register/graduates", (req, res) => {
 
     const { firstName, lastName, email, password, classCode } = req.body;

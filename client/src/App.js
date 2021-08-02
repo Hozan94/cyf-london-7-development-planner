@@ -1,16 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
-import About from "./pages/About";
+import React from "react";
 import Home from "./pages/Home";
-import GraduateBoard from "./pages/GraduateBoard";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-//import 'bootstrap/dist/css/bootstrap.css';
-
-
 toast.configure();
-//here I made some comment
-//This is also Hozan comment
 
 const App = () => {
 
@@ -18,18 +10,7 @@ const App = () => {
     return (
 
         <Home />
-        //<Switch>
-        //    <Route path="/" exact>
-        //        <Home />
-        //    </Route>
-        //    <Route path="/about/this/site">
-        //        <About />
-        //    </Route>
-        //    <Route path="/graduate/board">
-        //        {/* we need to make this a protected path on the front end */}
-        //        <GraduateBoard />
-        //    </Route>
-        //</Switch>
+     
     );
 };
 
