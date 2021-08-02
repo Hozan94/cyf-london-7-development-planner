@@ -3,56 +3,11 @@ import './Dashboards.css';
 import Test from '../components/Test'
 import Controls from '../components/controls/Controls';
 import { toast } from "react-toastify";
-
+import { useHistory } from "react-router";
 
 
 function MentorBoard({ setAuth }) {
-
-    //const fakeData = [
-    //    {
-    //        name: "Hozan Ali",
-    //        feedback_requested_date: "20/05/2021",
-    //        plan_name: "Make a website about your products and add the option of purchase",
-    //        goals_list: [
-    //            {
-    //                goal_details: "Create the Front End",
-    //                due_date: "24/05/2021",
-    //                remarks: "Use Express.js to build it and bcrypt to store passwords",
-    //            }, {
-    //                goal_details: "Create the Back End",
-    //                due_date: "28/05/2021",
-    //                remarks: "Use React and React Hooks alongside Bootstrap",
-    //            },
-    //            {
-    //                goal_details: "Create the Data Base",
-    //                due_date: "22/05/2021",
-    //                remarks: "Use Postgress and Postgress Node",
-    //            }
-    //        ]
-    //    },
-    //    {
-    //        name: "Hozan Ali",
-    //        feedback_requested_date: "20/05/2021",
-    //        plan_name: "Make a website about your products and add the option of purchase",
-    //        goals_list: [
-    //            {
-    //                goal_details: "Create the Front End",
-    //                due_date: "24/05/2021",
-    //                remarks: "Use Express.js to build it and bcrypt to store passwords",
-    //            }, {
-    //                goal_details: "Create the Back End",
-    //                due_date: "28/05/2021",
-    //                remarks: "Use React and React Hooks alongside Bootstrap",
-    //            },
-    //            {
-    //                goal_details: "Create the Data Base",
-    //                due_date: "22/05/2021",
-    //                remarks: "Use Postgress and Postgress Node",
-    //            }
-    //        ]
-    //    }
-
-    //]
+    const history = useHistory();
 
     const [plans, setPlans] = useState();
     const [loading, setLoading] = useState(true);
@@ -69,7 +24,7 @@ function MentorBoard({ setAuth }) {
 
             const parseRes = await response.json();
             id = parseRes.id;
-            console.log(parseRes);
+           // console.log(parseRes);
 
             setMentor(parseRes);
 
@@ -83,17 +38,18 @@ function MentorBoard({ setAuth }) {
             const feedbackRes = await feedback.json();
             setPlans(feedbackRes);
             setLoading(false);
-            console.log(feedbackRes);
+           // console.log(feedbackRes);
 
         } catch (err) {
             console.error(err.message)
         }
     }
-console.log(mentor)
+
     const logout = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        // localStorage.removeItem("token");
         localStorage.clear();
-        setAuth(false);
+        history.push(`/login`);
         toast.success("Logged out successfully");
     }
 
