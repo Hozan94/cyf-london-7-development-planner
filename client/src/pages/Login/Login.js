@@ -1,26 +1,25 @@
-import React, { useState } from "react";
-import "./Login.css";
-import image from "../../img/cyf.png";
+import { yupResolver } from "@hookform/resolvers/yup";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { toast } from "react-toastify";
-
+import * as yup from "yup";
+import image from "../../img/cyf.png";
+import "./Login.css";
 const loginSchema = yup.object().shape({
-    email: yup.string().email("Email is not valid").required(),
-    password: yup.string().required(),
-
+	email: yup.string().email("Email is not valid").required(),
+	password: yup.string().required(),
 });
-
 const Login = () => {
-    const history = useHistory();
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(loginSchema),
-    });
-
-
-    const onSubmitForm = async (data) => {
+	const history = useHistory();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		resolver: yupResolver(loginSchema),
+	});
+	const onSubmitForm = async (data) => {
 		try {
 			const response = await fetch("/api/users/login", {
 				method: "POST",
@@ -40,32 +39,29 @@ const Login = () => {
 			console.error(err.message);
 		}
 	};
-
-
-    return (
-        <div>
-            <div className="Login-container">
-                <img src={image} alt="Write something here" />
-                <form onSubmit={handleSubmit(onSubmitForm)}>
-                    <div className="Login-details">
-                        <div className="input-box">
-                            <span className="details">Email</span>
-                            <input type="email"   {...register("email")} />
-                            <p>{errors.email?.message}</p>
-                        </div>
-                        <div className="input-box">
-                            <span className="details">Password</span>
-                            <input type="password"   {...register("password")} />
-                            <p>{errors.password?.message}</p>
-                        </div>
-                    </div>
-                    <div className="btn-holder">
-                        <button className="btn-login">Login</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    );
+	return (
+		<div>
+			<div className="Login-container">
+				<img src={image} alt="Write something here" />
+				<form onSubmit={handleSubmit(onSubmitForm)}>
+					<div className="Login-details">
+						<div className="input-box">
+							<span className="details">Email</span>
+							<input type="email" {...register("email")} />
+							<p>{errors.email?.message}</p>
+						</div>
+						<div className="input-box">
+							<span className="details">Password</span>
+							<input type="password" {...register("password")} />
+							<p>{errors.password?.message}</p>
+						</div>
+					</div>
+					<div className="btn-holder">
+						<button className="btn-login">Login</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	);
 };
-
 export default Login;

@@ -19,6 +19,7 @@ import { useForm, Form } from "./useForm";
 import { Grid } from "@material-ui/core";
 import Icon from '@material-ui/core/Icon';
 import { format } from 'date-fns';
+import { green } from "@material-ui/core/colors";
 
 
 const useStyles = makeStyles(theme => ({
@@ -44,6 +45,10 @@ const useStyles = makeStyles(theme => ({
     feedbackFormButton: {
         margin: '0',
         marginBottom: '20px'
+    },
+
+    shareButton:{
+        backgroundColor:'green',
     }
 }));
 
@@ -54,8 +59,8 @@ const initialFieldValues = {
 }
 
 
-function Row(props) {
-    const { row, isMentor } = props;
+function Row({row, isMentor, isGraduate}) {
+
     const [open, setOpen] = useState(false);
     const classes = useStyles();
 
@@ -103,9 +108,26 @@ function Row(props) {
                         {format(new Date(row.feedback_requested_date), 'MM/dd/yyyy')}
                     </TableCell>
                 }
-                <TableCell component="th" >
-                    {row.plan_name}
+                 <TableCell>
+                <input value=  {row.id} className="plan_id" disabled />
                 </TableCell>
+                <TableCell component="th" >
+                    {row.plan_name} 
+                    
+                    
+                </TableCell>
+               
+                {isGraduate &&
+                <TableCell>
+                <Controls.Button
+                classes={{ root: classes.shareButton }}
+                type="submit"
+                text="share"
+                endIcon={<Icon>share</Icon>} //Used from Font Icons (Google Web Fonts)
+               />  
+                </TableCell>
+                }
+
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -183,7 +205,7 @@ export default function PlansTable(props) {
                     </TableHead>
                     <TableBody>
                         {props.plans.map((data) => {
-                            return <Row key={data.id} row={data} isMentor={props.isMentor} />
+                            return <Row key={data.id} row={data} isMentor={props.isMentor} isGraduate={props.isGraduate}  />
                         })}
                     </TableBody>
                 </Table>

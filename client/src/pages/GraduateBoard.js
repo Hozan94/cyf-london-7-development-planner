@@ -13,6 +13,8 @@ function GraduateBoard() {
     const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
 	const [graduate, setGraduate] = useState("");
+
+	const [mentorId , setMentorId] = useState();
 	let graduate_id;
 	async function getName() {
 		try {
@@ -70,7 +72,7 @@ function GraduateBoard() {
 			<main>
 				<div className="plan-container">
 					<div className="drop-down">
-						<MentorDropDown />
+						<MentorDropDown setMentorId={setMentorId}   />
 					</div>
 
 					<div className="c-1">
@@ -80,7 +82,7 @@ function GraduateBoard() {
 							graduateId={graduate.id}
 						/>
 						{/*<PlansTable plan={plans} />*/}
-						<Test plans={plans} isMentor={false} />
+						<Test plans={plans} isMentor={false} isGraduate={true} />
 					</div>
 				</div>
 			</main>

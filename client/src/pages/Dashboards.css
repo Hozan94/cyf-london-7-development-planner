@@ -86,3 +86,10 @@
 	flex:1;
 	order :2;
 }
+
+.plan_id{
+	background-color: transparent;
+	border: none;
+	outline: none;
+	
+}
