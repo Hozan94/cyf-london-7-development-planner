@@ -666,16 +666,16 @@ router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {
 
 router.post("/mentors/:mentor_id/feedbacks", async (req, res) => {
     
-	  const {plan_id} = req.body;
+	  const {id} = req.body;
 	  const mentor_id = req.params.mentor_id;
 
 
   
 	try {
-      console.log(mentor_id,plan_id);
-        await pool.query("INSERT INTO feedbacks(plan_id, mentor_id) VALUES ($1,$2)",[plan_id,mentor_id]);
+      console.log(mentor_id, id);
+        await pool.query("INSERT INTO feedbacks(plan_id, mentor_id) VALUES ($1,$2)",[id,mentor_id]);
          
-		res.json("feedback send succesfully");
+		res.json("feedback send successfully");
 	} catch (err) {
 		res.status(500).send(err,"server error");
 	}

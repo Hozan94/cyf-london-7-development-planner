@@ -20,6 +20,7 @@ import { Grid } from "@material-ui/core";
 import Icon from '@material-ui/core/Icon';
 import { format } from 'date-fns';
 import { green } from "@material-ui/core/colors";
+import ShareButton from './ShareButton'
 
 
 const useStyles = makeStyles(theme => ({
@@ -29,7 +30,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     plansTable: {
-        width: '50%',
+        width: '80%',
     },
     tableHeader: {
         fontWeight: '900',
@@ -47,8 +48,8 @@ const useStyles = makeStyles(theme => ({
         marginBottom: '20px'
     },
 
-    shareButton:{
-        backgroundColor:'green',
+    shareButton: {
+        backgroundColor: 'green',
     }
 }));
 
@@ -59,7 +60,7 @@ const initialFieldValues = {
 }
 
 
-function Row({row, isMentor, isGraduate}) {
+function Row({ row, isMentor, isGraduate }) {
 
     const [open, setOpen] = useState(false);
     const classes = useStyles();
@@ -69,22 +70,6 @@ function Row({row, isMentor, isGraduate}) {
         setValues,
         handleInputChange
     } = useForm(initialFieldValues);
-
-    //const [data, setData] = useState([])
-
-    //const goal = {
-    //    goal: values.goal,
-    //    dueDate: format(values.dueDate, 'MM/dd/yyyy'),
-    //    remarks: values.remarks
-    //}
-
-    //const handleSubmit = (e) => {
-    //    e.preventDefault();
-
-    //    setData(data.concat(goal))
-    //    props.goals(data.concat(goal))
-
-    //};
 
     return (
         <React.Fragment>
@@ -108,24 +93,19 @@ function Row({row, isMentor, isGraduate}) {
                         {format(new Date(row.feedback_requested_date), 'MM/dd/yyyy')}
                     </TableCell>
                 }
-                 <TableCell>
-                <input value=  {row.id} className="plan_id" disabled />
+                { isGraduate && <TableCell>
+                    {/*<input value={row.id} className="plan_id" disabled />*/}
+                    {row.id}
                 </TableCell>
+                }
                 <TableCell component="th" >
-                    {row.plan_name} 
-                    
-                    
+                    {row.plan_name}
                 </TableCell>
-               
+
                 {isGraduate &&
-                <TableCell>
-                <Controls.Button
-                classes={{ root: classes.shareButton }}
-                type="submit"
-                text="share"
-                endIcon={<Icon>share</Icon>} //Used from Font Icons (Google Web Fonts)
-               />  
-                </TableCell>
+                    <TableCell>
+                        <ShareButton planId={row.id}></ShareButton>
+                    </TableCell>
                 }
 
             </TableRow>
@@ -200,12 +180,13 @@ export default function PlansTable(props) {
                             <TableCell />
                             {props.isMentor && <TableCell className="graduate-name-cell" classes={{ head: classes.tableHeader }} >Graduate Name</TableCell>}
                             {props.isMentor && <TableCell className="request-date-cell" classes={{ head: classes.tableHeader }}>Request Date</TableCell>}
+                            {props.isGraduate && <TableCell className="plan-name-cell" classes={{ head: classes.tableHeader }}> Plan ID</TableCell>}
                             <TableCell className="plan-name-cell" classes={{ head: classes.tableHeader }}> Plan Name</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {props.plans.map((data) => {
-                            return <Row key={data.id} row={data} isMentor={props.isMentor} isGraduate={props.isGraduate}  />
+                            return <Row key={data.id} row={data} isMentor={props.isMentor} isGraduate={props.isGraduate} />
                         })}
                     </TableBody>
                 </Table>

@@ -71,7 +71,7 @@ function MentorBoard({ setAuth }) {
             <main>
                 {/*<CreatePlan plan={setPlans} plansList={plans} />*/}
                 {loading ? <h2>Loading.....</h2> : <h3 className="feedback-count">{`Number of feedback requested ${plans.length}`}</h3>}
-                {loading ? <h2>Loading.....</h2> : <Test plans={plans} isMentor={true} />}
+                {loading ? <h2>Loading.....</h2> : <Test plans={plans} isMentor={true} isGraduate={false}/>}
                 {/*{plans.error ? <h1>{plans.error}</h1> : <Test plan={plans} isMentor={true} />}*/}
                 {/*<Test plan={plans} isMentor={true} />*/}
             </main>
