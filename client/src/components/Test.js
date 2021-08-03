@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     plansTable: {
-        width: '80%',
+        width: '50%',
     },
     tableHeader: {
         fontWeight: '900',
