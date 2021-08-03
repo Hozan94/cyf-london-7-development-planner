@@ -60,7 +60,7 @@ const initialFieldValues = {
 }
 
 
-function Row({ row, isMentor, isGraduate }) {
+function Row({ row, isMentor, isGraduate, mentorId }) {
 
     const [open, setOpen] = useState(false);
     const classes = useStyles();
@@ -70,6 +70,32 @@ function Row({ row, isMentor, isGraduate }) {
         setValues,
         handleInputChange
     } = useForm(initialFieldValues);
+
+const   handelFeedBack = async (e) =>{
+    e.preventDefault()
+
+    try {
+        const response = await fetch(
+            
+            `http://localhost:3000/api/mentors/${mentorId}/${row.id}/feedbacks`,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+
+                body: JSON.stringify({feedback_details:values.feedback}),
+            }
+        );
+
+        const parseRes = await response.json();
+        console.log(parseRes)
+    } catch (err) {
+        console.error(err.message);
+    }
+
+
+
+}
+
 
     return (
         <React.Fragment>
@@ -137,7 +163,7 @@ function Row({ row, isMentor, isGraduate }) {
                         </Box>
                         {isMentor &&
                             <Box>
-                                <Form className={classes.feedbackForm}>
+                                <Form className={classes.feedbackForm} onSubmit={handelFeedBack}>
                                     <Grid container justifyContent="center" spacing={2}>
                                         <Grid item xs={9} >
                                             <Controls.Input
@@ -157,6 +183,7 @@ function Row({ row, isMentor, isGraduate }) {
                                             type="submit"
                                             text="send"
                                             endIcon={<Icon>send</Icon>} //Used from Font Icons (Google Web Fonts)
+                                            
                                         />
                                     </Grid>
                                 </Form>
@@ -167,8 +194,9 @@ function Row({ row, isMentor, isGraduate }) {
         </React.Fragment>
     );
 }
-
+let test1; 
 export default function PlansTable(props) {
+  test1= props.mentorId;
     const classes = useStyles();
 
     return (
@@ -186,7 +214,7 @@ export default function PlansTable(props) {
                     </TableHead>
                     <TableBody>
                         {props.plans.map((data) => {
-                            return <Row key={data.id} row={data} isMentor={props.isMentor} isGraduate={props.isGraduate} />
+                            return <Row key={data.id} row={data} isMentor={props.isMentor} isGraduate={props.isGraduate}  mentorId={props.mentorId}  />
                         })}
                     </TableBody>
                 </Table>
