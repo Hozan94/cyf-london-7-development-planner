@@ -71,3 +71,18 @@
     padding-left: 25px;
     color: black;
 }
+
+.plan-container {
+	display:flex;
+	/* justify-content:end; */
+}
+.c-1{
+	background-color:red;
+	flex:2;
+	order:1;
+}
+.drop-down{
+	background-color:yellow;
+	flex:1;
+	order :2;
+}

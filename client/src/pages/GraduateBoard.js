@@ -6,7 +6,7 @@ import Controls from "../components/controls/Controls";
 import Test from "../components/Test";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router";
-
+import MentorDropDown from "../components/MentorDropDown";
 function GraduateBoard() {
 	const history = useHistory();
     const [plans, setPlans] = useState([]);
@@ -68,13 +68,21 @@ function GraduateBoard() {
 				/>
 			</header>
 			<main>
-				<CreatePlan
-					plan={setPlans}
-					plansList={plans}
-					graduateId={graduate.id}
-				/>
-				{/*<PlansTable plan={plans} />*/}
-				<Test plans={plans} isMentor={false} />
+				<div className="plan-container">
+					<div className="drop-down">
+						<MentorDropDown />
+					</div>
+
+					<div className="c-1">
+						<CreatePlan
+							plan={setPlans}
+							plansList={plans}
+							graduateId={graduate.id}
+						/>
+						{/*<PlansTable plan={plans} />*/}
+						<Test plans={plans} isMentor={false} />
+					</div>
+				</div>
 			</main>
 		</div>
 	);

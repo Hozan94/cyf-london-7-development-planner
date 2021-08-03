@@ -233,7 +233,7 @@ router.get("/mentors", (req, res) => {
 
 		pool
 			.query(query)
-			.then((result) => res.json({ graduates: result.rows }))
+			.then((result) => res.json({ mentors: result.rows }))
 			.catch((error) => console.log(error));
 	}
 });
