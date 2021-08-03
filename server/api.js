@@ -684,6 +684,25 @@ router.post("/mentors/:mentor_id/feedbacks", async (req, res) => {
 
 
 
+// send feedback from mentor dashboard
+
+router.post("/mentors/:mentor_id/:plan_id/feedbacks", async (req, res) => {
+    
+	const {feedback_details} = req.body;
+	const {plan_id,mentor_id}= req.params;
+
+  try {
+	
+	  await pool.query("INSERT INTO feedbacks(feedback_details,plan_id, mentor_id) VALUES ($1,$2,$3)",[feedback_details,plan_id,mentor_id]);
+	   
+	  res.json("feedback send successfully");
+  } catch (err) {
+	  res.status(500).send(err,"server error");
+  }
+  
+});
+
+
 
 
 export default router;
