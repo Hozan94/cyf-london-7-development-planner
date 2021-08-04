@@ -70,7 +70,6 @@ router.get("/graduates/:id", (req, res) => {
 		.catch((error) => console.log(error));
 });
 
-
 router.post("/register/graduates", (req, res) => {
 	const { firstName, lastName, email, password, classCode } = req.body;
 	let graduateClassId;
@@ -488,8 +487,6 @@ router.get("/graduates/:graduate_id/plans", (req, res) => {
 		.catch((e) => console.error(e));
 });
 router.get("/graduates/:graduate_id/:plan_id([0:9])", (req, res) => {
-   
-
 	const graduateId = req.params.graduate_id;
 	const planId = req.params.plan_id;
 	const query = "SELECT * FROM plans WHERE graduate_id=$1 and id=$2";
@@ -560,89 +557,83 @@ router.get("/graduates/:graduate_id/goals", (req, res) => {
 		.catch((e) => console.error(e));
 });
 
-
-
-
-
-
 router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
-    const { plan_name, goals_list } = req.body; // this is found in the fetch body
-    const graduateId = req.params.graduate_id; // this is found in the fetch url
-    // const goals_list=[{goal_details:"text1"},{goal_details:"text2"}]
-    //Validate all fields are filled in
-    if (!plan_name || !graduateId) {
-        return res.status(400).json({
-            status: 400,
-            error: "This api endpoint requires plan name and graduate id",
-        });
-    }
+	const { plan_name, goals_list } = req.body; // this is found in the fetch body
+	const graduateId = req.params.graduate_id; // this is found in the fetch url
+	// const goals_list=[{goal_details:"text1"},{goal_details:"text2"}]
+	//Validate all fields are filled in
+	if (!plan_name || !graduateId) {
+		return res.status(400).json({
+			status: 400,
+			error: "This api endpoint requires plan name and graduate id",
+		});
+	}
 
-    const query =
-        "SELECT * FROM plans WHERE plan_name=$1 and graduate_id=$2";
+	const query = "SELECT * FROM plans WHERE plan_name=$1 and graduate_id=$2";
 
-    pool.query(query, [plan_name, graduateId]).then((result) => {
-        if (result.rowCount) {
-            res.status(400).json({
-                "status": 400,
-                "error":
-                    "Please change the plan name, this graduate has already got a plan with the same name",
-            });
-        } else {
-            const query_plan =
-                "INSERT INTO plans (plan_name,graduate_id) VALUES ($1,$2) RETURNING id";
+	pool
+		.query(query, [plan_name, graduateId])
+		.then((result) => {
+			if (result.rowCount) {
+				res.status(400).json({
+					status: 400,
+					error:
+						"Please change the plan name, this graduate has already got a plan with the same name",
+				});
+			} else {
+				const query_plan =
+					"INSERT INTO plans (plan_name,graduate_id) VALUES ($1,$2) RETURNING id";
 
-            pool
-                .query(query_plan, [plan_name, graduateId])
-                .then((result) => {
-                    goals_list.map((item) => {
-                        console.log(item);
-                        // item.goal_details
-                        const query_goals = "INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES($1,$2,$3,$4,$5)";
-                        pool
-                            .query(query_goals, [
-                                result.rows[0].id,
-                                item.goal_details,
-                                item.due_date,
-                                item.remarks,
-                                1,
-                            ])
-                            .catch((e) => console.error(e))
-                    });
+				pool
+					.query(query_plan, [plan_name, graduateId])
+					.then((result) => {
+						goals_list.map((item) => {
+							console.log(item);
+							// item.goal_details
+							const query_goals =
+								"INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES($1,$2,$3,$4,$5)";
+							pool
+								.query(query_goals, [
+									result.rows[0].id,
+									item.goal_details,
+									item.due_date,
+									item.remarks,
+									1,
+								])
+								.catch((e) => console.error(e));
+						});
 
-                    res.json("goals are saved")
-                })
-                .catch((e) => console.error(e));
-        }
-    })
-    .catch((e) => console.error(e));
+						res.json("goals are saved");
+					})
+					.catch((e) => console.error(e));
+			}
+		})
+		.catch((e) => console.error(e));
 });
 
 router.get("/graduates/:graduate_id/plans/goals", async (req, res) => {
-
-      try {
-				
-				const graduate_plans = await pool.query(
-                    `select plans.id,plans.plan_name ,
+	try {
+		const graduate_plans = await pool.query(
+			`select plans.id,plans.plan_name ,
                     json_agg(json_build_object('goal_details',goals.goal_details,'due_date',goals.due_date,'remarks',goals.remarks))
                      goals_list from goals inner join plans on plans.id=goals.plan_id where graduate_id=$1 group by 1,2 ;`,
-					[req.params.graduate_id]
-				);
-				res.json(graduate_plans.rows);
-			} catch (err) {
-				res.status(500).send("server error");
-			}
-
+			[req.params.graduate_id]
+		);
+		res.json(graduate_plans.rows);
+	} catch (err) {
+		res.status(500).send("server error");
+	}
 });
 
-/*feedacks endpoints */
+/******************feedacks endpoints */
 
 router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {
-    try {
-        // no need to check if mentor id is valid as mentors are already signed in
-        // const feedback_requests = await pool.query("select * from feedbacks where mentor_id=$1", [req.params.mentor_id]);
-        // res.json(feedback_requests.rows);
-        const feedback_requests = await pool.query(
-            `select plans.id,concat(graduates.first_name,' ',graduates.last_name) as name,feedbacks.feedback_requested_date,feedbacks.mentor_id,plans.plan_name,
+	try {
+		// no need to check if mentor id is valid as mentors are already signed in
+		// const feedback_requests = await pool.query("select * from feedbacks where mentor_id=$1", [req.params.mentor_id]);
+		// res.json(feedback_requests.rows);
+		const feedback_requests = await pool.query(
+			`select plans.id,concat(graduates.first_name,' ',graduates.last_name) as name,feedbacks.feedback_requested_date,feedbacks.mentor_id,plans.plan_name,
                         json_agg(json_build_object('goal_details',goals.goal_details,'due_date',goals.due_date, 'remarks', goals.remarks)) as goals_list
                         from goals 
                         inner join plans on plans.id=goals.plan_id 
@@ -661,48 +652,55 @@ router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {
 	//{user,feedback_requests}
 });
 
-
-
-
 router.post("/mentors/:mentor_id/feedbacks", async (req, res) => {
-    
-	  const {id} = req.body;
-	  const mentor_id = req.params.mentor_id;
+	const { id } = req.body;
+	const mentor_id = req.params.mentor_id;
 
-
-  
 	try {
-      console.log(mentor_id, id);
-        await pool.query("INSERT INTO feedbacks(plan_id, mentor_id) VALUES ($1,$2)",[id,mentor_id]);
-         
+		console.log(mentor_id, id);
+		await pool.query(
+			"INSERT INTO feedbacks(plan_id, mentor_id) VALUES ($1,$2)",
+			[id, mentor_id]
+		);
+
 		res.json("feedback send successfully");
 	} catch (err) {
-		res.status(500).send(err,"server error");
+		res.status(500).send(err, "server error");
 	}
-	
 });
-
-
 
 // send feedback from mentor dashboard
 
 router.post("/mentors/:mentor_id/:plan_id/feedbacks", async (req, res) => {
-    
-	const {feedback_details} = req.body;
-	const {plan_id,mentor_id}= req.params;
+	const { feedback_details } = req.body;
+	const { plan_id, mentor_id } = req.params;
 
-  try {
-	
-	  await pool.query("INSERT INTO feedbacks(feedback_details,plan_id, mentor_id) VALUES ($1,$2,$3)",[feedback_details,plan_id,mentor_id]);
-	   
-	  res.json("feedback send successfully");
-  } catch (err) {
-	  res.status(500).send(err,"server error");
-  }
-  
+	try {
+		await pool.query(
+			"INSERT INTO feedbacks(feedback_details,plan_id, mentor_id) VALUES ($1,$2,$3)",
+			[feedback_details, plan_id, mentor_id]
+		);
+
+		res.json("feedback send successfully");
+	} catch (err) {
+		res.status(500).send(err, "server error");
+	}
 });
-
-
-
+// for graduates to see the feedbacks
+router.get("/graduates/:graduate_id/feedbacks", async (req, res) => {
+	try {
+		const feedbacks = await pool.query(
+			`select f.feedback_details,f.plan_id,f.feedback_date,f.read_by_grad,plans.plan_name  , 
+			concat(mentors.first_name,' ',mentors.last_name) as name  from feedbacks f  inner join 
+			plans on plans.id=f.plan_id inner join mentors on mentors.id=f.mentor_id  
+			where graduate_id=$1 and f. feedback_details is not NULL;`,
+			[req.params.graduate_id]
+		);
+		res.json(feedbacks.rows);
+		// res.json("feedbacks retrieved from feedbacks table")
+	} catch (err) {
+		res.status(500).send(err, "server error");
+	}
+});
 
 export default router;

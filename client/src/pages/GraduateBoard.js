@@ -14,7 +14,9 @@ function GraduateBoard() {
 	const [error, setError] = useState(false);
 	const [graduate, setGraduate] = useState("");
 
-	const [mentorId , setMentorId] = useState("");
+	const [mentorId, setMentorId] = useState("");
+	// const [planName, setPlanName]=useState("")
+	const [feedbackDetails, setFeedbackDetails] = useState([]);
 	let graduate_id;
 	async function getName() {
 		try {
@@ -46,6 +48,27 @@ function GraduateBoard() {
 		}
 	}
 
+	async function getFeedbacks() {
+		try {
+			const feedbacks = await fetch(
+				"http://localhost:3000/api/graduates/6/feedbacks",
+				{
+					method: "GET",
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+				}
+			);
+          
+			const parseRes = await feedbacks.json();
+           	
+			setFeedbackDetails(parseRes);
+			console.log(parseRes);
+		} catch (err) {
+			console.error(err.message);
+		}
+	}
 	const logout = (e) => {
 		e.preventDefault();
 		// localStorage.removeItem("token");
@@ -56,8 +79,13 @@ function GraduateBoard() {
 
 	useEffect(() => {
 		getName();
+		getFeedbacks();
 	}, []);
 
+	// useEffect(() => {
+		
+	// 	getFeedbacks();
+	// }, []);
 	return (
 		<div>
 			<header className="header-container">
@@ -70,6 +98,30 @@ function GraduateBoard() {
 				/>
 			</header>
 			<main>
+				<div
+					style={{
+						display: "flex",
+						alignItems: "center",
+						flexDirection: "column",
+					}}
+				>
+					You have unread feeedbacks from your mentors
+					<ul>
+						{feedbackDetails.map((item) => (
+							<li key={item.id}>
+								<div
+									style={{ display: "flex", justifyContent: "space-between" }}
+								>
+									<p>{item.plan_name} </p>
+									<p style={{ marginLeft: "15px",color:'blue' }}>{item.feedback_details}</p>
+									<p>{item.name} </p>
+								</div>
+							</li>
+						))}
+
+						
+					</ul>
+				</div>
 				<div className="plan-container">
 					{/*<div className="drop-down">
 						<MentorDropDown setMentorId={setMentorId}  mentorId={mentorId} />
