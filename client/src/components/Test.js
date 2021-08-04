@@ -21,6 +21,7 @@ import Icon from '@material-ui/core/Icon';
 import { format } from 'date-fns';
 import { green } from "@material-ui/core/colors";
 import ShareButton from './ShareButton'
+import AsideBar from "./AsideBar";
 
 
 const useStyles = makeStyles(theme => ({
@@ -121,6 +122,7 @@ const   handelFeedBack = async (e) =>{
                 }
                 { isGraduate && <TableCell>
                     {/*<input value={row.id} className="plan_id" disabled />*/}
+                    
                     {row.id}
                 </TableCell>
                 }
@@ -202,6 +204,7 @@ export default function PlansTable(props) {
 
     return (
         <div className="plans-table-container">
+            
             <TableContainer component={Paper} classes={{ root: classes.plansTable }}>
                 <Table aria-label="collapsible table">
                     <TableHead >
@@ -220,6 +223,7 @@ export default function PlansTable(props) {
                     </TableBody>
                 </Table>
             </TableContainer>
+            {/* <AsideBar/> */}
         </div>
     );
 }

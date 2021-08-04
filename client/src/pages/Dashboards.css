@@ -24,6 +24,11 @@
 	margin-bottom: 40px;
 	display: flex;
 	justify-content: center;
+	
+}
+
+.wrapper{
+	display: flex;
 }
 
 .logout-button-container {
@@ -75,6 +80,13 @@
 .plan-container {
 	display:flex;
 	/* justify-content:end; */
+	flex: 2;
+	order: 1;
+}
+
+.side{
+	order: 2;
+	flex: 1;
 }
 .c-1{
 	background-color:red;

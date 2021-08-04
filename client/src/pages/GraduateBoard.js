@@ -7,6 +7,7 @@ import Test from "../components/Test";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router";
 import MentorDropDown from "../components/MentorsList";
+import AsideBar2 from "../components/AsideBar2";
 function GraduateBoard() {
 	const history = useHistory();
     const [plans, setPlans] = useState([]);
@@ -16,7 +17,7 @@ function GraduateBoard() {
 
 	const [mentorId, setMentorId] = useState("");
 	// const [planName, setPlanName]=useState("")
-	const [feedbackDetails, setFeedbackDetails] = useState([]);
+	//const [feedbackDetails, setFeedbackDetails] = useState([]);
 	let graduate_id;
 	async function getName() {
 		try {
@@ -48,27 +49,27 @@ function GraduateBoard() {
 		}
 	}
 
-	async function getFeedbacks() {
-		try {
-			const feedbacks = await fetch(
-				"http://localhost:3000/api/graduates/6/feedbacks",
-				{
-					method: "GET",
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json'
-					},
-				}
-			);
+	// async function getFeedbacks() {
+	// 	try {
+	// 		const feedbacks = await fetch(
+	// 			"http://localhost:3000/api/graduates/6/feedbacks",
+	// 			{
+	// 				method: "GET",
+	// 				headers: {
+	// 					'Accept': 'application/json',
+	// 					'Content-Type': 'application/json'
+	// 				},
+	// 			}
+	// 		);
           
-			const parseRes = await feedbacks.json();
+	// 		const parseRes = await feedbacks.json();
            	
-			setFeedbackDetails(parseRes);
-			console.log(parseRes);
-		} catch (err) {
-			console.error(err.message);
-		}
-	}
+	// 		setFeedbackDetails(parseRes);
+	// 		console.log(parseRes);
+	// 	} catch (err) {
+	// 		console.error(err.message);
+	// 	}
+	// }
 	const logout = (e) => {
 		e.preventDefault();
 		// localStorage.removeItem("token");
@@ -79,7 +80,7 @@ function GraduateBoard() {
 
 	useEffect(() => {
 		getName();
-		getFeedbacks();
+		//getFeedbacks();
 	}, []);
 
 	// useEffect(() => {
@@ -97,31 +98,8 @@ function GraduateBoard() {
 					onClick={logout}
 				/>
 			</header>
-			<main>
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						flexDirection: "column",
-					}}
-				>
-					You have unread feeedbacks from your mentors
-					<ul>
-						{feedbackDetails.map((item) => (
-							<li key={item.id}>
-								<div
-									style={{ display: "flex", justifyContent: "space-between" }}
-								>
-									<p>{item.plan_name} </p>
-									<p style={{ marginLeft: "15px",color:'blue' }}>{item.feedback_details}</p>
-									<p>{item.name} </p>
-								</div>
-							</li>
-						))}
-
-						
-					</ul>
-				</div>
+			<main className="wrapper">
+				<AsideBar2    / >
 				<div className="plan-container">
 					{/*<div className="drop-down">
 						<MentorDropDown setMentorId={setMentorId}  mentorId={mentorId} />
