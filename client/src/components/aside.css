@@ -32,3 +32,13 @@ h1{
     text-align: center;
     padding-bottom: 10px;
 }
+
+.red{
+    color: red;
+    
+}
+
+.green{
+color: green;
+font-size: 3rem;
+}

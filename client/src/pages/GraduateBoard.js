@@ -7,7 +7,7 @@ import Test from "../components/Test";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router";
 import MentorDropDown from "../components/MentorsList";
-import AsideBar2 from "../components/AsideBar2";
+import Sidebar from "../components/Sidebar";
 function GraduateBoard() {
 	const history = useHistory();
     const [plans, setPlans] = useState([]);
@@ -49,30 +49,8 @@ function GraduateBoard() {
 		}
 	}
 
-	// async function getFeedbacks() {
-	// 	try {
-	// 		const feedbacks = await fetch(
-	// 			"http://localhost:3000/api/graduates/6/feedbacks",
-	// 			{
-	// 				method: "GET",
-	// 				headers: {
-	// 					'Accept': 'application/json',
-	// 					'Content-Type': 'application/json'
-	// 				},
-	// 			}
-	// 		);
-          
-	// 		const parseRes = await feedbacks.json();
-           	
-	// 		setFeedbackDetails(parseRes);
-	// 		console.log(parseRes);
-	// 	} catch (err) {
-	// 		console.error(err.message);
-	// 	}
-	// }
 	const logout = (e) => {
 		e.preventDefault();
-		// localStorage.removeItem("token");
 		localStorage.clear();
 		history.push(`/login`);
 		toast.success("Logged out successfully");
@@ -80,14 +58,9 @@ function GraduateBoard() {
 
 	useEffect(() => {
 		getName();
-		//getFeedbacks();
 	}, []);
 
-	// useEffect(() => {
-		
-	// 	getFeedbacks();
-	// }, []);
-	return (
+    return (
 		<div>
 			<header className="header-container">
 				<h1>Graduate Dashboard {graduate.id}</h1>
@@ -99,9 +72,9 @@ function GraduateBoard() {
 				/>
 			</header>
 			<main className="wrapper">
-				<AsideBar2 graduateId={graduate.id}    /> 
-				
-			
+                {console.log(graduate.id)
+}
+                <Sidebar graduateId={graduate.id}/>
 				<div className="plan-container">
 					{/*<div className="drop-down">
 						<MentorDropDown setMentorId={setMentorId}  mentorId={mentorId} />

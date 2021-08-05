@@ -80,7 +80,7 @@ const   handelFeedBack = async (e) =>{
             
             `http://localhost:3000/api/mentors/${mentorId}/${row.id}/feedbacks`,
             {
-                method: "POST",
+                method: "PUT",
                 headers: { "Content-Type": "application/json" },
 
                 body: JSON.stringify({feedback_details:values.feedback}),

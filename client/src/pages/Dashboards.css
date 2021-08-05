@@ -84,7 +84,7 @@
 	order: 1;
 }
 
-.side{
+.sidebar-container{
 	order: 2;
 	flex: 1;
 }
