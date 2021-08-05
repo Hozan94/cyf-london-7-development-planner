@@ -38,6 +38,8 @@ const AccordionSummary = withStyles({
       margin: '12px 0',
     },
   },
+
+
   expanded: {},
 })(MuiAccordionSummary);
 
@@ -47,14 +49,15 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails);
 
-export default function CustomizedAccordions() {
+export default function CustomizedAccordions({graduateId}) {
 
     const [feedbackDetails, setFeedbackDetails] = useState([]);
-
+  
     async function getFeedbacks() {
 		try {
 			const feedbacks = await fetch(
-				"http://localhost:3000/api/graduates/6/feedbacks",
+        
+				`http://localhost:3000/api/graduates/${graduateId}/feedbacks`,
 				{
 					method: "GET",
 					headers: {
@@ -74,9 +77,11 @@ export default function CustomizedAccordions() {
 	}
 
     useEffect(() => {
-		
-		getFeedbacks();
-	}, []);
+      if(graduateId){
+     	getFeedbacks();
+      }
+
+	}, [graduateId]);
 
 
 
@@ -92,9 +97,9 @@ export default function CustomizedAccordions() {
      
      {feedbackDetails.map((item, index)=>(
       
-     <Accordion square expanded={expanded === index} onChange={handleChange(index)}>
-            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-            <Typography>{item.plan_name}</Typography>
+     <Accordion key={index}  square expanded={expanded === index} onChange={handleChange(index)}>
+            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" >
+            <Typography   >{item.plan_name}</Typography>
             </AccordionSummary>
             <AccordionDetails>
             <Typography>

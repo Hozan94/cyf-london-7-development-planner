@@ -99,7 +99,9 @@ function GraduateBoard() {
 				/>
 			</header>
 			<main className="wrapper">
-				<AsideBar2    / >
+				<AsideBar2 graduateId={graduate.id}    /> 
+				
+			
 				<div className="plan-container">
 					{/*<div className="drop-down">
 						<MentorDropDown setMentorId={setMentorId}  mentorId={mentorId} />
@@ -110,7 +112,9 @@ function GraduateBoard() {
 							plan={setPlans}
 							plansList={plans}
 							graduateId={graduate.id}
+							
 						/>
+						
 						{/*<PlansTable plan={plans} />*/}
 						<Test plans={plans} isMentor={false} isGraduate={true} />
 					</div>
