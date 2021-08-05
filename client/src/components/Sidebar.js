@@ -5,13 +5,8 @@ import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
-import Controls from './controls/Controls';
 import { makeStyles } from '@material-ui/core';
-import { useForm } from './useForm';
 
-const initialFieldValues = {
-    isRead: false
-}
 
 const Accordion = withStyles({
     root: {
@@ -32,7 +27,7 @@ const Accordion = withStyles({
 
 const AccordionSummary = withStyles({
     root: {
-        backgroundColor: 'rgb(232, 244, 253)',
+        backgroundColor: 'rgb(205 234 255)',
         borderBottom: '1px solid rgba(0, 0, 0, .125)',
         marginBottom: -1,
         minHeight: 56,
@@ -59,25 +54,11 @@ const AccordionDetails = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
     readByGrad: {
         backgroundColor: 'rgba(0, 0, 0, .03)',
-        borderBottom: '1px solid rgba(0, 0, 0, .125)',
-        marginBottom: -1,
-        minHeight: 56,
-        '&$expanded': {
-            minHeight: 56,
-        },
-        content: {
-            '&$expanded': {
-                margin: '12px 0',
-            },
-        },
-        expanded: {},
-    }
-
+    },
 }))
 
 
 function Sidebar({ graduateId }) {
-    console.log(graduateId)
 
     const classes = useStyles();
 
@@ -85,56 +66,27 @@ function Sidebar({ graduateId }) {
 
     const [expanded, setExpanded] = useState("");
 
-    const [checked, setChecked] = useState(false)
+    const [color, setColor] = useState("notRead")
 
-    const color = useRef("");
+    const getFeedbacks = async () => {
+        try {
+            const feedbacks = await fetch(
+                `http://localhost:3000/api/graduates/${graduateId}/feedbacks`,
+                {
+                    method: "GET",
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
 
-    const [selectedRow, setSelectedRow] = useState(-1)
+            const parseRes = await feedbacks.json();
+            setFeedbackDetails(parseRes);
 
-    //const handleInputChange = async (e) => {
-    //    //console.log(e.target.value)
-    //    console.log(e.target.checked)
-    //    setChecked(e.target.checked)
-
-    //    try {
-    //        const feedbacks = await fetch(
-    //            `http://localhost:3000/api/graduates/${graduateId}/${e.target.name}/feedbacks`,
-    //            {
-    //                method: "PUT",
-    //                headers: { "Content-Type": "application/json" },
-
-    //                body: JSON.stringify({ read_by_grad: e.target.checked }),
-    //            }
-    //        );
-
-    //        const parseRes = await feedbacks.json();
-
-    //        console.log(parseRes);
-    //    } catch (err) {
-    //        console.error(err.message);
-    //    }
-
-    //}
-
-
-    const changeColor =  () =>{
-
+        } catch (err) {
+            console.error(err.message);
+        }
     }
 
-    const handleChange = (planId, read) => async (event, newExpanded) => {
-        console.log(newExpanded)
-        setExpanded(newExpanded ? planId : false);
-        
-        //console.log(expanded)
-        //console.log(event.currentTarget.className)
-        
-        //  let element = document.getElementById(planId);
-        //  element.classList.remove("red");
-        //  element.classList.add("green");
-        //  console.log("id is",planId);
-       
-        
-
+    const updateFeedbacks = async (planId, read) => {
         if (!read) {
             try {
                 const feedbacks = await fetch(
@@ -149,57 +101,27 @@ function Sidebar({ graduateId }) {
 
                 const parseRes = await feedbacks.json();
 
-                //console.log(parseRes);
             } catch (err) {
                 console.error(err.message);
             }
         }
+    }
 
-        //item.read_by_grad ? true : checked
+    const handleChange = (planId, read) => async (event, newExpanded) => {
+        setExpanded(newExpanded ? planId : false);
+        setColor(planId);
+        updateFeedbacks(planId, read)
     };
 
-    async function getFeedbacks() {
-        try {
-            const feedbacks = await fetch(
-                `http://localhost:3000/api/graduates/${graduateId}/feedbacks`,
-                {
-                    method: "GET",
-                    headers: { 'Content-Type': 'application/json' }
-                }
-            );
-
-            const parseRes = await feedbacks.json();
-
-            setFeedbackDetails(parseRes);
-            console.log(parseRes);
-        } catch (err) {
-            console.error(err.message);
-        }
-    }
-//console.log(color)
     useEffect(() => {
 
         if (graduateId) {
             getFeedbacks();
+            handleChange();  // find out what happens if we don't invoke this callback function
         }
 
     }, [graduateId, color]);
 
-
-const test = () =>{
-    document.getElementById("myDIV").classList.add("red");
-}
-function changeStyle(index){
-    //this.id()
-    //var id=this.id();
-    index = document.getElementById(index);
-    element.style.color = "blue";
-    //element.style.color = "green";
-}
-
-    //console.log(checked)
- //className={item.read_by_grad ? color.current : null} 
- //  //className={!item.read_by_grad ? "red" : "green" }
     return (
         <div className="sidebar-container">
             <Typography variant="h4" gutterBottom>
@@ -208,17 +130,9 @@ function changeStyle(index){
             {
                 feedbackDetails.length !== 0 ?
                     feedbackDetails.map((item, index) => (
-                        <Accordion key={index} id={index} square expanded={expanded === `${item.plan_id}`} onChange={handleChange(`${item.plan_id}`, item.read_by_grad)}
-                        
-                        
-                        >
-                         
-                            <AccordionSummary  aria-controls="panel1d-content" id={item.plan_id} >
-                                <Typography onClick={changeStyle}  id="ff"  className={!item.read_by_grad ? "red" : "green" }
-                                //this.id
-                                
-                                >
-            
+                        <Accordion key={index} id={index} square expanded={expanded === `${item.plan_id}`} onChange={handleChange(`${item.plan_id}`, item.read_by_grad)}>
+                            <AccordionSummary aria-controls="panel1d-content" id={item.plan_id} className={item.read_by_grad ? classes.readByGrad : null} >
+                                <Typography>
                                     {item.plan_name}
                                 </Typography>
                             </AccordionSummary>
@@ -229,16 +143,6 @@ function changeStyle(index){
                                 <Typography gutterBottom>
                                     {item.feedback_details}
                                 </Typography>
-                                <div>
-                                    {/*<Controls.CheckBox
-                                        name={`${item.plan_id}`}
-                                        label="Read"
-                                        value={item.read_by_grad ? true : checked}
-                                        //value={checked}
-                                        onChange={handleInputChange}
-                                    />*/}
-
-                                </div>
                             </AccordionDetails>
                         </Accordion>
                     ))

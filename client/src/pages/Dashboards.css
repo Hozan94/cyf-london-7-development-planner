@@ -78,7 +78,7 @@
 }
 
 .plan-container {
-	display:flex;
+	/* display:flex; */
 	/* justify-content:end; */
 	flex: 2;
 	order: 1;
@@ -88,11 +88,11 @@
 	order: 2;
 	flex: 1;
 }
-.c-1{
+/* .c-1{
 	background-color:red;
 	flex:2;
 	order:1;
-}
+} */
 .drop-down{
 	background-color:yellow;
 	flex:1;

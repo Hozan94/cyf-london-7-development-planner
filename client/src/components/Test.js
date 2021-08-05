@@ -21,7 +21,7 @@ import Icon from '@material-ui/core/Icon';
 import { format } from 'date-fns';
 import { green } from "@material-ui/core/colors";
 import ShareButton from './ShareButton'
-import AsideBar from "./AsideBar";
+
 
 
 const useStyles = makeStyles(theme => ({
