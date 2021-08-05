@@ -639,7 +639,7 @@ router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {
                         inner join plans on plans.id=goals.plan_id 
                         inner join graduates on graduates.id=plans.graduate_id 
                         inner join feedbacks on feedbacks.plan_id=goals.plan_id
-                        where feedbacks.mentor_id=$1 
+                        where feedbacks.mentor_id=$1
                         group by plans.id,plans.graduate_id, plans.plan_name,
                         graduates.first_name,graduates.last_name,
                         feedbacks.feedback_requested_date,feedbacks.mentor_id;`,
@@ -671,13 +671,13 @@ router.post("/mentors/:mentor_id/feedbacks", async (req, res) => {
 
 // send feedback from mentor dashboard
 
-router.post("/mentors/:mentor_id/:plan_id/feedbacks", async (req, res) => {
+router.put("/mentors/:mentor_id/:plan_id/feedbacks", async (req, res) => {
 	const { feedback_details } = req.body;
 	const { plan_id, mentor_id } = req.params;
 
 	try {
 		await pool.query(
-			"INSERT INTO feedbacks(feedback_details,plan_id, mentor_id) VALUES ($1,$2,$3)",
+			"UPDATE feedbacks SET feedback_details=$1 WHERE plan_id=$2 AND mentor_id=$3",
 			[feedback_details, plan_id, mentor_id]
 		);
 
@@ -701,6 +701,22 @@ router.get("/graduates/:graduate_id/feedbacks", async (req, res) => {
 	} catch (err) {
 		res.status(500).send(err, "server error");
 	}
+});
+
+router.put("/graduates/:graduate_id/:plan_id/feedbacks", async (req, res) => {
+    const { read_by_grad } = req.body;
+    const { plan_id } = req.params;
+
+    try {
+        await pool.query(
+            "UPDATE feedbacks SET read_by_grad=$1 WHERE plan_id=$2",
+            [read_by_grad ,plan_id]
+        );
+
+        res.json("Graduate has read the feedback");
+    } catch (err) {
+        res.status(500).send(err, "server error");
+    }
 });
 
 export default router;
