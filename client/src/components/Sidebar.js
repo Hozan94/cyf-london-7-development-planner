@@ -117,7 +117,7 @@ function Sidebar({ graduateId }) {
 
         if (graduateId) {
             getFeedbacks();
-            handleChange();
+            handleChange();  // find out what happens if we don't invoke this callback function
         }
 
     }, [graduateId, color]);

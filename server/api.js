@@ -625,7 +625,7 @@ router.get("/graduates/:graduate_id/plans/goals", async (req, res) => {
 	}
 });
 
-/******************feedacks endpoints */
+/******************feedbacks endpoints */
 
 router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {
 	try {
@@ -634,13 +634,13 @@ router.get("/mentors/:mentor_id/feedbacks", async (req, res) => {
 		// res.json(feedback_requests.rows);
 		const feedback_requests = await pool.query(
 			`select plans.id,concat(graduates.first_name,' ',graduates.last_name) as name,feedbacks.feedback_requested_date,feedbacks.mentor_id,plans.plan_name,
-                        json_agg(json_build_object('goal_details',goals.goal_details,'due_date',goals.due_date, 'remarks', goals.remarks)) as goals_list
+                       feedbacks.feedback_details,json_agg(json_build_object('goal_details',goals.goal_details,'due_date',goals.due_date, 'remarks', goals.remarks)) as goals_list
                         from goals 
                         inner join plans on plans.id=goals.plan_id 
                         inner join graduates on graduates.id=plans.graduate_id 
                         inner join feedbacks on feedbacks.plan_id=goals.plan_id
                         where feedbacks.mentor_id=$1
-                        group by plans.id,plans.graduate_id, plans.plan_name,
+                        group by plans.id,plans.graduate_id, plans.plan_name,feedbacks.feedback_details,
                         graduates.first_name,graduates.last_name,
                         feedbacks.feedback_requested_date,feedbacks.mentor_id;`,
 			[req.params.mentor_id]
