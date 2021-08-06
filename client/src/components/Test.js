@@ -73,7 +73,7 @@ function Row({ row, isMentor, isGraduate, mentorId }) {
     } = useForm(initialFieldValues);
 
 const   handelFeedBack = async (e) =>{
-    e.preventDefault()
+    // e.preventDefault()
 
     try {
         const response = await fetch(
