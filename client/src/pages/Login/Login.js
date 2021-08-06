@@ -6,11 +6,14 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import image from "../../img/cyf.png";
 import "./Login.css";
+
 const loginSchema = yup.object().shape({
 	email: yup.string().email("Email is not valid").required(),
 	password: yup.string().required(),
 });
-const Login = () => {
+const Login = (props) => {
+
+
 	const history = useHistory();
 	const {
 		register,
