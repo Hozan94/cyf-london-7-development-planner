@@ -704,28 +704,27 @@ router.get("/graduates/:graduate_id/feedbacks", async (req, res) => {
 });
 
 router.put("/graduates/:graduate_id/:plan_id/feedbacks", async (req, res) => {
-    const { read_by_grad } = req.body;
-    const { plan_id } = req.params;
+	const { read_by_grad } = req.body;
+	const { plan_id } = req.params;
 
-    try {
-        await pool.query(
-            "UPDATE feedbacks SET read_by_grad=$1 WHERE plan_id=$2",
-            [read_by_grad ,plan_id]
-        );
+	try {
+		await pool.query("UPDATE feedbacks SET read_by_grad=$1 WHERE plan_id=$2", [
+			read_by_grad,
+			plan_id,
+		]);
 
-        res.json("Graduate has read the feedback");
-    } catch (err) {
-        res.status(500).send(err, "server error");
-    }
+		res.json("Graduate has read the feedback");
+	} catch (err) {
+		res.status(500).send(err, "server error");
+	}
 });
 // ********** cities endpoint ********///
 router.get("/cities", async (req, res) => {
 	try {
-		const cities_list=await pool.query(` select * from cities `);
-		res.json(cities_list.rows)
-	} catch(err){
-		res.status(500).send(err,'server error')
+		const cities_list = await pool.query(` select * from cities `);
+		res.json(cities_list.rows);
+	} catch (err) {
+		res.status(500).send(err, "server error");
 	}
-
-})
+});
 export default router;
