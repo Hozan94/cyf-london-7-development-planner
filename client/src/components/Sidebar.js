@@ -55,6 +55,14 @@ const useStyles = makeStyles((theme) => ({
     readByGrad: {
         backgroundColor: 'rgba(0, 0, 0, .03)',
     },
+
+    heading: {
+        flexBasis: '37.33%',
+        flexShrink: 0,
+    }
+    //text: {
+    //    marginLeft: '50px'
+    //}
 }))
 
 
@@ -127,14 +135,28 @@ function Sidebar({ graduateId }) {
             <Typography variant="h4" gutterBottom>
                 Received Feedback
             </Typography>
+            <div>
+                <Typography className={classes.heading} gutterBottom>
+                    Mentor
+                </Typography>
+                <Typography  gutterBottom>
+                    Plan
+                </Typography>
+            </div>
             {
                 feedbackDetails.length !== 0 ?
                     feedbackDetails.map((item, index) => (
                         <Accordion key={index} id={index} square expanded={expanded === `${item.plan_id}`} onChange={handleChange(`${item.plan_id}`, item.read_by_grad)}>
                             <AccordionSummary aria-controls="panel1d-content" id={item.plan_id} className={item.read_by_grad ? classes.readByGrad : null} >
-                                <Typography>
-                                    {item.plan_name}
-                                </Typography>
+                                {/*<div style={{ display: "flex", justifyContent: "space-between" }}>*/}
+                                    <Typography className={classes.heading}>
+                                        {item.name}
+                                    </Typography>
+                                    <Typography className={classes.text}>
+                                        {item.plan_name}
+                                    </Typography>
+                                {/*</div>*/}
+
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography variant="h6" gutterBottom>

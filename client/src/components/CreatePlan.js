@@ -57,10 +57,11 @@ function CreatePlan(props) {
     }
 
   async function handleSubmit() {
-        props.plan(props.plansList.concat(ourPlans))
-
+        //props.plan(props.plansList.concat(ourPlans))
+        props.submitted(ourPlans)
         setOpen(false);
         setData([]);
+        
         try {
             const response = await fetch(`http://localhost:3000/api/graduates/${props.graduateId}/plans/goals`, {
                 method: "POST",
