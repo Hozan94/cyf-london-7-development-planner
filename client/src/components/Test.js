@@ -64,6 +64,7 @@ const initialFieldValues = {
 function Row({ row, isMentor, isGraduate, mentorId }) {
 
     const [open, setOpen] = useState(false);
+    const [feedbackSent, setFeedbackSent] = useState(false);
     const classes = useStyles();
 
     const {
@@ -73,7 +74,9 @@ function Row({ row, isMentor, isGraduate, mentorId }) {
     } = useForm(initialFieldValues);
 
 const   handelFeedBack = async (e) =>{
-    e.preventDefault()
+    //e.preventDefault()
+    //setOpen(false);
+    //setFeedbackSent(true)
 
     try {
         const response = await fetch(

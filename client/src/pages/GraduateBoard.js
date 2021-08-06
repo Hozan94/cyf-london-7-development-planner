@@ -14,6 +14,7 @@ function GraduateBoard() {
     const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
 	const [graduate, setGraduate] = useState("");
+    const [submitted, setSubmitted] = useState("");
 
 	const [mentorId, setMentorId] = useState("");
 	// const [planName, setPlanName]=useState("")
@@ -58,7 +59,7 @@ function GraduateBoard() {
 
 	useEffect(() => {
 		getName();
-	}, []);
+	}, [submitted]);
 
     return (
 		<div>
@@ -82,7 +83,8 @@ function GraduateBoard() {
 
 					<div className="c-1">
 						<CreatePlan
-							plan={setPlans}
+                            submitted={setSubmitted}
+							//plan={setPlans}
 							plansList={plans}
 							graduateId={graduate.id}
 						/>
