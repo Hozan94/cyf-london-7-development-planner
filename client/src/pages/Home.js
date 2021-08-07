@@ -28,6 +28,7 @@ function Home() {
                     
                     <>
                         <Switch>
+                            
                             <Route exact path="/welcome" render={() => <Welcome />} />
                             <Route exact path="/login" render={() => <Login />} />
                            

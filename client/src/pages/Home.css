@@ -67,5 +67,24 @@ text-align: right;
     background-color: rgb(143, 138, 138);
     color: rgb(224, 216, 216);
    
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+
 }
+
+
+@media(max-width: 768px) {
+
+    .main{
+        flex-direction: column;
+        
+    }
+
+    
+   
+  }
 

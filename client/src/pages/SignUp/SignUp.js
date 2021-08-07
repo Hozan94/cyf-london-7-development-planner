@@ -73,7 +73,7 @@ const SignUp = ({ userType }) => {
 
 
     return (
-        <div>
+        <div className="sign-up-wrapper">
             <div className="signUp-container">
                 <img src={image} alt="cyf-logo" />
                 <form onSubmit={handleSubmit(onSubmitForm)}>

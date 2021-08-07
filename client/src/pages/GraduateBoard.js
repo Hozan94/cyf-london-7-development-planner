@@ -7,14 +7,16 @@ import { toast } from "react-toastify";
 import { useHistory } from "react-router";
 import Sidebar from "../components/Sidebar";
 import { Paper } from "@material-ui/core";
+import Grid from '@material-ui/core/Grid'
 
 function GraduateBoard() {
+
     const history = useHistory();
 
     const [plans, setPlans] = useState([]);
     const [graduate, setGraduate] = useState("");
     const [submitted, setSubmitted] = useState("");
-    
+
     let graduate_id;
     async function getName() {
         try {
@@ -58,15 +60,24 @@ function GraduateBoard() {
                 </div>
             </header>
             <main className="wrapper">
-                <Sidebar graduateId={graduate.id} />
-                <Paper className="plan-container ">
-                    <CreatePlan
-                        submitted={setSubmitted}
-                        plansList={plans}
-                        graduateId={graduate.id}
-                    />
-                    <Test graduateId={graduate.id} plans={plans} isMentor={false} isGraduate={true}/>
-                </Paper>
+                <Grid container className="grid-container">
+                    <Grid item xs={11} md={8}>
+                        <Paper className="gridItem">
+                            <CreatePlan
+                                submitted={setSubmitted}
+                                plansList={plans}
+                                graduateId={graduate.id}
+                            />
+                            <Test graduateId={graduate.id} plans={plans} isMentor={false} isGraduate={true} />
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={8} md={3}>
+                        <Sidebar graduateId={graduate.id} />
+                    </Grid>
+                </Grid>
+
+                {/*</Grid>*/}
+
             </main>
         </div>
     );
