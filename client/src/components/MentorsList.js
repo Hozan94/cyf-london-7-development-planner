@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import Controls from './controls/Controls';
-
 
 function MentorDropDown({ setMentorId, mentorId }) {
     
@@ -30,7 +29,6 @@ function MentorDropDown({ setMentorId, mentorId }) {
     }
 
     return (
-        <div>
             <Controls.Select
                 name="mentorsList"
                 label="Mentors List"
@@ -38,7 +36,6 @@ function MentorDropDown({ setMentorId, mentorId }) {
                 options={mentorName}
                 onChange={handelChange}
             />
-        </div>
     );
 }
 

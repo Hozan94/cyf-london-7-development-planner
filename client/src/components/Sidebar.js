@@ -156,7 +156,7 @@ function Sidebar({ graduateId }) {
     }, [graduateId, color]);
 
     return (
-        <Paper className="sidebar-container offset-md-1 col-md-4">
+        <Paper>
             <Typography variant="body1" className={classes.feedbackTableTitle}>
                 Received feedback <Icon className={classes.icon}>feedback</Icon>
             </Typography>

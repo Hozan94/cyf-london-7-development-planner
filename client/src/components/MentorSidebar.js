@@ -94,7 +94,7 @@ function MentorSidebar({ plans }) {
     // }, [graduateId, color]);
 
     return (
-        <Paper className="sidebar-container offset-md-1 col-md-4">
+        <Paper>
             <Typography variant="body1" className={classes.completedFeedbackTableTitle}>
                 Completed Feedback <Icon className={classes.icon}>task_alt</Icon>
             </Typography>

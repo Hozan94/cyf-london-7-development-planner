@@ -8,6 +8,7 @@ import MentorSidebar from "../components/MentorSidebar";
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -67,7 +68,7 @@ function MentorBoard() {
             console.error(err.message)
         }
     }
-    
+
     useEffect(() => {
         getFeedbacksRequests();
     }, []);
@@ -80,22 +81,28 @@ function MentorBoard() {
                 </div>
             </header>
             <main className="wrapper">
-                <MentorSidebar plans={completedFeedbacks} />
-                <Paper className="plan-container ">
-                    <Typography variant="body1" className={classes.requestedFeedbackTableTitle}>
-                        Number of feedback requested: <span className={classes.feedbackCount}>{outstandingFeedbacks.length}</span>
-                    </Typography>
-                    {loading ?
-                        <h5>Loading.....</h5>
-                        :
-                        <Test
-                            plans={outstandingFeedbacks}
-                            isMentor={true}
-                            isGraduate={false}
-                            mentorId={mentor.id}
-                        />
-                    }
-                </Paper>
+                <Grid container className="grid-container">
+                    <Grid item xs={11} md={8}>
+                        <Paper className="gridItem">
+                            <Typography variant="body1" className={classes.requestedFeedbackTableTitle}>
+                                Number of feedback requested: <span className={classes.feedbackCount}>{outstandingFeedbacks.length}</span>
+                            </Typography>
+                            {loading ?
+                                <h5>Loading.....</h5>
+                                :
+                                <Test
+                                    plans={outstandingFeedbacks}
+                                    isMentor={true}
+                                    isGraduate={false}
+                                    mentorId={mentor.id}
+                                />
+                            }
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={8} md={3}>
+                        <MentorSidebar plans={completedFeedbacks} />
+                    </Grid>
+                </Grid>
             </main>
         </div>
     );
