@@ -1,22 +1,17 @@
 import React from "react";
-import "bulma/css/bulma.min.css";
-import  { useState,useEffect } from "react";
+// import "bulma/css/bulma.min.css";
+import  { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
-
-
+import "bootstrap/dist/css/bootstrap.css";
+import "./navbar.css";
 export default function NavBar() {
     const [isOpen, setOpen] = useState(false);
 	const loggedIn = !!localStorage.getItem("token");
 	const history = useHistory();
 	
-	console.log(loggedIn);
-    //  const [log , setLog] = useState(loggedIn);
-
-	//  useEffect(()=>{
-    //   setLog(log)
-    // },[log])
+	
 
 	 const logout = (e) => {
         e.preventDefault();
@@ -28,43 +23,29 @@ export default function NavBar() {
 
 
    return (
-			<nav
-				className="navbar is-primary"
-				role="navigation"
-				aria-label="main navigation"
-			>
-				<div className="container">
-					<div className="navbar-brand">
-						<a
-							role="button"
-							className={`navbar-burger burger ${isOpen && "is-active"}`}
-							aria-label="menu"
-							aria-expanded="false"
-							onClick={() => setOpen(!isOpen)}
-						>
-							<span aria-hidden="true"></span>
-							<span aria-hidden="true"></span>
-							<span aria-hidden="true"></span>
-						</a>
-					</div>
-
-					<div className={`navbar-menu ${isOpen && "is-active"}`}>
-						<div className="navbar-start">
+	   <div>
+			<nav className="nav-bar">
+			<div className="container">	
+			
+				
+                           <div className="left-links">  
 							
 							
 							   <NavLink
-								className="navbar-item"
+								className="navbar-item-home"
 								activeClassName="is-active"
 							 	to="/welcome"
 							    >
 								Home
 							   </NavLink>
 
-						                      
+						     </div>  
+							 <div className="right-links">               
 						{loggedIn  ? (  
+							
                            <>
                               <NavLink
-								className="navbar-item"
+								className="navbar-item-logout"
 								activeClassName="is-active"
 								to="/login"
 								onClick={logout}
@@ -79,14 +60,14 @@ export default function NavBar() {
 	                    
 					   
 					        <NavLink
-								className="navbar-item"
+								className="navbar-item-signup"
 								activeClassName="is-active"
 								to="/signUp"
 							>
 								Sign Up
 							</NavLink>
                         <NavLink
-						className="navbar-item"
+						className="navbar-item-login"
 						activeClassName="is-active"
 						to="/login"
 						>
@@ -98,24 +79,19 @@ export default function NavBar() {
 						
 						}
 						
-						
+						</div>
 							
 							
                             
 
 							
 
-						</div>
+			</div>
 
-						{/* <div className="navbar-end">
-							<div className="navbar-item">
-								<div className="buttons">
-									<a className="button is-white">Log in</a>
-								</div>
-							</div>
-						</div> */}
-					</div>
-				</div>
+			   
 			</nav>
+
+           </div>
+			
 		);
 }

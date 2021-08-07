@@ -65,12 +65,12 @@ function GraduateBoard() {
 		<div>
 			<header className="header-container">
 				<h1>Graduate Dashboard {graduate.id}</h1>
-				<Controls.Button
+				{/* <Controls.Button
 					color="secondary"
 					type="submit"
 					text="Log Out"
 					onClick={logout}
-				/>
+				/> */}
 			</header>
 			<main className="wrapper">
                
