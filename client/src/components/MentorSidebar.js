@@ -6,6 +6,8 @@ import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
+import Icon from '@material-ui/core/Icon';
+import Paper from '@material-ui/core/Paper'
 
 
 const Accordion = withStyles({
@@ -52,13 +54,22 @@ const AccordionDetails = withStyles((theme) => ({
 }))(MuiAccordionDetails);
 
 const useStyles = makeStyles((theme) => ({
-    readByGrad: {
-        backgroundColor: 'rgba(0, 0, 0, .03)',
+    completedFeedbackTableTitle: {
+        padding: theme.spacing(1.8),
+        display: 'flex',
+        justifyContent: 'center'
     },
+    icon: {
+        marginLeft: theme.spacing(1)
+    },
+    noFeedbackText: {
+        textAlign: 'center',
+        padding: theme.spacing(2)
+    }
 }))
 
 
-function MentorSidebar({plans}) {
+function MentorSidebar({ plans }) {
 
     const classes = useStyles();
 
@@ -68,48 +79,9 @@ function MentorSidebar({plans}) {
 
     const [color, setColor] = useState("notRead")
 
-    // const getFeedbacks = async () => {
-    //     try {
-    //         const feedbacks = await fetch(
-    //             `http://localhost:3000/api/graduates/${graduateId}/feedbacks`,
-    //             {
-    //                 method: "GET",
-    //                 headers: { 'Content-Type': 'application/json' }
-    //             }
-    //         );
-
-    //         const parseRes = await feedbacks.json();
-    //         setFeedbackDetails(parseRes);
-
-    //     } catch (err) {
-    //         console.error(err.message);
-    //     }
-    // }
-
-    // const updateFeedbacks = async (planId, read) => {
-    //     if (!read) {
-    //         try {
-    //             const feedbacks = await fetch(
-    //                 `http://localhost:3000/api/graduates/${graduateId}/${planId}/feedbacks`,
-    //                 {
-    //                     method: "PUT",
-    //                     headers: { "Content-Type": "application/json" },
-
-    //                     body: JSON.stringify({ read_by_grad: true }),
-    //                 }
-    //             );
-
-    //             const parseRes = await feedbacks.json();
-
-    //         } catch (err) {
-    //             console.error(err.message);
-    //         }
-    //     }
-    // }
-
     const handleChange = (planId) => async (event, newExpanded) => {
         setExpanded(newExpanded ? planId : false);
-   
+
     };
 
     // useEffect(() => {
@@ -122,39 +94,42 @@ function MentorSidebar({plans}) {
     // }, [graduateId, color]);
 
     return (
-			<div className="sidebar-container">
-				<Typography variant="h4" gutterBottom>
-					Completed Feedbacks
-				</Typography>
-				{plans && plans.length !== 0 ? (
-					plans.map((item, index) => (
-						<Accordion
-							key={index}
-							id={index}
-							square
-							expanded={expanded === `${item.id}`}
-							onChange={handleChange(`${item.id}`)}
-						>
-							<AccordionSummary
-								aria-controls="panel1d-content"
-								id={item.id}
-								// className={item.read_by_grad ? classes.readByGrad : null}
-							>
-								<Typography>{item.plan_name}</Typography>
-							</AccordionSummary>
-							<AccordionDetails>
-								<Typography variant="h6" gutterBottom>
-									Feedback Details:
-								</Typography>
-								<Typography gutterBottom>{item.feedback_details}</Typography>
-							</AccordionDetails>
-						</Accordion>
-					))
-				) : (
-					<p>No completed feedback</p>
-				)}
-			</div>
-		);
+        <Paper className="sidebar-container offset-md-1 col-md-4">
+            <Typography variant="body1" className={classes.completedFeedbackTableTitle}>
+                Completed Feedback <Icon className={classes.icon}>task_alt</Icon>
+            </Typography>
+            <Paper square elevation={2} >
+
+                {plans && plans.length !== 0 ?
+                    plans.map((item, index) => (
+                        <Accordion
+                            key={index}
+                            id={index}
+                            square
+                            expanded={expanded === `${item.id}`}
+                            onChange={handleChange(`${item.id}`)}
+                        >
+                            <AccordionSummary
+                                aria-controls="panel1d-content"
+                                id={item.id}
+                            // className={item.read_by_grad ? classes.readByGrad : null}
+                            >
+                                <Typography>{item.plan_name}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography variant="h6" gutterBottom>
+                                    Feedback Details:
+                                </Typography>
+                                <Typography gutterBottom>{item.feedback_details}</Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                    ))
+                    :
+                    <Typography className={classes.noFeedbackText}>No feedback completed</Typography>
+                }
+            </Paper>
+        </Paper>
+    );
 }
 
 export default MentorSidebar;

@@ -5,7 +5,7 @@ import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core';
+import { Icon, makeStyles, Paper } from '@material-ui/core';
 
 
 const Accordion = withStyles({
@@ -52,17 +52,40 @@ const AccordionDetails = withStyles((theme) => ({
 }))(MuiAccordionDetails);
 
 const useStyles = makeStyles((theme) => ({
-    readByGrad: {
-        backgroundColor: 'rgba(0, 0, 0, .03)',
+    feedbackTableTitle: {
+        padding: theme.spacing(1.8),
+        display: 'flex',
+        justifyContent: 'center'
     },
-
+    icon: {
+        marginLeft: theme.spacing(1)
+    },
+    readByGrad: {
+        backgroundColor: 'rgb(248, 247, 245)',
+    },
     heading: {
-        flexBasis: '37.33%',
+        flexBasis: '45.33%',
         flexShrink: 0,
+    },
+    headingText: {
+        fontWeight: '900'
+    },
+    accordionHeading: {
+        fontSize: '0.875rem'
+    },
+    accordionSummaryHeading: {
+        fontWeight: '400',
+        paddingBottom: '20px'
+    },
+    paperContainer: {
+        border: 'none',
+        display: 'flex',
+        padding: theme.spacing(2),
+    },
+    noFeedbackText: {
+        textAlign: 'center',
+        padding: theme.spacing(2)
     }
-    //text: {
-    //    marginLeft: '50px'
-    //}
 }))
 
 
@@ -72,11 +95,12 @@ function Sidebar({ graduateId }) {
 
     const [feedbackDetails, setFeedbackDetails] = useState([]);
 
-    const [expanded, setExpanded] = useState("");
+    //const [expanded, setExpanded] = useState("");
 
     const [color, setColor] = useState("notRead")
 
     const getFeedbacks = async () => {
+        console.log("11111")
         try {
             const feedbacks = await fetch(
                 `http://localhost:3000/api/graduates/${graduateId}/feedbacks`,
@@ -95,6 +119,7 @@ function Sidebar({ graduateId }) {
     }
 
     const updateFeedbacks = async (planId, read) => {
+        console.log(read)
         if (!read) {
             try {
                 const feedbacks = await fetch(
@@ -115,8 +140,8 @@ function Sidebar({ graduateId }) {
         }
     }
 
-    const handleChange = (planId, read) => async (event, newExpanded) => {
-        setExpanded(newExpanded ? planId : false);
+    const handleChange = (planId, read) => (event) => {
+        //setExpanded(newExpanded ? planId : false);
         setColor(planId);
         updateFeedbacks(planId, read)
     };
@@ -125,53 +150,50 @@ function Sidebar({ graduateId }) {
 
         if (graduateId) {
             getFeedbacks();
-            handleChange();  // find out what happens if we don't invoke this callback function
+            //handleChange();  // find out what happens if we don't invoke this callback function
         }
 
     }, [graduateId, color]);
 
     return (
-        <div className="sidebar-container">
-            <Typography variant="h4" gutterBottom>
-                Received Feedback
+        <Paper className="sidebar-container offset-md-1 col-md-4">
+            <Typography variant="body1" className={classes.feedbackTableTitle}>
+                Received feedback <Icon className={classes.icon}>feedback</Icon>
             </Typography>
-            <div>
-                <Typography className={classes.heading} gutterBottom>
+            <Paper square elevation={2} className={classes.paperContainer} >
+                <Typography className={`${classes.heading} ${classes.headingText}`} >
                     Mentor
                 </Typography>
-                <Typography  gutterBottom>
+                <Typography className={classes.headingText}>
                     Plan
                 </Typography>
-            </div>
+            </Paper>
             {
                 feedbackDetails.length !== 0 ?
                     feedbackDetails.map((item, index) => (
-                        <Accordion key={index} id={index} square expanded={expanded === `${item.plan_id}`} onChange={handleChange(`${item.plan_id}`, item.read_by_grad)}>
-                            <AccordionSummary aria-controls="panel1d-content" id={item.plan_id} className={item.read_by_grad ? classes.readByGrad : null} >
-                                {/*<div style={{ display: "flex", justifyContent: "space-between" }}>*/}
-                                    <Typography className={classes.heading}>
-                                        {item.name}
-                                    </Typography>
-                                    <Typography className={classes.text}>
-                                        {item.plan_name}
-                                    </Typography>
-                                {/*</div>*/}
-
+                        <Accordion key={index} id={index} square onChange={handleChange(`${item.plan_id}`, item.read_by_grad)}>
+                            <AccordionSummary aria-controls={`panel${item.plan_id}-content`} id={item.plan_id} className={item.read_by_grad ? classes.readByGrad : null} >
+                                <Typography className={`${classes.heading} ${classes.accordionHeading}`}>
+                                    {item.name}
+                                </Typography>
+                                <Typography className={classes.accordionHeading}>
+                                    {item.plan_name}
+                                </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Typography variant="h6" gutterBottom>
+                                <Typography className={classes.accordionSummaryHeading}>
                                     Feedback Details:
                                 </Typography>
-                                <Typography gutterBottom>
+                                <Typography variant="body2" gutterBottom>
                                     {item.feedback_details}
                                 </Typography>
                             </AccordionDetails>
                         </Accordion>
                     ))
                     :
-                    <p>No feedback</p>
+                    <Typography className={classes.noFeedbackText}>No feedback</Typography>
             }
-        </div>
+        </Paper>
     );
 }
 
