@@ -730,4 +730,15 @@ router.get("/cities", async (req, res) => {
 		res.status(500).send(err, "server error");
 	}
 });
+
+// ********** classes endpoint ********///
+
+router.get("/classes", async (req, res) => {
+	try {
+		const classes_list = await pool.query(` select * from classes `);
+		res.json(classes_list.rows);
+	} catch (err) {
+		res.status(500).send(err, "server error");
+	}
+});
 export default router;
