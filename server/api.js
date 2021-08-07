@@ -720,6 +720,35 @@ router.put("/graduates/:graduate_id/:plan_id/feedbacks", async (req, res) => {
     }
 });
 
+//Delete a graduate plan with specified IDs
+
+router.delete("/graduates/:graduate_id/:plan_id", async (req, res) => {
+    const { graduate_id, plan_id } = req.params;
+
+    if (!graduate_id || !plan_id) {
+        res.status(404).json({ "status": 404, "error": "No graduate/plan found" });
+    }
+
+    try {
+
+        const deleteGoals = await pool.query(
+            "DELETE FROM goals WHERE plan_id=$1", [plan_id]
+        )
+
+        const deleteFeedbacks = await pool.query(
+            "DELETE FROM feedbacks WHERE plan_id=$1", [plan_id]
+        )
+
+        const result = await pool.query(
+            "DELETE FROM plans WHERE plans.id=$1 AND graduate_id=$2", [plan_id, graduate_id]
+        );
+
+        res.json({ "Success": "Plan is deleted" });
+    } catch (err) {
+        res.status(500).send("server error")
+    }
+})
+
 
 
 // ********** cities endpoint ********///

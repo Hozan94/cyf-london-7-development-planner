@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,9 +10,15 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import GoalsForm from './GoalsForm';
 import GoalsTable from './GoalsTable';
-import { Paper, TextField, Grid } from '@material-ui/core';
+import { Paper, TextField, Grid, Tooltip, Icon } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
+    createButton: {
+        textTransform: 'none',
+        fontSize: '20px',
+        fontWeight: '500',
+        padding: theme.spacing(2)
+    },
     appBar: {
         position: 'relative'
     },
@@ -31,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
@@ -55,12 +61,11 @@ function CreatePlan(props) {
         goals_list: data
     }
 
-  async function handleSubmit() {
-        //props.plan(props.plansList.concat(ourPlans))
+    async function handleSubmit() {
         props.submitted(ourPlans)
         setOpen(false);
         setData([]);
-        
+
         try {
             const response = await fetch(`http://localhost:3000/api/graduates/${props.graduateId}/plans/goals`, {
                 method: "POST",
@@ -70,24 +75,33 @@ function CreatePlan(props) {
 
             const parseRes = await response.json();
             console.log(parseRes);
-        } catch (err){
+        } catch (err) {
             console.log(err);
         }
-       
+
     }
 
     function handleInputChange(e) {
         setPlanTitle(e.target.value);
     }
 
+    function smartGoals() {
+        return (
+            <p>use <a style={{color:'white'}} target="_blank" href="https://www.indeed.com/career-advice/career-development/smart-goals">SMART</a> method when creating your goals</p>
+        )
+    }
+
     return (
         <div className="create-plan-button">
-            <Button variant="contained" color="primary" onClick={handleClickOpen}>
-                Create a new plan
-            </Button>
+            <Tooltip title={smartGoals()} placement="right" interactive >
+                <Button className={classes.createButton} endIcon={<Icon style={{ fontSize: '30px' }}>add_circle</Icon>}
+                    onClick={handleClickOpen}>
+                    Add a new plan
+                </Button>
+            </Tooltip>
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-                <AppBar className={classes.appBar}>
-                    <Toolbar>
+                <AppBar color="transparent" className={classes.appBar}>
+                    <Toolbar >
                         <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
                             <CloseIcon />
                         </IconButton>

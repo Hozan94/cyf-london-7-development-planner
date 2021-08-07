@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -7,9 +7,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
 import Controls from './controls/Controls';
-import { IconButton, makeStyles } from '@material-ui/core';
-import MentorsList from './MentorsList';
-import ShareIcon from '@material-ui/icons/Share';
+import { makeStyles} from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 function PaperComponent(props) {
     return (
@@ -20,17 +21,23 @@ function PaperComponent(props) {
 }
 
 const useStyles = makeStyles(theme => ({
-    shareButton: {
+
+    dialogText: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    deleteButton:{
         padding: '0'
     }
 }));
 
-export default function ShareButton({ planId }) {
+export default function DeleteButton({ graduateId, planId }) {
 
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
     const [mentorId, setMentorId] = useState("");
+    const [deletedPlans, setDeletedPlans] = useState("");
 
     const handleClick = (e) => {
         setOpen(true);
@@ -40,50 +47,55 @@ export default function ShareButton({ planId }) {
         setOpen(false);
     };
 
-    const handleShare = async () => {
+    const handleDelete = async (e) => {
         try {
-            const response = await fetch(
-                `http://localhost:3000/api/mentors/${mentorId}/feedbacks`,
+            const response = await fetch(`/api/graduates/${graduateId}/${planId}`,
                 {
-                    method: "POST",
+                    method: "DELETE",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ id: planId }),
                 }
             );
 
             const parseRes = await response.json();
-            console.log(parseRes)
+            setDeletedPlans(parseRes);
+            console.log(parseRes);
+            window.location.reload();
         } catch (err) {
             console.error(err.message);
         }
 
         setOpen(false);
-    };
+
+    }
 
     return (
         <div>
-            <IconButton aria-label="share" color="inherit" className={classes.shareButton} onClick={handleClick}>
-                <ShareIcon />
+            <IconButton aria-label="delete" color="inherit" className={classes.deleteButton} onClick={handleClick}>
+                <DeleteIcon />
             </IconButton>
             <Dialog
                 open={open}
                 onClose={handleClose}
                 PaperComponent={PaperComponent}
                 aria-labelledby="draggable-dialog-title"
+                maxWidth="sm"
+                fullWidth
             >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                    Share
+                    Delete
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        To share your plan with a mentor, please select the mentor from the list below.
+                    <DialogContentText className={classes.dialogText}>
+                        Delete this plan?
                     </DialogContentText>
-                    <MentorsList setMentorId={setMentorId} mentorId={mentorId} />
+                    <DialogContentText variant="caption">
+                        Once a plan is deleted you wont be able to retrieve.
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Controls.Button text="Cancel" variant="text" autoFocus onClick={handleClose} />
 
-                    <Controls.Button text="Share" variant="text" onClick={handleShare} />
+                    <Controls.Button text="Delete" variant="text" onClick={handleDelete} />
 
                 </DialogActions>
             </Dialog>
