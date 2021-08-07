@@ -19,8 +19,8 @@ import { useForm, Form } from "./useForm";
 import { Grid } from "@material-ui/core";
 import Icon from '@material-ui/core/Icon';
 import { format } from 'date-fns';
-import { green } from "@material-ui/core/colors";
-import ShareButton from './ShareButton'
+import ShareButton from './ShareButton';
+import DeleteButton from './DeleteButton'
 
 
 
@@ -31,7 +31,8 @@ const useStyles = makeStyles(theme => ({
         },
     },
     plansTable: {
-        width: '80%',
+        borderTop:'',
+        width: '100%',
     },
     tableHeader: {
         fontWeight: '900',
@@ -61,7 +62,7 @@ const initialFieldValues = {
 }
 
 
-function Row({ row, isMentor, isGraduate, mentorId }) {
+function Row({ row, isMentor, isGraduate, mentorId, graduateId }) {
 
     const [open, setOpen] = useState(false);
     const [feedbackSent, setFeedbackSent] = useState(false);
@@ -123,23 +124,24 @@ const   handelFeedBack = async (e) =>{
                         {format(new Date(row.feedback_requested_date), 'MM/dd/yyyy')}
                     </TableCell>
                 }
-                { isGraduate && <TableCell>
-                    {/*<input value={row.id} className="plan_id" disabled />*/}
-                    
+                { isGraduate && <TableCell>                    
                     {row.id}
                 </TableCell>
                 }
                 <TableCell component="th" >
                     {row.plan_name}
                 </TableCell>
-                
-
+                {isGraduate &&
+                    <TableCell>
+                        <DeleteButton graduateId={graduateId} planId={row.id}></DeleteButton>
+                    </TableCell>
+                }
                 {isGraduate &&
                     <TableCell>
                         <ShareButton planId={row.id}></ShareButton>
                     </TableCell>
                 }
-
+               
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -200,9 +202,9 @@ const   handelFeedBack = async (e) =>{
         </React.Fragment>
     );
 }
-let test1; 
+
 export default function PlansTable(props) {
-  test1= props.mentorId;
+
     const classes = useStyles();
 
     return (
@@ -217,11 +219,13 @@ export default function PlansTable(props) {
                             {props.isMentor && <TableCell className="request-date-cell" classes={{ head: classes.tableHeader }}>Request Date</TableCell>}
                             {props.isGraduate && <TableCell className="plan-name-cell" classes={{ head: classes.tableHeader }}> Plan ID</TableCell>}
                             <TableCell className="plan-name-cell" classes={{ head: classes.tableHeader }}> Plan Name</TableCell>
+                            <TableCell />
+                            <TableCell/>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {props.plans.map((data) => {
-                            return <Row key={data.id} row={data} isMentor={props.isMentor} isGraduate={props.isGraduate}  mentorId={props.mentorId}  />
+                            return <Row key={data.id} row={data} isMentor={props.isMentor} isGraduate={props.isGraduate}  mentorId={props.mentorId}  graduateId={props.graduateId}/>
                         })}
                     </TableBody>
                 </Table>

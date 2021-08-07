@@ -5,18 +5,35 @@ import Controls from '../components/controls/Controls';
 import { toast } from "react-toastify";
 import { useHistory } from "react-router";
 import MentorSidebar from "../components/MentorSidebar";
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core';
+
+
+const useStyles = makeStyles((theme) => ({
+    requestedFeedbackTableTitle: {
+        padding: theme.spacing(1.8),
+    },
+    feedbackCount: {
+        fontWeight: '900'
+    }
+}))
+
 
 function MentorBoard() {
+
+    const classes = useStyles()
+
     const history = useHistory();
 
-    const [plans, setPlans] = useState();
-    const [completedPlans, setCompletedPlans] = useState();
+    const [outstandingFeedbacks, setOutstandingFeedbacks] = useState([]);
+    const [completedFeedbacks, setCompletedFeedbacks] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [mentor, setMentor] = useState();
     let mentor_id;
 
-    async function getName() {
+    async function getFeedbacksRequests() {
         try {
             const response = await fetch("http://localhost:3000/api/dashboard/mentor", {
                 method: "GET",
@@ -25,7 +42,7 @@ function MentorBoard() {
 
             const parseRes = await response.json();
             mentor_id = parseRes.id;
-           // console.log(parseRes);
+            // console.log(parseRes);
 
             setMentor(parseRes);
 
@@ -37,17 +54,15 @@ function MentorBoard() {
             const feedback = await fetch(`http://localhost:3000/api/mentors/${mentor_id}/feedbacks`);
 
             const feedbackRes = await feedback.json();
-            let outstanding_plans = feedbackRes.filter(
-							(plan) =>plan.feedback_details === null
+            let outstandingFeedbacks = feedbackRes.filter(
+                (plan) => plan.feedback_details === null
             );
-            let completed_plans = feedbackRes.filter(
-							(plan) => plan.feedback_details !== null
-						);
-            setPlans(outstanding_plans);
-            setCompletedPlans(completed_plans);
-            // setPlans(feedbackRes);
+            let completedFeedbacks = feedbackRes.filter(
+                (plan) => plan.feedback_details !== null
+            );
+            setOutstandingFeedbacks(outstandingFeedbacks);
+            setCompletedFeedbacks(completedFeedbacks);
             setLoading(false);
-           // console.log(feedbackRes);
 
         } catch (err) {
             console.error(err.message)
@@ -56,7 +71,6 @@ function MentorBoard() {
 
     const logout = (e) => {
         e.preventDefault();
-        // localStorage.removeItem("token");
         localStorage.clear();
         history.push(`/login`);
         toast.success("Logged out successfully");
@@ -65,63 +79,51 @@ function MentorBoard() {
     // function filterPlans() {
     //     if(plans){
     //     let filtered_plans = plans.filter(
-	// 				(plan) => plan.feedback_details.length !== 0
+    // 				(plan) => plan.feedback_details.length !== 0
     //     );
     //         return filtered_plans;
     // }
-        
-    // }
-    
-   
-    useEffect(() => {
-        getName();
-        // filterPlans();
-         
-    }, []);
-    //  useEffect(() => {
-	// 			getName();
-	// 		}, [handleSubmit---feedback_details]);
 
+    // }
+
+
+    useEffect(() => {
+        getFeedbacksRequests();
+    }, []);
 
     return (
-			<div>
-				<header className="header-container">
-					<h1>
-						Mentor Dashboard{" "}
-						<span className="email">{mentor ? mentor.email : null}</span>
-					</h1>
-					<Controls.Button
-						color="secondary"
-						type="submit"
-						text="Log Out"
-						onClick={logout}
-					/>
-				</header>
-				<main className="wrapper">
-					{/*<CreatePlan plan={setPlans} plansList={plans} />*/}
-					<MentorSidebar plans={completedPlans} />
-					<div className="plan-container">
-						{loading ? (
-							<h2>Loading.....</h2>
-						) : (
-							<h3 className="feedback-count">{`Number of feedbacks requested ${plans.length}`}</h3>
-						)}
-						{loading ? (
-							<h2>Loading.....</h2>
-						) : (
-							<Test
-								plans={plans}
-								isMentor={true}
-								isGraduate={false}
-								mentorId={mentor.id}
-							/>
-						)}
-						{/*{plans.error ? <h1>{plans.error}</h1> : <Test plan={plans} isMentor={true} />}*/}
-						{/*<Test plan={plans} isMentor={true} />*/}
-					</div>
-				</main>
-			</div>
-		);
+        <div>
+            <header className="header-container">
+                <div className="header-title-container">
+                    <h1>Mentor Dashboard <span className="email">{mentor ? mentor.email : null}</span></h1>
+                    <Controls.Button
+                        color="secondary"
+                        type="submit"
+                        text="Log Out"
+                        onClick={logout}
+                    />
+                </div>
+            </header>
+            <main className="wrapper">
+                <MentorSidebar plans={completedFeedbacks} />
+                <Paper className="plan-container ">
+                    <Typography variant="body1" className={classes.requestedFeedbackTableTitle}>
+                        Number of feedback requested: <span className={classes.feedbackCount}>{outstandingFeedbacks.length}</span>
+                    </Typography>
+                    {loading ?
+                        <h5>Loading.....</h5>
+                        :
+                        <Test
+                            plans={outstandingFeedbacks}
+                            isMentor={true}
+                            isGraduate={false}
+                            mentorId={mentor.id}
+                        />
+                    }
+                </Paper>
+            </main>
+        </div>
+    );
 };
 
 export default MentorBoard;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
 import Controls from './controls/Controls';
 import Icon from '@material-ui/core/Icon';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import MentorsList from './MentorsList';
 
 
@@ -23,17 +23,22 @@ function PaperComponent(props) {
 
 const useStyles = makeStyles(theme => ({
 
+    dialogText: {
+        display: 'flex',
+        flexDirection: 'column',
+    }
     //shareButton: {
     //    width:'10px'
     //}
 }));
 
-export default function ShareButton({ planId }) {
+export default function DeleteButton({ graduateId, planId }) {
 
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
     const [mentorId, setMentorId] = useState("");
+    const [deletedPlans, setDeletedPlans] = useState("");
 
     const handleClick = (e) => {
         setOpen(true);
@@ -45,35 +50,35 @@ export default function ShareButton({ planId }) {
         setOpen(false);
     };
 
-    const handleShare = async () => {
+    const handleDelete = async (e) => {
         try {
-            const response = await fetch(
-                `http://localhost:3000/api/mentors/${mentorId}/feedbacks`,
+            const response = await fetch(`/api/graduates/${graduateId}/${planId}`,
                 {
-                    method: "POST",
+                    method: "DELETE",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({id:planId}),
                 }
             );
 
             const parseRes = await response.json();
-            console.log(parseRes)
+            setDeletedPlans(parseRes);
+            console.log(parseRes);
+            window.location.reload();
         } catch (err) {
             console.error(err.message);
         }
 
         setOpen(false);
-    };
+
+    }
+
 
     //console.log(id)
     return (
         <div>
             <Controls.Button
-                classes={{ root: classes.shareButton }}
                 variant="text"
                 color="default"
-                type="submit"
-                endIcon={<Icon>share</Icon>} //Used from Font Icons (Google Web Fonts)
+                endIcon={<Icon>delete</Icon>} //Used from Font Icons (Google Web Fonts)
                 onClick={handleClick}
             />
             <Dialog
@@ -81,21 +86,25 @@ export default function ShareButton({ planId }) {
                 onClose={handleClose}
                 PaperComponent={PaperComponent}
                 aria-labelledby="draggable-dialog-title"
+                maxWidth="sm"
+                fullWidth
             >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                    Share
+                    Delete
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        To share your plan with a mentor, please select the mentor from the list below.
+                    <DialogContentText className={classes.dialogText}>
+                        Delete this plan?
                     </DialogContentText>
-                    <MentorsList setMentorId={setMentorId} mentorId={mentorId} />
+                    <DialogContentText variant="caption">
+                        Once a plan is deleted you wont be able to retrieve.
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Controls.Button text="Cancel" variant="text" autoFocus onClick={handleClose}/>
-                    
-                    <Controls.Button text="Share" variant="text" onClick={handleShare}/>
-                   
+                    <Controls.Button text="Cancel" variant="text" autoFocus onClick={handleClose} />
+
+                    <Controls.Button text="Delete" variant="text" onClick={handleDelete} />
+
                 </DialogActions>
             </Dialog>
         </div>
