@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 toast.configure();
 
-
+import "../src/pages/Home.css"
 
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -30,10 +30,7 @@ const App = () => {
   <div className="App">
   <header className="App-header">
       <Router>
-          {/* <Link to="/signUp">Register</Link>
-<br></br>
-<Link to="/login">Log in</Link> */}
-          {/*{!isAuthenticated ? <NavBar /> : null}*/}
+ 
           <Switch>
              <NavBar /> 
           </Switch>
