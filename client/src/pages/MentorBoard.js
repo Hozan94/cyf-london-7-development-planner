@@ -87,7 +87,7 @@ function MentorBoard() {
 			<div>
 				<header className="header-container">
 					<h1>
-						Mentor Dashboard{" "}
+						Mentor Dashboard
 						<span className="email">{mentor ? mentor.email : null}</span>
 					</h1>
 					<Controls.Button

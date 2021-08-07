@@ -42,7 +42,6 @@ function CreatePlan(props) {
     const [open, setOpen] = useState(false);
     const [data, setData] = useState([]);
     const [planTitle, setPlanTitle] = useState("");
-    
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -95,7 +94,7 @@ function CreatePlan(props) {
                         <Typography variant="h6" className={classes.title}>
                             Create you plan
                         </Typography>
-                        <Button autoFocus color="inherit" type="submit" onClick={handleSubmit}>
+                        <Button disabled={!planTitle} autoFocus color="inherit" type="submit" onClick={handleSubmit}>
                             save
                         </Button>
                     </Toolbar>
