@@ -26,7 +26,11 @@ export default function NavBar() {
 	   <div>
 			<nav className="nav-bar">
 			<div className="container">	
-			
+			{/* <div class="hamburger_menu_and_text">
+                   <div class="hamburger_menu_box">
+                       <div class="line"></div>
+                 </div>
+				 </div> */}
 				
                            <div className="left-links">  
 							
@@ -88,7 +92,7 @@ export default function NavBar() {
 
 			</div>
 
-			   
+			  
 			</nav>
 
            </div>

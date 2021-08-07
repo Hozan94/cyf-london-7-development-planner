@@ -1,6 +1,7 @@
 import React from "react";
 
 function Welcome() {
+
     return (
 			<div>
 				
@@ -13,6 +14,10 @@ function Welcome() {
 					<p className="txt-slogen">If you’re looking for a holistic  app that covers tasks,<br/> routines, goals and habits, try Development Planner</p>
 				 </div>
 				
+
+				
+
+
 				</div>
 
                <footer className="footer">

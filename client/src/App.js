@@ -3,6 +3,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 toast.configure();
 
+import "../src/pages/Home.css"
+
 import "bootstrap/dist/css/bootstrap.css";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -17,46 +19,49 @@ import SignUp from "../src/pages/SignUp/SignUp";
 import Welcome from "../src/pages/Welcome";
 
 const App = () => {
-	return (
-		<div className="App">
-			<header className="App-header">
-				<Router>
-					{/* <Link to="/signUp">Register</Link>
-<br></br>
-<Link to="/login">Log in</Link> */}
-					{/*{!isAuthenticated ? <NavBar /> : null}*/}
-					<Switch>
-						<NavBar />
-					</Switch>
 
-					<>
-						<Switch>
-							<Route exact path="/" render={() => <Welcome />} />
-							<Route exact path="/welcome" render={() => <Welcome />} />
-							<Route exact path="/login" render={() => <Login />} />
 
-							<Route exact path="/signup" render={() => <SignUp />} />
+    return (
 
-							<SecureRoute
-								exact
-								path="/dashboard/graduate/"
-								render={() => <GraduateBoard />}
-								allowedRole="graduate"
-							/>
 
-							<SecureRoute
-								exact
-								path="/dashboard/mentor"
-								render={() => <MentorBoard />}
-								allowedRole="mentor"
-							/>
-						</Switch>
-					</>
-				</Router>
-				{/* <Login/> */}
-			</header>
-		</div>
-	);
+
+  <div className="App">
+  <header className="App-header">
+      <Router>
+ 
+          <Switch>
+             <NavBar /> 
+          </Switch>
+          
+          <>
+              <Switch>
+                  <Route exact path="/welcome" render={() => <Welcome />} />
+                  <Route exact path="/login" render={() => <Login />} />
+                 
+                 
+                  <Route exact path="/signup" render={() => <SignUp />} />
+                  
+                  <SecureRoute
+                      exact
+                      path="/dashboard/graduate/"
+                      render={() => <GraduateBoard />}
+                      allowedRole="graduate"
+                  />
+                  
+                  <SecureRoute
+                      exact
+                      path="/dashboard/mentor"
+                      render={() => <MentorBoard />}
+                      allowedRole="mentor"
+                  />
+              </Switch>
+          </>
+      </Router>
+      {/* <Login/> */}
+  </header>
+</div> 
+     
+    );
 };
 
 export default App;

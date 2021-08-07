@@ -17,44 +17,43 @@ toast.configure();
 
 function Home() {
     return (
-        <div className="App">
-            <header className="App-header">
-                <Router>
-                    {/* <Link to="/signUp">Register</Link>
+			<div className="App">
+				<header className="App-header">
+					<Router>
+						{/* <Link to="/signUp">Register</Link>
 					<br></br>
 					<Link to="/login">Log in</Link> */}
-                    {/*{!isAuthenticated ? <NavBar /> : null}*/}
-                    <Switch>
-                       <NavBar /> 
-                    </Switch>
-                    
-                    <>
-                        <Switch>
-                            <Route exact path="/welcome" render={() => <Welcome />} />
-                            <Route exact path="/login" render={() => <Login />} />
-                           
-                           
-                            <Route exact path="/signup" render={() => <SignUp />} />
-                            
-                            <SecureRoute
-                                exact
-                                path="/dashboard/graduate/"
-                                render={() => <GraduateBoard />}
-                                allowedRole="graduate"
-                            />
-                            
-                            <SecureRoute
-                                exact
-                                path="/dashboard/mentor"
-                                render={() => <MentorBoard />}
-                                allowedRole="mentor"
-                            />
-                        </Switch>
-                    </>
-                </Router>
-                {/* <Login/> */}
-            </header>
-        </div>
-    );
+						{/*{!isAuthenticated ? <NavBar /> : null}*/}
+						<Switch>
+							<NavBar />
+						</Switch>
+
+						<>
+							<Switch>
+								<Route exact path="/welcome" render={() => <Welcome />} />
+								<Route exact path="/login" render={() => <Login />} />
+
+								<Route exact path="/signup" render={() => <SignUp />} />
+
+								<SecureRoute
+									exact
+									path="/dashboard/graduate/"
+									render={() => <GraduateBoard />}
+									allowedRole="graduate"
+								/>
+
+								<SecureRoute
+									exact
+									path="/dashboard/mentor"
+									render={() => <MentorBoard />}
+									allowedRole="mentor"
+								/>
+							</Switch>
+						</>
+					</Router>
+					{/* <Login/> */}
+				</header>
+			</div>
+		);
 }
 export default Home;
