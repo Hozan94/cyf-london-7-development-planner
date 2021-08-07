@@ -4,7 +4,6 @@ import  { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
-import "bootstrap/dist/css/bootstrap.css";
 import "./navbar.css";
 export default function NavBar() {
     const [isOpen, setOpen] = useState(false);

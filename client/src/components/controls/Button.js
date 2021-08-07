@@ -3,16 +3,14 @@ import { Button as MuiButton, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-       marginRight: "5%",
+        marginRight: "5%",
     },
-})
-
-);
+}));
 
 function Button(props) {
     const { text, size, color, variant, onClick, ...other } = props;
 
-  const classes = useStyles();
+    const classes = useStyles();
 
     return (
         <MuiButton
@@ -21,7 +19,7 @@ function Button(props) {
             color={color || "primary"}
             onClick={onClick}
             {...other}
-            className ={classes.root}
+            className={classes.root}
         >
             {text}
         </MuiButton>
