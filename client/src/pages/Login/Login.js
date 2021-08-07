@@ -6,11 +6,15 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import image from "../../img/cyf.png";
 import "./Login.css";
+
 const loginSchema = yup.object().shape({
 	email: yup.string().email("Email is not valid").required(),
 	password: yup.string().required(),
 });
 const Login = () => {
+	
+
+
 	const history = useHistory();
 	const {
 		register,
@@ -32,6 +36,7 @@ const Login = () => {
 				localStorage.setItem("userType", parseRes.userType); //On refresh this will make sure the userType stays in local storage, so when it re-render we get the correct dashboard
 				history.push(`/dashboard/${parseRes.userType}`);
 				toast.success(" login was Successful");
+				//window.location.reload();
 			} else {
 				toast.error(parseRes);
 			}

@@ -42,7 +42,6 @@ function MentorBoard() {
 
             const parseRes = await response.json();
             mentor_id = parseRes.id;
-            // console.log(parseRes);
 
             setMentor(parseRes);
 
@@ -68,25 +67,7 @@ function MentorBoard() {
             console.error(err.message)
         }
     }
-
-    const logout = (e) => {
-        e.preventDefault();
-        localStorage.clear();
-        history.push(`/login`);
-        toast.success("Logged out successfully");
-    }
-    // console.log(plans);
-    // function filterPlans() {
-    //     if(plans){
-    //     let filtered_plans = plans.filter(
-    // 				(plan) => plan.feedback_details.length !== 0
-    //     );
-    //         return filtered_plans;
-    // }
-
-    // }
-
-
+    
     useEffect(() => {
         getFeedbacksRequests();
     }, []);
@@ -96,12 +77,6 @@ function MentorBoard() {
             <header className="header-container">
                 <div className="header-title-container">
                     <h1>Mentor Dashboard <span className="email">{mentor ? mentor.email : null}</span></h1>
-                    <Controls.Button
-                        color="secondary"
-                        type="submit"
-                        text="Log Out"
-                        onClick={logout}
-                    />
                 </div>
             </header>
             <main className="wrapper">

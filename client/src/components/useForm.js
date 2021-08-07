@@ -15,6 +15,7 @@ export function useForm(initialFieldValues) {
             ...values,
             [name]: value
         })
+        
     }
 
     return {

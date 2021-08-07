@@ -1,59 +1,97 @@
 import React from "react";
-//import "bulma/css/bulma.min.css";
-import { useState } from "react";
+// import "bulma/css/bulma.min.css";
+import  { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router";
+import { toast } from "react-toastify";
+import "bootstrap/dist/css/bootstrap.css";
+import "./navbar.css";
 export default function NavBar() {
     const [isOpen, setOpen] = useState(false);
-    return (
-        <nav
-            className="navbar is-primary"
-            role="navigation"
-            aria-label="main navigation"
-        >
-            <div className="container">
-                <div className="navbar-brand">
-                    <a
-                        role="button"
-                        className={`navbar-burger burger ${isOpen && "is-active"}`}
-                        aria-label="menu"
-                        aria-expanded="false"
-                        onClick={() => setOpen(!isOpen)}
-                    >
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                    </a>
-                </div>
+	const loggedIn = !!localStorage.getItem("token");
+	const history = useHistory();
+	
+	
 
-                <div className={`navbar-menu ${isOpen && "is-active"}`}>
-                    <div className="navbar-start">
+	 const logout = (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        history.push(`/login`);
+        toast.success("Logged out successfully");
+		//window.location.reload();
+    }
+
+
+   return (
+	   <div>
+			<nav className="nav-bar">
+			<div className="container">	
+			
+				
+                           <div className="left-links">  
+							
+							
+							   <NavLink
+								className="navbar-item-home"
+								activeClassName="is-active"
+							 	to="/welcome"
+							    >
+								Home
+							   </NavLink>
+
+						     </div>  
+							 <div className="right-links">               
+						{loggedIn  ? (  
+							
+                           <>
+                              <NavLink
+								className="navbar-item-logout"
+								activeClassName="is-active"
+								to="/login"
+								onClick={logout}
+							    >
+								Logout
+							   </NavLink>   
+
+						   </>
+
+						  ):(
+                         <>
+	                    
+					   
+					        <NavLink
+								className="navbar-item-signup"
+								activeClassName="is-active"
+								to="/signUp"
+							>
+								Sign Up
+							</NavLink>
                         <NavLink
-                            className="navbar-item"
-                            activeClassName="is-active"
-                            to="/welcome"
-                        >
-                            Home
-                        </NavLink>
+						className="navbar-item-login"
+						activeClassName="is-active"
+						to="/login"
+						>
+							Login
+					   </NavLink>
+                        </>
+						)
+					
+						
+						}
+						
+						</div>
+							
+							
+                            
 
-                        <NavLink
-                            className="navbar-item"
-                            activeClassName="is-active"
-                            to="/signUp"
-                        >
-                            Sign Up
-                        </NavLink>
-                        <NavLink
-                            className="navbar-item"
-                            activeClassName="is-active"
-                            to="/login"
-                        >
-                            Login
-                        </NavLink>
+							
 
-                    </div>
+			</div>
 
-                </div>
-            </div>
-        </nav>
-    );
+			   
+			</nav>
+
+           </div>
+			
+		);
 }

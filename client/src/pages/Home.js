@@ -24,18 +24,25 @@ function Home() {
 					<br></br>
 					<Link to="/login">Log in</Link> */}
                     {/*{!isAuthenticated ? <NavBar /> : null}*/}
-                    <NavBar />
+                    <Switch>
+                       <NavBar /> 
+                    </Switch>
+                    
                     <>
                         <Switch>
                             <Route exact path="/welcome" render={() => <Welcome />} />
                             <Route exact path="/login" render={() => <Login />} />
+                           
+                           
                             <Route exact path="/signup" render={() => <SignUp />} />
+                            
                             <SecureRoute
                                 exact
                                 path="/dashboard/graduate/"
                                 render={() => <GraduateBoard />}
                                 allowedRole="graduate"
                             />
+                            
                             <SecureRoute
                                 exact
                                 path="/dashboard/mentor"

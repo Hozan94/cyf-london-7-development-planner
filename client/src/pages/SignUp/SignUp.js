@@ -20,14 +20,20 @@ const userSchema = yup.object().shape({
 });
 
 const SignUp = ({ userType }) => {
+
+
+
     const history = useHistory();
     const [role, setRole] = useState("");
     const [status, setStatus] = useState(true);
-
+    
     const handleClassMenu = (value) => {
         console.log(value);
     };
 
+
+
+    
     const handleRoleMenu = (value) => {
         value === "graduate" ? setStatus(false) : setStatus(true);
         setRole(value);

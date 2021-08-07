@@ -46,13 +46,6 @@ function GraduateBoard() {
         }
     }
 
-    const logout = (e) => {
-        e.preventDefault();
-        localStorage.clear();
-        history.push(`/login`);
-        toast.success("Logged out successfully");
-    };
-
     useEffect(() => {
         getName();
     }, [submitted]);
@@ -62,12 +55,6 @@ function GraduateBoard() {
             <header className="header-container">
                 <div className="header-title-container">
                     <h1>Graduate Dashboard {graduate.id}</h1>
-                    <Controls.Button
-                        color="secondary"
-                        type="submit"
-                        text="Log Out"
-                        onClick={logout}
-                    />
                 </div>
             </header>
             <main className="wrapper">

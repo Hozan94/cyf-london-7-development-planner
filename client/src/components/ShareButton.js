@@ -11,7 +11,6 @@ import { IconButton, makeStyles } from '@material-ui/core';
 import MentorsList from './MentorsList';
 import ShareIcon from '@material-ui/icons/Share';
 
-
 function PaperComponent(props) {
     return (
         <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>

@@ -686,6 +686,7 @@ router.put("/mentors/:mentor_id/:plan_id/feedbacks", async (req, res) => {
         res.status(500).send(err, "server error");
     }
 });
+
 // for graduates to see the feedbacks
 router.get("/graduates/:graduate_id/feedbacks", async (req, res) => {
     try {
@@ -748,4 +749,15 @@ router.delete("/graduates/:graduate_id/:plan_id", async (req, res) => {
     }
 })
 
+
+
+// ********** cities endpoint ********///
+router.get("/cities", async (req, res) => {
+	try {
+		const cities_list = await pool.query(` select * from cities `);
+		res.json(cities_list.rows);
+	} catch (err) {
+		res.status(500).send(err, "server error");
+	}
+});
 export default router;
