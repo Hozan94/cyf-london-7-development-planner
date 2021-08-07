@@ -24,7 +24,10 @@ function Home() {
 					<br></br>
 					<Link to="/login">Log in</Link> */}
                     {/*{!isAuthenticated ? <NavBar /> : null}*/}
-                    <NavBar />
+                    <Switch>
+                       <NavBar /> 
+                    </Switch>
+                    
                     <>
                         <Switch>
                             <Route exact path="/welcome" render={() => <Welcome />} />

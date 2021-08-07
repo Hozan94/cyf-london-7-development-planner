@@ -90,12 +90,12 @@ function MentorBoard() {
 						Mentor Dashboard
 						<span className="email">{mentor ? mentor.email : null}</span>
 					</h1>
-					<Controls.Button
+					{/* <Controls.Button
 						color="secondary"
 						type="submit"
 						text="Log Out"
 						onClick={logout}
-					/>
+					/> */}
 				</header>
 				<main className="wrapper">
 					{/*<CreatePlan plan={setPlans} plansList={plans} />*/}
