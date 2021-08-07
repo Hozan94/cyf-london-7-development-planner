@@ -1,9 +1,32 @@
 import React from "react";
 import "bulma/css/bulma.min.css";
-import  { useState } from "react";
+import  { useState,useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router";
+import { toast } from "react-toastify";
+
+
 export default function NavBar() {
     const [isOpen, setOpen] = useState(false);
+	const loggedIn = !!localStorage.getItem("token");
+	const history = useHistory();
+	
+	console.log(loggedIn);
+    //  const [log , setLog] = useState(loggedIn);
+
+	//  useEffect(()=>{
+    //   setLog(log)
+    // },[log])
+
+	 const logout = (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        history.push(`/login`);
+        toast.success("Logged out successfully");
+		//window.location.reload();
+    }
+
+
    return (
 			<nav
 				className="navbar is-primary"
@@ -27,29 +50,61 @@ export default function NavBar() {
 
 					<div className={`navbar-menu ${isOpen && "is-active"}`}>
 						<div className="navbar-start">
-							<NavLink
+							
+							
+							   <NavLink
 								className="navbar-item"
 								activeClassName="is-active"
-								to="/welcome"
-							>
+							 	to="/welcome"
+							    >
 								Home
-							</NavLink>
+							   </NavLink>
 
-							<NavLink
+						                      
+						{loggedIn  ? (  
+                           <>
+                              <NavLink
+								className="navbar-item"
+								activeClassName="is-active"
+								to="/login"
+								onClick={logout}
+							    >
+								Logout
+							   </NavLink>   
+
+						   </>
+
+						  ):(
+                         <>
+	                    
+					   
+					        <NavLink
 								className="navbar-item"
 								activeClassName="is-active"
 								to="/signUp"
 							>
 								Sign Up
 							</NavLink>
+                        <NavLink
+						className="navbar-item"
+						activeClassName="is-active"
+						to="/login"
+						>
+							Login
+					   </NavLink>
+                        </>
+						)
+					
+						
+						}
+						
+						
+							
+							
+                            
 
-							<NavLink
-								className="navbar-item"
-								activeClassName="is-active"
-								to="/login"
-							>
-								Login
-							</NavLink>
+							
+
 						</div>
 
 						{/* <div className="navbar-end">

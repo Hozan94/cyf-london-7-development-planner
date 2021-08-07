@@ -33,6 +33,12 @@ h1{
     padding-bottom: 10px;
 }
 
-.test{
-    background-color: red;
+.red{
+    color: red;
+    
+}
+
+.green{
+color: green;
+font-size: 3rem;
 }

@@ -9,7 +9,12 @@ const App = () => {
 
     return (
 
-        <Home />
+<main>
+  
+    <Home />
+  </main>
+
+        
      
     );
 };

@@ -11,7 +11,7 @@ import Controls from './controls/Controls';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core';
 import MentorsList from './MentorsList';
-
+import ShareIcon from '@material-ui/icons/Share';
 
 function PaperComponent(props) {
     return (
@@ -97,6 +97,7 @@ export default function ShareButton({ planId }) {
                     <Button onClick={handleShare} color="primary">
                         Share
                     </Button>
+                   
                 </DialogActions>
             </Dialog>
         </div>

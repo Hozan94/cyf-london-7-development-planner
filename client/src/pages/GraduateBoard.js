@@ -73,8 +73,7 @@ function GraduateBoard() {
 				/>
 			</header>
 			<main className="wrapper">
-                {console.log(graduate.id)
-}
+               
                 <Sidebar graduateId={graduate.id}/>
 				<div className="plan-container">
 					{/*<div className="drop-down">
@@ -87,7 +86,9 @@ function GraduateBoard() {
 							//plan={setPlans}
 							plansList={plans}
 							graduateId={graduate.id}
+							
 						/>
+						
 						{/*<PlansTable plan={plans} />*/}
 						<Test plans={plans} isMentor={false} isGraduate={true} />
 					</div>
