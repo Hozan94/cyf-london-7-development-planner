@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,9 +7,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
 import Controls from './controls/Controls';
-import Icon from '@material-ui/core/Icon';
-import { makeStyles, Typography } from '@material-ui/core';
-import MentorsList from './MentorsList';
+import { makeStyles} from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 function PaperComponent(props) {
@@ -26,10 +25,10 @@ const useStyles = makeStyles(theme => ({
     dialogText: {
         display: 'flex',
         flexDirection: 'column',
+    },
+    deleteButton:{
+        padding: '0'
     }
-    //shareButton: {
-    //    width:'10px'
-    //}
 }));
 
 export default function DeleteButton({ graduateId, planId }) {
@@ -42,8 +41,6 @@ export default function DeleteButton({ graduateId, planId }) {
 
     const handleClick = (e) => {
         setOpen(true);
-        //console.log(e)
-        //console.log(e.target.parentNode.parentNode.parentNode.parentNode)
     };
 
     const handleClose = () => {
@@ -71,16 +68,11 @@ export default function DeleteButton({ graduateId, planId }) {
 
     }
 
-
-    //console.log(id)
     return (
         <div>
-            <Controls.Button
-                variant="text"
-                color="default"
-                endIcon={<Icon>delete</Icon>} //Used from Font Icons (Google Web Fonts)
-                onClick={handleClick}
-            />
+            <IconButton aria-label="delete" color="inherit" className={classes.deleteButton} onClick={handleClick}>
+                <DeleteIcon />
+            </IconButton>
             <Dialog
                 open={open}
                 onClose={handleClose}

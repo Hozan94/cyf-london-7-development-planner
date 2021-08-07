@@ -98,33 +98,36 @@ function MentorSidebar({ plans }) {
             <Typography variant="body1" className={classes.completedFeedbackTableTitle}>
                 Completed Feedback <Icon className={classes.icon}>task_alt</Icon>
             </Typography>
-            {plans && plans.length !== 0 ?
-                plans.map((item, index) => (
-                    <Accordion
-                        key={index}
-                        id={index}
-                        square
-                        expanded={expanded === `${item.id}`}
-                        onChange={handleChange(`${item.id}`)}
-                    >
-                        <AccordionSummary
-                            aria-controls="panel1d-content"
-                            id={item.id}
-                        // className={item.read_by_grad ? classes.readByGrad : null}
+            <Paper square elevation={2} >
+
+                {plans && plans.length !== 0 ?
+                    plans.map((item, index) => (
+                        <Accordion
+                            key={index}
+                            id={index}
+                            square
+                            expanded={expanded === `${item.id}`}
+                            onChange={handleChange(`${item.id}`)}
                         >
-                            <Typography>{item.plan_name}</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography variant="h6" gutterBottom>
-                                Feedback Details:
-                            </Typography>
-                            <Typography gutterBottom>{item.feedback_details}</Typography>
-                        </AccordionDetails>
-                    </Accordion>
-                ))
-                :
-                <Typography className={classes.noFeedbackText}>No feedback completed</Typography>
-            }
+                            <AccordionSummary
+                                aria-controls="panel1d-content"
+                                id={item.id}
+                            // className={item.read_by_grad ? classes.readByGrad : null}
+                            >
+                                <Typography>{item.plan_name}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography variant="h6" gutterBottom>
+                                    Feedback Details:
+                                </Typography>
+                                <Typography gutterBottom>{item.feedback_details}</Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                    ))
+                    :
+                    <Typography className={classes.noFeedbackText}>No feedback completed</Typography>
+                }
+            </Paper>
         </Paper>
     );
 }

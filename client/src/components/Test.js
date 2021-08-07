@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     plansTable: {
-        borderTop:'',
+        borderTop: '',
         width: '100%',
     },
     tableHeader: {
@@ -49,9 +49,8 @@ const useStyles = makeStyles(theme => ({
         margin: '0',
         marginBottom: '20px'
     },
-
-    shareButton: {
-        backgroundColor: 'green',
+    feedbackInput: {
+        margin: theme.spacing(1)
     }
 }));
 
@@ -66,6 +65,7 @@ function Row({ row, isMentor, isGraduate, mentorId, graduateId }) {
 
     const [open, setOpen] = useState(false);
     const [feedbackSent, setFeedbackSent] = useState(false);
+    const [disabled, setDisabled] = useState(false)
     const classes = useStyles();
 
     const {
@@ -74,32 +74,32 @@ function Row({ row, isMentor, isGraduate, mentorId, graduateId }) {
         handleInputChange
     } = useForm(initialFieldValues);
 
-const   handelFeedBack = async (e) =>{
-    //e.preventDefault()
-    //setOpen(false);
-    //setFeedbackSent(true)
+    const handelFeedBack = async (e) => {
+        //e.preventDefault()
+        //setOpen(false);
+        //setFeedbackSent(true)
 
-    try {
-        const response = await fetch(
-            
-            `http://localhost:3000/api/mentors/${mentorId}/${row.id}/feedbacks`,
-            {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
+        try {
+            const response = await fetch(
 
-                body: JSON.stringify({feedback_details:values.feedback}),
-            }
-        );
+                `http://localhost:3000/api/mentors/${mentorId}/${row.id}/feedbacks`,
+                {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
 
-        const parseRes = await response.json();
-        console.log(parseRes)
-    } catch (err) {
-        console.error(err.message);
+                    body: JSON.stringify({ feedback_details: values.feedback }),
+                }
+            );
+
+            const parseRes = await response.json();
+            console.log(parseRes)
+        } catch (err) {
+            console.error(err.message);
+        }
+
+
+
     }
-
-
-
-}
 
 
     return (
@@ -124,7 +124,7 @@ const   handelFeedBack = async (e) =>{
                         {format(new Date(row.feedback_requested_date), 'MM/dd/yyyy')}
                     </TableCell>
                 }
-                { isGraduate && <TableCell>                    
+                {isGraduate && <TableCell>
                     {row.id}
                 </TableCell>
                 }
@@ -141,7 +141,7 @@ const   handelFeedBack = async (e) =>{
                         <ShareButton planId={row.id}></ShareButton>
                     </TableCell>
                 }
-               
+
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -172,7 +172,7 @@ const   handelFeedBack = async (e) =>{
                         {isMentor &&
                             <Box>
                                 <Form className={classes.feedbackForm} onSubmit={handelFeedBack}>
-                                    <Grid container justifyContent="center" spacing={2}>
+                                    <Grid container className={classes.feedbackInput}>
                                         <Grid item xs={9} >
                                             <Controls.Input
                                                 placeholder="Add your feedback"
@@ -185,13 +185,16 @@ const   handelFeedBack = async (e) =>{
                                             />
                                         </Grid>
                                     </Grid>
-                                    <Grid container justifyContent="center">
+                                    <Grid container className={classes.feedbackInput}>
                                         <Controls.Button
                                             classes={{ root: classes.feedbackFormButton }}
                                             type="submit"
                                             text="send"
+                                            variant="text"
+                                            color="default"
+                                            disabled={!values.feedback}
                                             endIcon={<Icon>send</Icon>} //Used from Font Icons (Google Web Fonts)
-                                            
+
                                         />
                                     </Grid>
                                 </Form>
@@ -209,7 +212,7 @@ export default function PlansTable(props) {
 
     return (
         <div className="plans-table-container">
-            
+
             <TableContainer component={Paper} classes={{ root: classes.plansTable }}>
                 <Table aria-label="collapsible table">
                     <TableHead >
@@ -220,12 +223,12 @@ export default function PlansTable(props) {
                             {props.isGraduate && <TableCell className="plan-name-cell" classes={{ head: classes.tableHeader }}> Plan ID</TableCell>}
                             <TableCell className="plan-name-cell" classes={{ head: classes.tableHeader }}> Plan Name</TableCell>
                             <TableCell />
-                            <TableCell/>
+                            <TableCell />
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {props.plans.map((data) => {
-                            return <Row key={data.id} row={data} isMentor={props.isMentor} isGraduate={props.isGraduate}  mentorId={props.mentorId}  graduateId={props.graduateId}/>
+                            return <Row key={data.id} row={data} isMentor={props.isMentor} isGraduate={props.isGraduate} mentorId={props.mentorId} graduateId={props.graduateId} />
                         })}
                     </TableBody>
                 </Table>

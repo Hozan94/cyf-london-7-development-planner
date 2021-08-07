@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,9 +7,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
 import Controls from './controls/Controls';
-import Icon from '@material-ui/core/Icon';
-import { makeStyles } from '@material-ui/core';
+import { IconButton, makeStyles } from '@material-ui/core';
 import MentorsList from './MentorsList';
+import ShareIcon from '@material-ui/icons/Share';
 
 
 function PaperComponent(props) {
@@ -22,10 +21,9 @@ function PaperComponent(props) {
 }
 
 const useStyles = makeStyles(theme => ({
-
-    //shareButton: {
-    //    width:'10px'
-    //}
+    shareButton: {
+        padding: '0'
+    }
 }));
 
 export default function ShareButton({ planId }) {
@@ -37,8 +35,6 @@ export default function ShareButton({ planId }) {
 
     const handleClick = (e) => {
         setOpen(true);
-        //console.log(e)
-        //console.log(e.target.parentNode.parentNode.parentNode.parentNode)
     };
 
     const handleClose = () => {
@@ -52,7 +48,7 @@ export default function ShareButton({ planId }) {
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({id:planId}),
+                    body: JSON.stringify({ id: planId }),
                 }
             );
 
@@ -65,17 +61,11 @@ export default function ShareButton({ planId }) {
         setOpen(false);
     };
 
-    //console.log(id)
     return (
         <div>
-            <Controls.Button
-                classes={{ root: classes.shareButton }}
-                variant="text"
-                color="default"
-                type="submit"
-                endIcon={<Icon>share</Icon>} //Used from Font Icons (Google Web Fonts)
-                onClick={handleClick}
-            />
+            <IconButton aria-label="share" color="inherit" className={classes.shareButton} onClick={handleClick}>
+                <ShareIcon />
+            </IconButton>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -92,10 +82,10 @@ export default function ShareButton({ planId }) {
                     <MentorsList setMentorId={setMentorId} mentorId={mentorId} />
                 </DialogContent>
                 <DialogActions>
-                    <Controls.Button text="Cancel" variant="text" autoFocus onClick={handleClose}/>
-                    
-                    <Controls.Button text="Share" variant="text" onClick={handleShare}/>
-                   
+                    <Controls.Button text="Cancel" variant="text" autoFocus onClick={handleClose} />
+
+                    <Controls.Button text="Share" variant="text" onClick={handleShare} />
+
                 </DialogActions>
             </Dialog>
         </div>

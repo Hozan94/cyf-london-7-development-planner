@@ -15,8 +15,9 @@ import { Paper, TextField, Grid, Tooltip, Icon } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     createButton: {
         textTransform: 'none',
-        fontSize: '30px',
-        fontWeight: '400'
+        fontSize: '20px',
+        fontWeight: '500',
+        padding: theme.spacing(2)
     },
     appBar: {
         position: 'relative'
@@ -48,8 +49,6 @@ function CreatePlan(props) {
     const [data, setData] = useState([]);
     const [planTitle, setPlanTitle] = useState("");
 
-    //const smartGoals = `Use ${<a href="">SMART</a>} method when creating goals`
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -64,7 +63,6 @@ function CreatePlan(props) {
     }
 
     async function handleSubmit() {
-        //props.plan(props.plansList.concat(ourPlans))
         props.submitted(ourPlans)
         setOpen(false);
         setData([]);

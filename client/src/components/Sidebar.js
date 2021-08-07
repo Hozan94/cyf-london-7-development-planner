@@ -54,11 +54,15 @@ const AccordionDetails = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
     feedbackTableTitle: {
         padding: theme.spacing(1.8),
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    icon: {
+        marginLeft: theme.spacing(1)
     },
     readByGrad: {
         backgroundColor: 'rgb(248, 247, 245)',
     },
-
     heading: {
         flexBasis: '45.33%',
         flexShrink: 0,
@@ -78,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         padding: theme.spacing(2),
     },
-    noFeedbackText:{
+    noFeedbackText: {
         textAlign: 'center',
         padding: theme.spacing(2)
     }
@@ -154,7 +158,7 @@ function Sidebar({ graduateId }) {
     return (
         <Paper className="sidebar-container offset-md-1 col-md-4">
             <Typography variant="body1" className={classes.feedbackTableTitle}>
-                Received feedback <Icon>feedback</Icon>
+                Received feedback <Icon className={classes.icon}>feedback</Icon>
             </Typography>
             <Paper square elevation={2} className={classes.paperContainer} >
                 <Typography className={`${classes.heading} ${classes.headingText}`} >
