@@ -9,6 +9,7 @@ import "./navbar.css";
 export default function NavBar() {
     const [isOpen, setOpen] = useState(false);
 	const loggedIn = !!localStorage.getItem("token");
+	const userType = localStorage.getItem("userType");
 	const history = useHistory();
 	
 	
@@ -55,6 +56,16 @@ export default function NavBar() {
 								onClick={logout}
 							    >
 								Logout
+							   </NavLink>   
+
+						 
+                              <NavLink
+								className="navbar-item-logout"
+								activeClassName="is-active"
+								to={`/dashboard/${userType}`}
+								
+							    >
+								My Dashboard
 							   </NavLink>   
 
 						   </>

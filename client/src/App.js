@@ -17,13 +17,11 @@ import Login from "../src/pages/Login/Login";
 import MentorBoard from "../src/pages/MentorBoard";
 import SignUp from "../src/pages/SignUp/SignUp";
 import Welcome from "../src/pages/Welcome";
-
+import ErrorMessage from "./components/ErrorMessage";
 const App = () => {
 
 
     return (
-
-
 
   <div className="App">
   <header className="App-header">
@@ -35,9 +33,10 @@ const App = () => {
           
           <>
               <Switch>
+                  <Route exact path="/" render={() => <Welcome />} />
                   <Route exact path="/welcome" render={() => <Welcome />} />
                   <Route exact path="/login" render={() => <Login />} />
-                 
+                  {/* <Route component={ErrorMessage}/> */}
                  
                   <Route exact path="/signup" render={() => <SignUp />} />
                   
