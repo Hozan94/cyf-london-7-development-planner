@@ -31,7 +31,7 @@ function MentorBoard() {
     const [completedFeedbacks, setCompletedFeedbacks] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-    const [mentor, setMentor] = useState();
+    const [mentor, setMentor] = useState([]);
     let mentor_id;
 
     async function getFeedbacksRequests() {
@@ -75,9 +75,15 @@ function MentorBoard() {
 
     return (
         <div>
-            <header className="header-container">
+            <header>
                 <div className="header-title-container">
-                    <h1>Mentor Dashboard <span className="email">{mentor ? mentor.email : null}</span></h1>
+                    {/*<h1>Graduate Dashboard {graduate.email}</h1>*/}
+                    <Typography variant="h5" component="h1" >
+                        Mentor:
+                    </Typography>
+                    <Typography variant="body2" >
+                        {mentor.email}
+                    </Typography>
                 </div>
             </header>
             <main className="wrapper">

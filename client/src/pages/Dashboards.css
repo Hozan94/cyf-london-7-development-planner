@@ -1,58 +1,20 @@
-.header-container {
-	display: flex;
-	flex-direction: column;
-	/*justify-content: space-between;*/
-	/*align-items: flex-start;*/
-	/*padding-top: 20px;*/
-	/*height: 100px;*/
-	background-color: rgb(226, 226, 226);
-}
-
 .header-title-container {
 	display: flex;
-	justify-content: space-between;
+    flex-direction: column;
 	align-items: flex-start;
-	padding-top: 20px;
-	/*height: 100px;*/
-	/*background-color: rgb(226, 226, 226);*/
-}
-
-.header-container h1 {
-	margin-left: 4%;
+	padding-top: 10px;
+	height: 100px;
+    padding-left: 25px;
 }
 
 /*Not available in mentor board  */
-.goals-table-container {
+/*.goals-table-container {
 	margin-top: 20px;
 	margin-bottom: 40px;
 	display: flex;
 	justify-content: center;
-}
+}*/
 
-/*.plans-table-container {*/
-/*margin-top: 20px;*/
-/*margin-left: 1%;*/
-/*display: flex;
-	justify-content: center;*/
-/*}*/
-
-.logout-button-container {
-	height: 50%;
-	width: 50%;
-	display: inline-flex;
-	justify-content: flex-end;
-	align-items: center;
-}
-
-/* Not available in mentor board */
-.create-plan-button {
-	/*display: flex;
-	justify-content: center;*/
-	margin-bottom: 2%;
-	/*margin-top: 2%;
-
-	margin-left: 4%;*/
-}
 
 .goals-list-table {
 	background-color: rgb(248, 247, 245);

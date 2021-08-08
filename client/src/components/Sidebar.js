@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import "./aside.css";
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';

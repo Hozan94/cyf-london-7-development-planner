@@ -1,0 +1,118 @@
+/*@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Rajdhani:wght@700&display=swap");*/
+
+
+
+/*.tab{
+    justify-content: space-between;
+}*/
+
+/*.tab {
+	width: 50%;
+	text-align: center;
+	padding: 20px;
+}
+
+.tabs-container {
+	justify-content: center;
+}*/
+
+.cyf-image {
+	width: 100%;
+	height: auto;
+}
+
+.main {
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	display: flex;
+	align-items: center;
+	/*justify-content: flex-end;*/
+	margin-bottom: 100px;
+}
+
+.image-wrapper {
+	flex: 1;
+}
+
+.title {
+	text-align: left;
+	flex: 1;
+	color: hsl(0deg 0% 25%);
+}
+
+.title h1 {
+	text-align: left;
+	font-size: 5rem;
+	/*font-family: "Rajdhani", sans-serif;*/
+}
+
+.txt-slogen {
+	font-size: 1.5rem;
+	font-weight: 500;
+	color: rgb(165, 162, 162);
+	/*font-family: "Rajdhani", sans-serif;*/
+	line-height: 2rem;
+}
+
+.title-txt {
+	color: hsl(0deg 64% 50%);
+}
+
+/*.app-container {*/
+	/*height: 100%;*/
+	/*display: flex;
+	flex-direction: column;*/
+	/*align-items: flex-end;*/
+/*}*/
+@media (max-width: 400px) {
+	.main {
+		padding: 10px;
+		flex-direction: column;
+	}
+	.title {
+		margin-top: 25px;
+	}
+	.title h1 {
+		font-size: 2.5rem;
+	}
+	.txt-slogen {
+		font-size: 1.2rem;
+	}
+}
+
+@media (min-width: 400px) and (max-width: 786px) {
+	.main {
+		padding: 10px;
+		flex-direction: column;
+	}
+	.title {
+		margin-top: 25px;
+	}
+	.title h1 {
+		font-size: 3rem;
+	}
+	.txt-slogen {
+		font-size: 1.2rem;
+	}
+}
+
+@media (min-width: 787px) and (max-width:1180px) {
+	.main {
+		padding: 20px;
+	}
+	.cyf-image {
+		width: 100%;
+	}
+	.image-wrapper {
+        flex-grow: 1;
+	}
+	.title {
+        flex-grow: 1;
+	}
+    .title h1 {
+        word-break:keep-all;
+		font-size: 3.5rem;
+	}
+	.txt-slogen {
+		font-size: 1.3rem;
+	}
+}

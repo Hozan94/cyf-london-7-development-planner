@@ -6,15 +6,16 @@ import Test from "../components/Test";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router";
 import Sidebar from "../components/Sidebar";
-import { Paper } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 import Grid from '@material-ui/core/Grid'
+import Footer from "../components/Footer";
 
 function GraduateBoard() {
 
     const history = useHistory();
 
     const [plans, setPlans] = useState([]);
-    const [graduate, setGraduate] = useState("");
+    const [graduate, setGraduate] = useState([]);
     const [submitted, setSubmitted] = useState("");
 
     let graduate_id;
@@ -54,10 +55,17 @@ function GraduateBoard() {
 
     return (
         <div>
-            <header className="header-container">
+            <header>
                 <div className="header-title-container">
-                    <h1>Graduate Dashboard {graduate.id}</h1>
+                    {/*<h1>Graduate Dashboard {graduate.email}</h1>*/}
+                    <Typography variant="h5" component="h1" >
+                        Graduate:
+                    </Typography>
+                    <Typography variant="body2" >
+                        {graduate.email}
+                    </Typography>
                 </div>
+                
             </header>
             <main className="wrapper">
                 <Grid container className="grid-container">
@@ -77,7 +85,6 @@ function GraduateBoard() {
                 </Grid>
 
                 {/*</Grid>*/}
-
             </main>
         </div>
     );

@@ -87,7 +87,7 @@ function CreatePlan(props) {
 
     function smartGoals() {
         return (
-            <p>use <a style={{color:'white'}} target="_blank" href="https://www.indeed.com/career-advice/career-development/smart-goals">SMART</a> method when creating your goals</p>
+            <p>use <a style={{color:'white', textDecoration:'underline'}} target="_blank" href="https://www.indeed.com/career-advice/career-development/smart-goals">SMART</a> method when creating your goals</p>
         )
     }
 

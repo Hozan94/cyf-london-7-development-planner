@@ -4,7 +4,9 @@ import  { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
-import "./navbar.css";
+import "./Navbar.css";
+import { Typography } from "@material-ui/core";
+
 export default function NavBar() {
     const [isOpen, setOpen] = useState(false);
 	const loggedIn = !!localStorage.getItem("token");
@@ -25,13 +27,9 @@ export default function NavBar() {
 	   <div>
 			<nav className="nav-bar">
 			<div className="container">	
-			{/* <div class="hamburger_menu_and_text">
-                   <div class="hamburger_menu_box">
-                       <div class="line"></div>
-                 </div>
-				 </div> */}
+			
 				
-                           <div className="left-links">  
+                   <div className="left-links">  
 							
 							
 							   <NavLink
@@ -39,6 +37,7 @@ export default function NavBar() {
 								activeClassName="is-active"
 							 	to="/welcome"
 							    >
+                                    
 								Home
 							   </NavLink>
 
@@ -53,7 +52,7 @@ export default function NavBar() {
 								to="/login"
 								onClick={logout}
 							    >
-								Logout
+								Log out
 							   </NavLink>   
 
 						   </>
