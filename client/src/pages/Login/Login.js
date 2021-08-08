@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
@@ -13,17 +13,20 @@ const loginSchema = yup.object().shape({
 });
 const Login = () => {
 	
-
-
+	const [isValidToken, setIsValidToken] = useState("false");
+	const [errorMessage, setErrorMessage] = useState();
 	const history = useHistory();
 	const {
 		register,
 		handleSubmit,
+		setError,
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(loginSchema),
 	});
 	const onSubmitForm = async (data) => {
+		// setErrorMessage(parseRes.error);
+		console.log("before try",errorMessage);
 		try {
 			const response = await fetch("/api/users/login", {
 				method: "POST",
@@ -31,19 +34,35 @@ const Login = () => {
 				body: JSON.stringify(data),
 			});
 			const parseRes = await response.json();
+			// setErrorMessage(parseRes && parseRes.error);
+			setErrorMessage(parseRes.error);
+			console.log("after response",errorMessage);
 			if (parseRes.token) {
+				
+				
 				localStorage.setItem("token", parseRes.token);
 				localStorage.setItem("userType", parseRes.userType); //On refresh this will make sure the userType stays in local storage, so when it re-render we get the correct dashboard
 				history.push(`/dashboard/${parseRes.userType}`);
+				console.log('if',errorMessage)
+				
 				toast.success(" login was Successful");
 				//window.location.reload();
+				
 			} else {
 				toast.error(parseRes);
+				alert(parseRes.error);
+				setErrorMessage(parseRes.error);
+				console.log('else',errorMessage);
+				// history.push('/login');
 			}
 		} catch (err) {
 			console.error(err.message);
+			// setErrorMessage(err.message);
+			console.log('catch',err.message);
+
 		}
 	};
+	
 	return (
 		<div>
 			<div className="Login-container">

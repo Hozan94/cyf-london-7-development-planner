@@ -10,6 +10,7 @@ import { Typography } from "@material-ui/core";
 export default function NavBar() {
     const [isOpen, setOpen] = useState(false);
 	const loggedIn = !!localStorage.getItem("token");
+	const userType = localStorage.getItem("userType");
 	const history = useHistory();
 	
 	
@@ -55,6 +56,16 @@ export default function NavBar() {
 								Log out
 							   </NavLink>   
 
+						 
+                              <NavLink
+								className="navbar-item-dashboard"
+								activeClassName="is-active"
+								to={`/dashboard/${userType}`}
+								
+							    >
+								My Dashboard
+							   </NavLink>   
+
 						   </>
 
 						  ):(
@@ -83,9 +94,6 @@ export default function NavBar() {
 						
 						</div>
 							
-							
-                            
-
 							
 
 			</div>

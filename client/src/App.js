@@ -12,46 +12,56 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 toast.configure();
 
-const App = () => {
 
 
-    return (
-        <Router>
+    //import NavBar from "../../client/src/components/NavBar";
+    //import SecureRoute from "../../client/src/components/SecureRoute";
+    //import GraduateBoard from "../src/pages/GraduateBoard";
+    //import "../src/pages/Home.css";
+    //import Login from "../src/pages/Login/Login";
+    //import MentorBoard from "../src/pages/MentorBoard";
+    //import SignUp from "../src/pages/SignUp/SignUp";
+    //import Welcome from "../src/pages/Welcome";
+    import ErrorMessage from "./components/ErrorMessage";
+    
+    const App = () => {
+        return (
 
-            <Switch>
-                <NavBar />
-            </Switch>
-
-            <>
+            <Router>
                 <Switch>
-                    <Route exact path="/welcome" render={() => <Welcome />} />
-                    <Route exact path="/login" render={() => <Login />} />
-
-
-                    <Route exact path="/signup" render={() => <SignUp />} />
-
-                    <SecureRoute
-                        exact
-                        path="/dashboard/graduate/"
-                        render={() => <GraduateBoard />}
-                        allowedRole="graduate"
-                    />
-
-                    <SecureRoute
-                        exact
-                        path="/dashboard/mentor"
-                        render={() => <MentorBoard />}
-                        allowedRole="mentor"
-                    />
-
-
+                    <NavBar />
                 </Switch>
-            </>
-            <Switch>
-                <Footer />
-            </Switch>
-        </Router>
-    );
-};
 
-export default App;
+                <>
+                    <Switch>
+                        <Route exact path="/" render={() => <Welcome />} />
+                        <Route exact path="/welcome" render={() => <Welcome />} />
+                        <Route exact path="/login" render={() => <Login />} />
+                        {/* <Route component={ErrorMessage}/> */}
+
+                        <Route exact path="/signup" render={() => <SignUp />} />
+
+                        <SecureRoute
+                            exact
+                            path="/dashboard/graduate/"
+                            render={() => <GraduateBoard />}
+                            allowedRole="graduate"
+                        />
+
+                        <SecureRoute
+                            exact
+                            path="/dashboard/mentor"
+                            render={() => <MentorBoard />}
+                            allowedRole="mentor"
+                        />
+                    </Switch>
+                </>
+                <Switch>
+                    <Footer />
+                </Switch>
+            </Router>
+
+        );
+    };
+
+    export default App;
