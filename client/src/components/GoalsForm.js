@@ -15,15 +15,15 @@ const initialFieldValues = {
 function GoalsForm(props) {
 	const { values, setValues, handleInputChange } = useForm(initialFieldValues);
 
-	const [data, setData] = useState([]);
-    const [isDisabled, setIsDisabled]=useState('true')
-	const goal = {
+    const [data, setData] = useState([]);
+
+    const goal = {
 		goal_details: values.goalDetails,
-		due_date: format(values.dueDate, "MM/dd/yyyy"),
+		due_date: format(values.dueDate, 'dd/MM/yyyy'),
 		remarks: values.remarks,
 	};
-	// console.log(goal.goal_details);
-	const handleSubmit = (e) => {
+
+    const handleSubmit = (e) => {
 		e.preventDefault();
 
 		setData(data.concat(goal));

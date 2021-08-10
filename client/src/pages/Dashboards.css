@@ -8,12 +8,12 @@
 }
 
 /*Not available in mentor board  */
-/*.goals-table-container {
+.goals-table-container {
 	margin-top: 20px;
 	margin-bottom: 40px;
 	display: flex;
 	justify-content: center;
-}*/
+}
 
 
 .goals-list-table {

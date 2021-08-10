@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboards.css";
 import CreatePlan from "../components/CreatePlan";
-import Controls from "../components/controls/Controls";
-import Test from "../components/Test";
-import { toast } from "react-toastify";
-import { useHistory } from "react-router";
-import Sidebar from "../components/Sidebar";
-import { Paper, Typography } from "@material-ui/core";
-import Grid from '@material-ui/core/Grid'
-import Footer from "../components/Footer";
+import PlansTable from "../components/PlansTable";
+import GraduateSideboard from "../components/GraduateSideboard";
+import { Paper, Typography, Grid } from "@material-ui/core";
 
 function GraduateBoard() {
-
-    const history = useHistory();
 
     const [plans, setPlans] = useState([]);
     const [graduate, setGraduate] = useState([]);
     const [submitted, setSubmitted] = useState("");
 
     let graduate_id;
+
     async function getName() {
         try {
             const response = await fetch(
@@ -57,7 +51,6 @@ function GraduateBoard() {
         <div>
             <header>
                 <div className="header-title-container">
-                    {/*<h1>Graduate Dashboard {graduate.email}</h1>*/}
                     <Typography variant="h5" component="h1" >
                         Graduate:
                     </Typography>
@@ -65,7 +58,6 @@ function GraduateBoard() {
                         {graduate.email}
                     </Typography>
                 </div>
-                
             </header>
             <main className="wrapper">
                 <Grid container className="grid-container">
@@ -76,15 +68,13 @@ function GraduateBoard() {
                                 plansList={plans}
                                 graduateId={graduate.id}
                             />
-                            <Test graduateId={graduate.id} plans={plans} isMentor={false} isGraduate={true} />
+                            <PlansTable graduateId={graduate.id} plans={plans} isMentor={false} isGraduate={true} />
                         </Paper>
                     </Grid>
                     <Grid item xs={8} md={3}>
-                        <Sidebar graduateId={graduate.id} />
+                        <GraduateSideboard graduateId={graduate.id} />
                     </Grid>
                 </Grid>
-
-                {/*</Grid>*/}
             </main>
         </div>
     );

@@ -1,11 +1,8 @@
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+    Table, TableBody, TableCell, TableContainer,
+    TableHead, TableRow, Paper
+} from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +34,7 @@ function GoalsTable(props) {
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell classes={{head: classes.tableCells}}>Goal Name</TableCell>
+                            <TableCell classes={{ head: classes.tableCells }}>Goal Name</TableCell>
                             <TableCell classes={{ head: classes.tableCells }} align="center">Due Date</TableCell>
                             <TableCell classes={{ head: classes.tableCells }} align="right">Remarks</TableCell>
                         </TableRow>

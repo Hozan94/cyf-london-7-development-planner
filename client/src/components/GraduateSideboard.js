@@ -1,54 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { withStyles } from '@material-ui/core/styles';
-import MuiAccordion from '@material-ui/core/Accordion';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
-import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
-import { Icon, makeStyles, Paper } from '@material-ui/core';
-
-
-const Accordion = withStyles({
-    root: {
-        border: '1px solid rgba(0, 0, 0, .125)',
-        boxShadow: 'none',
-        '&:not(:last-child)': {
-            borderBottom: 0,
-        },
-        '&:before': {
-            display: 'none',
-        },
-        '&$expanded': {
-            margin: 'auto',
-        },
-    },
-    expanded: {},
-})(MuiAccordion);
-
-const AccordionSummary = withStyles({
-    root: {
-        backgroundColor: 'rgb(205 234 255)',
-        borderBottom: '1px solid rgba(0, 0, 0, .125)',
-        marginBottom: -1,
-        minHeight: 56,
-        '&$expanded': {
-            minHeight: 56,
-        },
-    },
-    content: {
-        '&$expanded': {
-            margin: '12px 0',
-        },
-    },
-    expanded: {},
-})(MuiAccordionSummary);
-
-const AccordionDetails = withStyles((theme) => ({
-    root: {
-        padding: theme.spacing(2),
-        display: 'flex',
-        flexDirection: 'column',
-    },
-}))(MuiAccordionDetails);
+import React, { useState, useEffect } from 'react'
+import { makeStyles } from '@material-ui/core/styles';
+import { Accordion, AccordionSummary, AccordionDetails } from './Accordion'
+import { Icon, Paper, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     feedbackTableTitle: {
@@ -72,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     accordionHeading: {
         fontSize: '0.875rem'
     },
-    accordionSummaryHeading: {
+    accordionDetailsHeading: {
         fontWeight: '400',
         paddingBottom: '20px'
     },
@@ -88,13 +41,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-function Sidebar({ graduateId }) {
+function GraduateSidebar({ graduateId }) {
 
     const classes = useStyles();
 
     const [feedbackDetails, setFeedbackDetails] = useState([]);
-
-    //const [expanded, setExpanded] = useState("");
 
     const [color, setColor] = useState("notRead")
 
@@ -139,8 +90,7 @@ function Sidebar({ graduateId }) {
         }
     }
 
-    const handleChange = (planId, read) => (event) => {
-        //setExpanded(newExpanded ? planId : false);
+    const handleChange = (planId, read) => (event, newExpanded) => {
         setColor(planId);
         updateFeedbacks(planId, read)
     };
@@ -180,7 +130,7 @@ function Sidebar({ graduateId }) {
                                 </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Typography className={classes.accordionSummaryHeading}>
+                                <Typography className={classes.accordionDetailsHeading}>
                                     Feedback Details:
                                 </Typography>
                                 <Typography variant="body2" gutterBottom>
@@ -196,4 +146,4 @@ function Sidebar({ graduateId }) {
     );
 }
 
-export default Sidebar;
+export default GraduateSidebar;

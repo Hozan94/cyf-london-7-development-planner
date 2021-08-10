@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React,{useState,useEffect} from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
@@ -13,7 +13,6 @@ const loginSchema = yup.object().shape({
 });
 const Login = () => {
 	
-	const [isValidToken, setIsValidToken] = useState("false");
 	const [errorMessage, setErrorMessage] = useState();
 	const history = useHistory();
 	const {
@@ -25,7 +24,6 @@ const Login = () => {
 		resolver: yupResolver(loginSchema),
 	});
 	const onSubmitForm = async (data) => {
-		// setErrorMessage(parseRes.error);
 		console.log("before try",errorMessage);
 		try {
 			const response = await fetch("/api/users/login", {
@@ -34,7 +32,6 @@ const Login = () => {
 				body: JSON.stringify(data),
 			});
 			const parseRes = await response.json();
-			// setErrorMessage(parseRes && parseRes.error);
 			setErrorMessage(parseRes.error);
 			console.log("after response",errorMessage);
 			if (parseRes.token) {
@@ -45,19 +42,15 @@ const Login = () => {
 				history.push(`/dashboard/${parseRes.userType}`);
 				console.log('if',errorMessage)
 				
-				toast.success(" login was Successful");
-				//window.location.reload();
-				
+				toast.success(" login was Successful");				
 			} else {
 				toast.error(parseRes);
 				alert(parseRes.error);
 				setErrorMessage(parseRes.error);
 				console.log('else',errorMessage);
-				// history.push('/login');
 			}
 		} catch (err) {
 			console.error(err.message);
-			// setErrorMessage(err.message);
 			console.log('catch',err.message);
 
 		}
@@ -65,10 +58,10 @@ const Login = () => {
 	
 	return (
 		<div>
-			<div className="Login-container">
+			<div className="login-container">
 				<img src={image} alt="Write something here" />
 				<form onSubmit={handleSubmit(onSubmitForm)}>
-					<div className="Login-details">
+					<div className="login-details">
 						<div className="input-box">
 							<span className="details">Email</span>
 							<input type="email" {...register("email")} />

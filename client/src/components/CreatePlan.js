@@ -1,16 +1,12 @@
 import React, { useState, forwardRef } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
 import GoalsForm from './GoalsForm';
 import GoalsTable from './GoalsTable';
-import { Paper, TextField, Grid, Tooltip, Icon } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import {
+    Paper, TextField, Grid, Tooltip, Icon, Button,
+    Dialog, AppBar, Toolbar, IconButton, Typography, Slide
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     createButton: {
@@ -48,6 +44,7 @@ function CreatePlan(props) {
     const [open, setOpen] = useState(false);
     const [data, setData] = useState([]);
     const [planTitle, setPlanTitle] = useState("");
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -87,7 +84,7 @@ function CreatePlan(props) {
 
     function smartGoals() {
         return (
-            <p>use <a style={{color:'white', textDecoration:'underline'}} target="_blank" href="https://www.indeed.com/career-advice/career-development/smart-goals">SMART</a> method when creating your goals</p>
+            <p>use <a style={{ color: 'white', textDecoration: 'underline' }} target="_blank" href="https://www.indeed.com/career-advice/career-development/smart-goals">SMART</a> method when creating your goals</p>
         )
     }
 

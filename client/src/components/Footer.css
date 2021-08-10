@@ -1,17 +1,7 @@
 .footer-container {
-	/*align-self:stretch;*/
-	/*align-content: flex-end;*/
 	background-color: rgb(226, 226, 226);
-	/*position: relative;*/
 	margin-top: 80vh;
 	padding: 2%;
-	/*height:5%;*/
-	/*left: 0;*/
-	/*bottom: 0;*/
-	/*position: relative;
-	left: 0;
-	bottom: 0;
-	right: 0;*/
     margin-bottom: -10;
 	width: 100%;
     color: rgb(124, 120, 120);

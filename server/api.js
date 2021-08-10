@@ -590,6 +590,7 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
                         goals_list.map((item) => {
                             console.log(item);
                             // item.goal_details
+                            console.log(`API: ${item.due_date}`)
                             const query_goals =
                                 "INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES($1,$2,$3,$4,$5)";
                             pool

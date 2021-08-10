@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboards.css';
-import Test from '../components/Test'
-import Controls from '../components/controls/Controls';
-import { toast } from "react-toastify";
-import { useHistory } from "react-router";
+import PlansTable from '../components/PlansTable'
 import MentorSidebar from "../components/MentorSidebar";
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core';
-import { Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Typography, Paper } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,13 +20,11 @@ function MentorBoard() {
 
     const classes = useStyles()
 
-    const history = useHistory();
-
     const [outstandingFeedbacks, setOutstandingFeedbacks] = useState([]);
     const [completedFeedbacks, setCompletedFeedbacks] = useState();
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
     const [mentor, setMentor] = useState([]);
+
     let mentor_id;
 
     async function getFeedbacksRequests() {
@@ -54,12 +47,14 @@ function MentorBoard() {
             const feedback = await fetch(`http://localhost:3000/api/mentors/${mentor_id}/feedbacks`);
 
             const feedbackRes = await feedback.json();
+
             let outstandingFeedbacks = feedbackRes.filter(
                 (plan) => plan.feedback_details === null
             );
             let completedFeedbacks = feedbackRes.filter(
                 (plan) => plan.feedback_details !== null
             );
+
             setOutstandingFeedbacks(outstandingFeedbacks);
             setCompletedFeedbacks(completedFeedbacks);
             setLoading(false);
@@ -77,7 +72,6 @@ function MentorBoard() {
         <div>
             <header>
                 <div className="header-title-container">
-                    {/*<h1>Graduate Dashboard {graduate.email}</h1>*/}
                     <Typography variant="h5" component="h1" >
                         Mentor:
                     </Typography>
@@ -93,15 +87,16 @@ function MentorBoard() {
                             <Typography variant="body1" className={classes.requestedFeedbackTableTitle}>
                                 Number of feedback requested: <span className={classes.feedbackCount}>{outstandingFeedbacks.length}</span>
                             </Typography>
-                            {loading ?
-                                <h5>Loading.....</h5>
-                                :
-                                <Test
-                                    plans={outstandingFeedbacks}
-                                    isMentor={true}
-                                    isGraduate={false}
-                                    mentorId={mentor.id}
-                                />
+                            {
+                                loading ?
+                                    <h5>Loading.....</h5>
+                                    :
+                                    <PlansTable
+                                        plans={outstandingFeedbacks}
+                                        isMentor={true}
+                                        isGraduate={false}
+                                        mentorId={mentor.id}
+                                    />
                             }
                         </Paper>
                     </Grid>

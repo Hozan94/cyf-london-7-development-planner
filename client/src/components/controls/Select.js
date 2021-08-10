@@ -4,11 +4,12 @@ import { FormControl, InputLabel, MenuItem, Select as MuiSelect, makeStyles } fr
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '50%',
-        paddingTop: theme.spacing(3)
+        marginTop: theme.spacing(3)
     },
 }));
 
 function Select(props) {
+    
     const classes = useStyles();
     const { name, label, value, onChange, options } = props;
 
@@ -30,7 +31,6 @@ function Select(props) {
             </MuiSelect>
 
         </FormControl>
-
     )
 }
 

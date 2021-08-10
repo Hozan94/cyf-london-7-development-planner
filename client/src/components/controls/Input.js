@@ -2,6 +2,7 @@ import React from 'react';
 import { TextField } from '@material-ui/core';
 
 function Input(props) {
+   
     const {name, label, value, onChange, multiline, placeholder, rows, maxRows, autoFocus} = props;
 
     return (
@@ -11,7 +12,7 @@ function Input(props) {
             label={label}
             name={name}
             multiline = {multiline}
-            maxRows={maxRows}  //previously was maxRows={6} added it other inputs
+            maxRows={maxRows}  
             rows={rows}
             value={value}
             onChange={onChange}

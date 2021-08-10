@@ -4,7 +4,6 @@ import Controls from './controls/Controls';
 function MentorDropDown({ setMentorId, mentorId }) {
     
     const [mentorName, setMentorName] = useState([]);
-    //const [value, setValue] = useState("");
 
     async function getMentors() {
         const mentors = await fetch('http://localhost:3000/api/mentors');
@@ -27,7 +26,6 @@ function MentorDropDown({ setMentorId, mentorId }) {
         setMentorId(e.target.value);
         console.log(e.target.value)
     }
-
     return (
             <Controls.Select
                 name="mentorsList"

@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Paper from '@material-ui/core/Paper';
+import React, { useState } from 'react';
 import Draggable from 'react-draggable';
 import Controls from './controls/Controls';
-import { makeStyles} from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
+import { makeStyles} from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import {
+    Dialog, DialogActions, DialogContentText, DialogContent,
+    DialogTitle, Paper, IconButton
+} from '@material-ui/core'
 
 function PaperComponent(props) {
     return (
@@ -22,11 +18,7 @@ function PaperComponent(props) {
 
 const useStyles = makeStyles(theme => ({
 
-    dialogText: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    deleteButton:{
+    deleteButton: {
         padding: '0'
     }
 }));
@@ -36,7 +28,6 @@ export default function DeleteButton({ graduateId, planId }) {
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-    const [mentorId, setMentorId] = useState("");
     const [deletedPlans, setDeletedPlans] = useState("");
 
     const handleClick = (e) => {
@@ -85,7 +76,7 @@ export default function DeleteButton({ graduateId, planId }) {
                     Delete
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText className={classes.dialogText}>
+                    <DialogContentText>
                         Delete this plan?
                     </DialogContentText>
                     <DialogContentText variant="caption">
@@ -96,7 +87,6 @@ export default function DeleteButton({ graduateId, planId }) {
                     <Controls.Button text="Cancel" variant="text" autoFocus onClick={handleClose} />
 
                     <Controls.Button text="Delete" variant="text" onClick={handleDelete} />
-
                 </DialogActions>
             </Dialog>
         </div>

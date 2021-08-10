@@ -1,10 +1,11 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import React from 'react';
+import { format, parseISO } from "date-fns";
 
 
 function DatePicker(props) {
-
+    
     const { name, label, value, onChange } = props;
 
     const convertToDefEventPara = (name, value) => ({
@@ -20,7 +21,7 @@ function DatePicker(props) {
                 variant="inline"
                 inputVariant="outlined"
                 label={label}
-                format="MM/dd/yyyy"
+                format="dd/MM/yyyy"
                 value={value}
                 onChange={date => onChange(convertToDefEventPara(name, date))}
             />

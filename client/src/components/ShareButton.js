@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
 import Controls from './controls/Controls';
-import { IconButton, makeStyles } from '@material-ui/core';
 import MentorsList from './MentorsList';
+import { makeStyles } from '@material-ui/core/styles';
 import ShareIcon from '@material-ui/icons/Share';
+import {
+    Dialog, DialogActions, DialogContent, DialogContentText,
+    DialogTitle, Paper, IconButton
+} from '@material-ui/core'
+
 
 function PaperComponent(props) {
     return (
@@ -52,7 +51,6 @@ export default function ShareButton({ planId }) {
             );
 
             const parseRes = await response.json();
-            console.log(parseRes)
         } catch (err) {
             console.error(err.message);
         }
@@ -84,7 +82,6 @@ export default function ShareButton({ planId }) {
                     <Controls.Button text="Cancel" variant="text" autoFocus onClick={handleClose} />
 
                     <Controls.Button text="Share" variant="text" onClick={handleShare} />
-
                 </DialogActions>
             </Dialog>
         </div>
