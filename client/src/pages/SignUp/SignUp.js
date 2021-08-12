@@ -6,27 +6,8 @@ import { useHistory } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-import Controls from "../../components/controls/Controls";
 import { Form } from "../../components/useForm";
-import { FormControl, InputLabel, MenuItem, Select as MuiSelect, makeStyles, Grid, TextField, Paper, FormHelperText } from '@material-ui/core';
-
-const useStyles = makeStyles((theme) => ({
-    signupBtn: {
-        margin: '10px 0 0 0',
-        backgroundColor: '#932020',
-        textTransform: 'none',
-        color: 'white',
-        width: '50%',
-        borderRadius: '10px',
-        height: '45px',
-        "&:hover": {
-            backgroundColor: '#d12f2f'
-        }
-    },
-    //formInputs: {
-    //    width: '0%'
-    //}
-}))
+import { FormControl, InputLabel, MenuItem, Select as MuiSelect, makeStyles, Grid, TextField, Paper } from '@material-ui/core';
 
 const userSchema = yup.object().shape({
     firstName: yup.string().required("First Name is required"),
@@ -41,7 +22,6 @@ const userSchema = yup.object().shape({
 });
 
 const SignUp = ({ userType }) => {
-    const style = useStyles();
     const history = useHistory();
     const [status, setStatus] = useState(true);
     const [role, setRole] = useState("");
@@ -246,14 +226,6 @@ const SignUp = ({ userType }) => {
                             />
                         </Grid>
                         <Grid container item xs={7} justifyContent="center">
-                            {/*<Controls.Button
-                                classes={{ root: style.signupBtn }}
-                                className="btn-signup"
-                                text="Sign Up"
-                                type="submit"
-                                variant="text"
-                                color="default"
-                            />*/}
                             <div className="btn-holder">
                                 <button type="submit" className="btn-signup">Sign up</button>
                             </div>
@@ -262,105 +234,10 @@ const SignUp = ({ userType }) => {
                 </Form>
             </Paper>
         </div>
-        //<div>
-        //    <div className="signUp-container">
-        //        <img src={image} alt="cyf-logo" />
-        //        <form onSubmit={handleSubmit(onSubmitForm)}>
-        //            <div className="user-details">
-        //                <div className="input-box">
-        //                    <span className="details">First Name</span>
-        //                    <input type="text" {...register("firstName")} />
-
-        //                    <p>{errors.firstName?.message}</p>
-        //                </div>
-
-        //                <div className="input-box">
-        //                    <span className="details">Last Name</span>
-        //                    <input type="text" {...register("lastName")} />
-
-        //                    <p>{errors.lastName?.message}</p>
-        //                </div>
-
-        //                <div className="input-box">
-        //                    <span className="details">Role</span>
-        //                    <select
-        //                        className="role"
-        //                        name="role"
-        //                        id="role"
-        //                        {...register("role")}
-        //                        onChange={(e) => handleRoleMenu(e.target.value)}
-        //                    >
-        //                        <option value="">--Please choose your role--</option>
-        //                        <option value="graduate">Graduate</option>
-        //                        <option value="mentor">Mentor</option>
-        //                    </select>
-        //                </div>
-
-        //                <div className="input-box">
-        //                    <span className="details">Class <span className="grads-only-msg">(Graduates only)</span></span>
-        //                    <select
-        //                        className="role"
-        //                        name="studentClass"
-        //                        id="studentClass"
-        //                        required
-        //                        {...register("classCode")}
-        //                        onChange={(e) => handleClassMenu(e.target.value)}
-        //                        disabled={status}
-        //                    >
-        //                        <option value="">--Please choose your class--</option>
-        //                        {classes.map((item) => (
-        //                            <option key={item.id} value={item.class_code}>{item.class_code}</option>
-        //                        ))}
-        //                    </select>
-        //                </div>
-
-        //                <div className="input-box">
-        //                    <span className="details">City</span>
-        //                    {/* <input type="text"   {...register("city")} /> */}
-        //                    <select
-        //                        className="city"
-        //                        {...register("city")}
-        //                        onChange={(e) => handleCityMenu(e.target.value)}
-        //                    >
-        //                        <option value="">--Please choose your city--</option>
-        //                        {cities.map((elem) => (
-        //                            <option key={elem.id} value={elem.city_name}>
-        //                                {elem.city_name}
-        //                            </option>
-        //                        ))}
-        //                    </select>
-
-        //                    <p>{errors.city?.message}</p>
-        //                </div>
-
-        //                <div className="input-box">
-        //                    <span className="details">Email</span>
-        //                    <input type="" {...register("email")} />
-
-        //                    <p>{errors.email?.message}</p>
-        //                </div>
-
-        //                <div className="input-box">
-        //                    <span className="details">Password</span>
-        //                    <input type="password" {...register("password")} />
-
-        //                    <p>{errors.password?.message}</p>
-        //                </div>
-
-        //                <div className="input-box">
-        //                    <span className="details">Confirm Password</span>
-        //                    <input type="password" {...register("confirmPassword")} />
-
-        //                    <p>{errors.confirmPassword?.message}</p>
-        //                </div>
-        //            </div>
-        //            <div className="btn-holder">
-        //                <button className="btn-signup">Signup</button>
-        //            </div>
-        //        </form>
-        //    </div>
-        //</div>
     );
 };
 
 export default SignUp;
+
+
+       
