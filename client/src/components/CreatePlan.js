@@ -64,7 +64,7 @@ function CreatePlan(props) {
         setData([]);
 
         try {
-            const response = await fetch(`http://localhost:3000/api/graduates/${props.graduateId}/plans/goals`, {
+            const response = await fetch(`/api/graduates/${props.graduateId}/plans/goals`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(ourPlans),

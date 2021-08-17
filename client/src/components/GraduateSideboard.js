@@ -53,7 +53,7 @@ function GraduateSidebar({ graduateId }) {
         console.log("11111")
         try {
             const feedbacks = await fetch(
-                `http://localhost:3000/api/graduates/${graduateId}/feedbacks`,
+                `/api/graduates/${graduateId}/feedbacks`,
                 {
                     method: "GET",
                     headers: { 'Content-Type': 'application/json' }
@@ -73,7 +73,7 @@ function GraduateSidebar({ graduateId }) {
         if (!read) {
             try {
                 const feedbacks = await fetch(
-                    `http://localhost:3000/api/graduates/${graduateId}/${planId}/feedbacks`,
+                    `/api/graduates/${graduateId}/${planId}/feedbacks`,
                     {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },

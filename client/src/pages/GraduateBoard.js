@@ -16,7 +16,7 @@ function GraduateBoard() {
     async function getName() {
         try {
             const response = await fetch(
-                "http://localhost:3000/api/dashboard/graduate",
+                "/api/dashboard/graduate",
                 {
                     method: "GET",
                     headers: { token: localStorage.token },
@@ -32,7 +32,7 @@ function GraduateBoard() {
 
         try {
             const plans = await fetch(
-                `http://localhost:3000/api/graduates/${graduate_id}/plans/goals`
+                `/api/graduates/${graduate_id}/plans/goals`
 
             );
 

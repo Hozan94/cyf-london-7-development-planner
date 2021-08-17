@@ -29,7 +29,7 @@ function MentorBoard() {
 
     async function getFeedbacksRequests() {
         try {
-            const response = await fetch("http://localhost:3000/api/dashboard/mentor", {
+            const response = await fetch("/api/dashboard/mentor", {
                 method: "GET",
                 headers: { token: localStorage.token }
             });
@@ -44,7 +44,7 @@ function MentorBoard() {
         }
 
         try {
-            const feedback = await fetch(`http://localhost:3000/api/mentors/${mentor_id}/feedbacks`);
+            const feedback = await fetch(`/api/mentors/${mentor_id}/feedbacks`);
 
             const feedbackRes = await feedback.json();
 

@@ -79,7 +79,7 @@ function Row({ row, isMentor, isGraduate, mentorId, graduateId }) {
         try {
             const response = await fetch(
 
-                `http://localhost:3000/api/mentors/${mentorId}/${row.id}/feedbacks`,
+                `/api/mentors/${mentorId}/${row.id}/feedbacks`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },

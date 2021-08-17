@@ -6,7 +6,7 @@ function MentorDropDown({ setMentorId, mentorId }) {
     const [mentorName, setMentorName] = useState([]);
 
     async function getMentors() {
-        const mentors = await fetch('http://localhost:3000/api/mentors');
+        const mentors = await fetch('/api/mentors');
         const parse = await mentors.json()
         setMentorName(parse.mentors.map((mentor) => {
             return {

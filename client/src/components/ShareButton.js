@@ -42,7 +42,7 @@ export default function ShareButton({ planId }) {
     const handleShare = async () => {
         try {
             const response = await fetch(
-                `http://localhost:3000/api/mentors/${mentorId}/feedbacks`,
+                `/api/mentors/${mentorId}/feedbacks`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
