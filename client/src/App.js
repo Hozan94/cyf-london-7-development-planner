@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import NavBar from "./components/NavBar";
@@ -46,5 +47,22 @@ const App = () => {
         </Router>
     );
 };
+=======
+import { Route, Switch } from "react-router-dom";
+
+import About from "./pages/About";
+import Home from "./pages/Home";
+
+const App = () => (
+	<Switch>
+		<Route path="/" exact>
+			<Home />
+		</Route>
+		<Route path="/about/this/site">
+			<About />
+		</Route>
+	</Switch>
+);
+>>>>>>> da79074b2f1c86687da126fe3c89261f123fc3d0
 
 export default App;
