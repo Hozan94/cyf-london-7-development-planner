@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { Router } from "express";
-<<<<<<< HEAD
 import { Pool } from "pg";
 //const authorization = require('./middleware/authorization');
 //const jwtGenerator = require('./utils/jwtGenerator');
@@ -9,8 +8,6 @@ import { authorization, jwtGenerator } from "./middleware";
 import { pool } from "./db";
 
 const bcrypt = require("bcrypt");
-=======
->>>>>>> da79074b2f1c86687da126fe3c89261f123fc3d0
 
 const router = new Router();
 
@@ -18,7 +15,6 @@ router.get("/", (_, res) => {
 	res.json({ message: "Hello, world!" });
 });
 
-<<<<<<< HEAD
 //const dbUrl = process.env.DATABASE_URL || "postgres://localhost:5432/cyf";
 
 //const pool = new Pool({
@@ -776,6 +772,4 @@ router.get("/classes", async (req, res) => {
 		res.status(500).send(err, "server error");
 	}
 });
-=======
->>>>>>> da79074b2f1c86687da126fe3c89261f123fc3d0
 export default router;
