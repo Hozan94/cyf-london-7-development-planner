@@ -1,12 +1,13 @@
 import React from "react";
 import './Welcome.css';
+import image from "../img/CodeYourFuture2.jpeg";
 
 function Welcome() {
 
     return (
         <div className="main">
             <div className="image-wrapper">
-                <img className="cyf-image" src="client/src/img/CodeYourFuture2.jpeg" alt="cyf" />
+                <img className="cyf-image" src={image} alt="cyf" />
             </div>
             <div className="title">
                 <h1><span className="title-txt">Development</span><br /> Planner</h1>
