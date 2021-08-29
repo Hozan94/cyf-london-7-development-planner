@@ -601,10 +601,12 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
                                     item.remarks,
                                     1,
                                 ])
+                                .then(()=>{
+                                    res.json("goals are saved");
+                                })
                                 .catch((e) => console.error(e));
                         });
 
-                        res.json("goals are saved");
                     })
                     .catch((e) => console.error(e));
             }
