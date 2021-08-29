@@ -6,13 +6,16 @@ import { Pool } from "pg";
 //const jwtGenerator = require('./utils/jwtGenerator');
 import { authorization, jwtGenerator } from "./middleware";
 import { pool } from "./db";
+import { array } from "prop-types";
 
 const bcrypt = require("bcrypt");
 
 const router = new Router();
 
+var format = require('pg-format');
+
 router.get("/", (_, res) => {
-	res.json({ message: "Hello, world!" });
+    res.json({ message: "Hello, world!" });
 });
 
 //const dbUrl = process.env.DATABASE_URL || "postgres://localhost:5432/cyf";
@@ -587,20 +590,24 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
                 pool
                     .query(query_plan, [plan_name, graduateId])
                     .then((result) => {
-                        for(let i=0; i<goals_list.length; i++){
+                        for (let i=0; i<goals_list.length; i++){
                             const query_goals =
                                 "INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES($1,$2,$3,$4,$5)";
                             pool
                                 .query(query_goals, [
                                     result.rows[0].id,
-                                    goals_list[i].goal_details,
-                                    goals_list[i].due_date,
-                                    goals_list[i].remarks,
+                                    item.goal_details,
+                                    item.due_date,
+                                    item.remarks,
                                     1,
-                                ])
-                                .catch((e) => console.error(e));
+                                ], (error, results) => {
+                                    if (error) {
+                                        throw error
+                                    } else {
+                                        console.log("Rows " + JSON.stringify(results.rows));
+                                    }
+                                })
                         }
-
                         //goals_list.forEach((item) => {
                         //    console.log(item);
                         //    // item.goal_details
@@ -767,22 +774,22 @@ router.delete("/graduates/:graduate_id/:plan_id", async (req, res) => {
 
 // ********** cities endpoint ********///
 router.get("/cities", async (req, res) => {
-	try {
-		const cities_list = await pool.query(` select * from cities `);
-		res.json(cities_list.rows);
-	} catch (err) {
-		res.status(500).send(err, "server error");
-	}
+    try {
+        const cities_list = await pool.query(` select * from cities `);
+        res.json(cities_list.rows);
+    } catch (err) {
+        res.status(500).send(err, "server error");
+    }
 });
 
 // ********** classes endpoint ********///
 
 router.get("/classes", async (req, res) => {
-	try {
-		const classes_list = await pool.query(` select * from classes `);
-		res.json(classes_list.rows);
-	} catch (err) {
-		res.status(500).send(err, "server error");
-	}
+    try {
+        const classes_list = await pool.query(` select * from classes `);
+        res.json(classes_list.rows);
+    } catch (err) {
+        res.status(500).send(err, "server error");
+    }
 });
 export default router;
