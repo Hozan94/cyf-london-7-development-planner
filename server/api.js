@@ -587,22 +587,36 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
                 pool
                     .query(query_plan, [plan_name, graduateId])
                     .then((result) => {
-                        goals_list.forEach((item) => {
-                            console.log(item);
-                            // item.goal_details
-                            console.log(`API: ${item.due_date}`)
+                        for(let i=0; i<goals_list.length; i++){
                             const query_goals =
                                 "INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES($1,$2,$3,$4,$5)";
                             pool
                                 .query(query_goals, [
                                     result.rows[0].id,
-                                    item.goal_details,
-                                    item.due_date,
-                                    item.remarks,
+                                    goals_list[i].goal_details,
+                                    goals_list[i].due_date,
+                                    goals_list[i].remarks,
                                     1,
                                 ])
                                 .catch((e) => console.error(e));
-                        });
+                        }
+
+                        //goals_list.forEach((item) => {
+                        //    console.log(item);
+                        //    // item.goal_details
+                        //    console.log(`API: ${item.due_date}`)
+                        //    const query_goals =
+                        //        "INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES($1,$2,$3,$4,$5)";
+                        //    pool
+                        //        .query(query_goals, [
+                        //            result.rows[0].id,
+                        //            item.goal_details,
+                        //            item.due_date,
+                        //            item.remarks,
+                        //            1,
+                        //        ])
+                        //        .catch((e) => console.error(e));
+                        //});
 
                     })
                     .catch((e) => console.error(e));
