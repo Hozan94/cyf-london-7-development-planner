@@ -587,7 +587,7 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
                 pool
                     .query(query_plan, [plan_name, graduateId])
                     .then((result) => {
-                        goals_list.map((item) => {
+                        goals_list.forEach((item) => {
                             console.log(item);
                             // item.goal_details
                             console.log(`API: ${item.due_date}`)
@@ -601,11 +601,6 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
                                     item.remarks,
                                     1,
                                 ])
-                                .then(()=>{
-                                    if(item === goals_list[goals_list.length -1]){
-                                        res.json("goals are saved");
-                                    }
-                                })
                                 .catch((e) => console.error(e));
                         });
 
