@@ -602,7 +602,9 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
                                     1,
                                 ])
                                 .then(()=>{
-                                    res.json("goals are saved");
+                                    if(item === goals_list[goals_list.length -1]){
+                                        res.json("goals are saved");
+                                    }
                                 })
                                 .catch((e) => console.error(e));
                         });
