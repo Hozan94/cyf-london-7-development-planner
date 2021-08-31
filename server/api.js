@@ -590,40 +590,36 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
                 pool
                     .query(query_plan, [plan_name, graduateId])
                     .then((result) => {
-                        for (let i=0; i<goals_list.length; i++){
-                            const query_goals =
-                                "INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES($1,$2,$3,$4,$5)";
-                            pool
-                                .query(query_goals, [
-                                    result.rows[0].id,
-                                    item.goal_details,
-                                    item.due_date,
-                                    item.remarks,
-                                    1,
-                                ], (error, results) => {
-                                    if (error) {
-                                        throw error
-                                    } else {
-                                        console.log("Rows " + JSON.stringify(results.rows));
-                                    }
-                                })
-                        }
+                        console.log("fdfd")
+                      
+                        
                         //goals_list.forEach((item) => {
                         //    console.log(item);
                         //    // item.goal_details
                         //    console.log(`API: ${item.due_date}`)
-                        //    const query_goals =
-                        //        "INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES($1,$2,$3,$4,$5)";
-                        //    pool
-                        //        .query(query_goals, [
-                        //            result.rows[0].id,
-                        //            item.goal_details,
-                        //            item.due_date,
-                        //            item.remarks,
-                        //            1,
-                        //        ])
-                        //        .catch((e) => console.error(e));
-                        //});
+                    //   const arr =  goals_list.map((item)=> (
+                    //        item[id]= result.rows[0].id
+                            
+                    //    ))
+                        //console.log(arr);
+                       
+                      let arr = goals_list.map((item) => (
+                      [result.rows[0].id,
+                                item.goal_details,
+                                item.due_date,
+                                item.remarks,
+                                1]
+                      ))
+                      console.log(pool)
+                            //const query_goals =
+                            //    format(`INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES %L`, arr);
+                            pool
+                                .query(format(`INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES %L`, arr), [])
+                        //    console.log(item);)
+
+                                .then(()=> res.json("goals are saved"))
+                                .catch((e) => console.error(e));
+                        
 
                     })
                     .catch((e) => console.error(e));
