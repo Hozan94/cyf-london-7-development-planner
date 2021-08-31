@@ -614,7 +614,7 @@ router.post("/graduates/:graduate_id/plans/goals", (req, res) => {
                             //const query_goals =
                             //    format(`INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES %L`, arr);
                             pool
-                                .query(format(`INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES %L`, arr), [])
+                                .query(format(`INSERT INTO goals (plan_id,goal_details,due_date,remarks,goal_status_id) VALUES %L`, arr))
                         //    console.log(item);)
 
                                 .then(()=> res.json("goals are saved"))
