@@ -30,9 +30,7 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			favicon: "./client/src/favicon.ico",
-			template: "./client/src/index.html",
-            googleFont: "https//fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap",
-            googleIcon: "https//fonts.googleapis.com/icon?family=Material+Icons",
+			template: "./client/src/index.html"
 		}),
 	],
 };
