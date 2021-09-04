@@ -14,8 +14,10 @@ import {
 const apiRoot = "/api";
 const staticDir = path.join(__dirname, "static");
 
+const cors = require('cors')
 const app = express();
 
+app.use(cors())
 app.use(express.json());
 app.use(configuredHelmet());
 app.use(morgan("dev"));
